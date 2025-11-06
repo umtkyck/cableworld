@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Linkedin, Twitter, Youtube, Mail } from 'lucide-react'
+import Logo from './Logo'
 
 export default function Footer() {
   return (
@@ -8,11 +9,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-accent-green to-accent-blue rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">C</span>
-              </div>
-              <span className="text-2xl font-bold">CableWorld</span>
+            <Link href="/" className="mb-4 inline-block">
+              <Logo variant="white" showText={true} size="md" />
             </Link>
             <p className="text-slate-300 mb-4 max-w-md">
               Revolutionizing cable and wire harness manufacturing with instant quotes,
