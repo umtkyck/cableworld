@@ -41,14 +41,14 @@ export default function Navigation() {
               </div>
             </div>
 
+            <Link href="/shop" className="text-slate-700 hover:text-primary-500 transition">
+              Shop
+            </Link>
             <Link href="/how-it-works" className="text-slate-700 hover:text-primary-500 transition">
               How It Works
             </Link>
             <Link href="/pricing" className="text-slate-700 hover:text-primary-500 transition">
               Pricing
-            </Link>
-            <Link href="/about" className="text-slate-700 hover:text-primary-500 transition">
-              About
             </Link>
             <Link href="/contact" className="text-slate-700 hover:text-primary-500 transition">
               Contact
@@ -97,14 +97,14 @@ export default function Navigation() {
                 </Link>
               </div>
             )}
+            <Link href="/shop" className="block px-4 py-2 text-slate-700 hover:bg-slate-50 rounded-lg">
+              Shop
+            </Link>
             <Link href="/how-it-works" className="block px-4 py-2 text-slate-700 hover:bg-slate-50 rounded-lg">
               How It Works
             </Link>
             <Link href="/pricing" className="block px-4 py-2 text-slate-700 hover:bg-slate-50 rounded-lg">
               Pricing
-            </Link>
-            <Link href="/about" className="block px-4 py-2 text-slate-700 hover:bg-slate-50 rounded-lg">
-              About
             </Link>
             <Link href="/contact" className="block px-4 py-2 text-slate-700 hover:bg-slate-50 rounded-lg">
               Contact
