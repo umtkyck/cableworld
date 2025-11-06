@@ -1,6 +1,6 @@
-# Loombotic Website
+# CableWorld Website
 
-Modern, professional website for Loombotic - the instant cable harness manufacturing platform.
+Modern, professional website for CableWorld - the instant cable harness manufacturing platform.
 
 ## Features
 
@@ -9,12 +9,16 @@ Modern, professional website for Loombotic - the instant cable harness manufactu
 - **📱 Fully Responsive**: Mobile-first design that works on all devices
 - **🎭 Smooth Animations**: Framer Motion animations and custom CSS transitions
 - **🎯 Conversion Optimized**: Designed to guide users to get quotes quickly
+- **💳 Stripe Integration**: Complete payment processing with Stripe Elements
+- **🔒 Secure Payments**: PCI DSS compliant payment handling
 - **♿ Accessible**: WCAG 2.1 AA compliant
 
 ## Pages
 
 - **Homepage** (`/`): Hero section, features, how it works, benefits, testimonials, CTA
 - **Quote Page** (`/quote`): Interactive file upload with drag-and-drop
+- **Checkout Page** (`/checkout`): Secure payment processing with Stripe
+- **Payment Success** (`/payment/success`): Order confirmation and next steps
 - **Navigation**: Full-featured nav with dropdowns
 - **Footer**: Comprehensive footer with links and social media
 
@@ -23,6 +27,7 @@ Modern, professional website for Loombotic - the instant cable harness manufactu
 - **Framework**: Next.js 14 with App Router
 - **Styling**: Tailwind CSS 3.4
 - **Language**: TypeScript
+- **Payments**: Stripe (@stripe/stripe-js, @stripe/react-stripe-js)
 - **Icons**: Lucide React
 - **File Upload**: React Dropzone
 - **Animations**: Framer Motion
@@ -40,6 +45,10 @@ Modern, professional website for Loombotic - the instant cable harness manufactu
 # Install dependencies
 npm install
 
+# Set up environment variables
+cp .env.example .env.local
+# Edit .env.local and add your Stripe keys
+
 # Run development server
 npm run dev
 
@@ -51,6 +60,21 @@ npm start
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view the website.
+
+## Environment Variables
+
+Create `.env.local` file in the website directory:
+
+```env
+# Stripe API Keys (get from https://dashboard.stripe.com/apikeys)
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_key_here
+STRIPE_SECRET_KEY=sk_test_your_key_here
+
+# Optional
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+**Important**: Never commit `.env.local` to git. It's already in `.gitignore`.
 
 ## Project Structure
 
@@ -127,15 +151,35 @@ Content is in component files under `/components/home/`. Update text, images, an
 
 ## Deployment
 
+### Quick Deploy (5 minutes)
+
+See **[DEPLOY_NOW.md](../DEPLOY_NOW.md)** for quick deployment guide.
+
 ### Vercel (Recommended)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/umtkyck/cableworld&root-directory=website)
+
+1. Click button above
+2. Set environment variables (Stripe keys)
+3. Deploy!
+
+Or use CLI:
 
 ```bash
 # Install Vercel CLI
 npm i -g vercel
 
 # Deploy
-vercel
+vercel --prod
 ```
+
+### Detailed Guide
+
+See **[DEPLOYMENT.md](../DEPLOYMENT.md)** for:
+- Multiple hosting options (Vercel, Netlify, Railway, Render)
+- Free domain setup
+- Custom domain configuration
+- Troubleshooting tips
 
 ### Other Platforms
 
@@ -160,10 +204,37 @@ Deploy the `.next` folder to your hosting provider.
 - Safari (latest)
 - Edge (latest)
 
+## Testing Stripe Integration
+
+```bash
+# Start dev server
+npm run dev
+
+# Test checkout page
+# Open: http://localhost:3000/checkout?quote_id=TEST-001&amount=100
+
+# Use test card
+Card: 4242 4242 4242 4242
+Expiry: 12/34
+CVC: 123
+ZIP: 12345
+```
+
+### Test Cards
+
+| Scenario | Card Number |
+|----------|-------------|
+| Success | 4242 4242 4242 4242 |
+| 3D Secure | 4000 0025 0000 3155 |
+| Decline | 4000 0000 0000 9995 |
+
 ## License
 
-Copyright © 2024 Loombotic. All rights reserved.
+Copyright © 2024 CableWorld. All rights reserved.
 
 ## Support
 
-For questions or issues, contact: support@loombotic.com
+- **Issues**: https://github.com/umtkyck/cableworld/issues
+- **Email**: support@cableworld.com
+- **Docs**: See [STRIPE_INTEGRATION.md](../docs/STRIPE_INTEGRATION.md) for payment integration
+- **Deploy**: See [DEPLOY_NOW.md](../DEPLOY_NOW.md) to deploy in 5 minutes
