@@ -2,12 +2,14 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Menu, X, ChevronDown } from 'lucide-react'
+import { Menu, X, ChevronDown, ShoppingCart } from 'lucide-react'
 import Logo from './Logo'
+import { useCart } from '@/context/CartContext'
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [productsOpen, setProductsOpen] = useState(false)
+  const { cartCount } = useCart()
 
   return (
     <nav className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
@@ -44,8 +46,8 @@ export default function Navigation() {
             <Link href="/shop" className="text-slate-700 hover:text-primary-500 transition">
               Shop
             </Link>
-            <Link href="/how-it-works" className="text-slate-700 hover:text-primary-500 transition">
-              How It Works
+            <Link href="/blog" className="text-slate-700 hover:text-primary-500 transition">
+              Blog
             </Link>
             <Link href="/pricing" className="text-slate-700 hover:text-primary-500 transition">
               Pricing
@@ -57,11 +59,22 @@ export default function Navigation() {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
+            <Link href="/dashboard" className="text-slate-700 hover:text-primary-500 transition">
+              Dashboard
+            </Link>
+            <Link href="/cart" className="relative p-2 text-slate-700 hover:text-primary-500 transition">
+              <ShoppingCart className="w-6 h-6" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent-green text-white text-xs rounded-full flex items-center justify-center font-bold">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
             <Link href="/login" className="text-slate-700 hover:text-primary-500 transition">
               Sign In
             </Link>
             <Link href="/quote" className="btn-primary">
-              Get Instant Quote
+              Get Quote
             </Link>
           </div>
 

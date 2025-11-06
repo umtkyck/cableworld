@@ -23,6 +23,7 @@ export default function ShopPage() {
     {
       id: 1,
       category: 'usb',
+      slug: 'usb-c-to-usb-c-cable',
       name: 'USB-C to USB-C Cable',
       description: 'High-speed USB-C cable with 100W power delivery',
       price: '$12.99',
@@ -33,6 +34,7 @@ export default function ShopPage() {
     {
       id: 2,
       category: 'usb',
+      slug: 'usb-c-to-lightning-cable',
       name: 'USB-C to Lightning Cable',
       description: 'MFi certified charging cable for Apple devices',
       price: '$15.99',
@@ -43,6 +45,7 @@ export default function ShopPage() {
     {
       id: 3,
       category: 'hdmi',
+      slug: 'hdmi-2-1-cable',
       name: 'HDMI 2.1 Cable',
       description: '8K @ 60Hz, 4K @ 120Hz support cable',
       price: '$18.99',
