@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CableWorld - Quote Upload Mockup</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            color: #1f2937;
+            background: #f9fafb;
+        }
+
+        /* Navigation */
+        .nav {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #092c47;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #092c47;
+            margin-bottom: 1rem;
+        }
+        .header p {
+            font-size: 1.125rem;
+            color: #6b7280;
+        }
+
+        /* Upload Section */
+        .upload-section {
+            background: white;
+            border-radius: 1rem;
+            padding: 3rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .upload-zone {
+            border: 2px dashed #d1d5db;
+            border-radius: 1rem;
+            padding: 4rem 2rem;
+            text-align: center;
+            background: #f9fafb;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .upload-zone:hover {
+            border-color: #13bf87;
+            background: #f0fdf4;
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #13bf87;
+        }
+        .upload-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #092c47;
+        }
+        .upload-desc {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+        }
+        .upload-button {
+            background: #13bf87;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        /* Supported Formats */
+        .formats {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .format-badge {
+            background: #e5e7eb;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #092c47;
+        }
+        .feature-desc {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        /* Sample Files */
+        .sample-section {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+        .sample-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #092c47;
+        }
+        .sample-files {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        .sample-file {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sample-file:hover {
+            border-color: #13bf87;
+            background: #f0fdf4;
+        }
+        .sample-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .sample-name {
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+
+        /* Info Section */
+        .info-section {
+            background: linear-gradient(135deg, #092c47 0%, #0a1929 100%);
+            border-radius: 1rem;
+            padding: 2rem;
+            color: white;
+            margin-top: 2rem;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        .info-item {
+            text-align: center;
+        }
+        .info-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .info-label {
+            opacity: 0.8;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-logo">CableWorld</div>
+        <ul class="nav-links">
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">My Quotes</a></li>
+            <li><a href="#">Orders</a></li>
+            <li><a href="#">Profile</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="header">
+            <h1>Get Your Instant Quote</h1>
+            <p>Upload your cable harness diagram and receive a detailed quote in under 60 seconds</p>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="upload-section">
+            <div class="upload-zone">
+                <div class="upload-icon">📁</div>
+                <h2 class="upload-title">Drag & Drop Your Files Here</h2>
+                <p class="upload-desc">or click to browse from your computer</p>
+                <button class="upload-button">Choose Files</button>
+            </div>
+
+            <div class="formats">
+                <span class="format-badge">📄 PDF</span>
+                <span class="format-badge">📊 Excel</span>
+                <span class="format-badge">🖼️ PNG/JPG</span>
+                <span class="format-badge">📐 DWG</span>
+                <span class="format-badge">📋 DXF</span>
+                <span class="format-badge">📝 CSV</span>
+                <span class="format-badge">🎨 SVG</span>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3 class="feature-title">AI-Powered Analysis</h3>
+                <p class="feature-desc">Our AI automatically extracts components, wire specs, and connections from any format</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">✅</div>
+                <h3 class="feature-title">Instant Validation</h3>
+                <p class="feature-desc">Real-time component availability check across Digikey, Mouser, Newark, and LCSC</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3 class="feature-title">Secure & Private</h3>
+                <p class="feature-desc">Your designs are encrypted and never shared. Delete anytime with one click</p>
+            </div>
+        </div>
+
+        <!-- Sample Files -->
+        <div class="sample-section">
+            <h3 class="sample-title">Try with Sample Diagrams</h3>
+            <div class="sample-files">
+                <div class="sample-file">
+                    <div class="sample-icon">🔌</div>
+                    <div class="sample-name">Simple USB Cable</div>
+                </div>
+                <div class="sample-file">
+                    <div class="sample-icon">⚡</div>
+                    <div class="sample-name">Power Distribution</div>
+                </div>
+                <div class="sample-file">
+                    <div class="sample-icon">📡</div>
+                    <div class="sample-name">Sensor Harness</div>
+                </div>
+                <div class="sample-file">
+                    <div class="sample-icon">🎮</div>
+                    <div class="sample-name">Multi-Connector</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Section -->
+        <div class="info-section">
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-value">&lt;60s</div>
+                    <div class="info-label">Average Quote Time</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-value">95%</div>
+                    <div class="info-label">First-Time Accuracy</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-value">50,000+</div>
+                    <div class="info-label">Components in Database</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CableWorld Mobile - Home Screen</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        /* Phone Frame */
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: #000;
+            border-radius: 3rem;
+            padding: 1rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 30px;
+            background: #000;
+            border-radius: 0 0 1rem 1rem;
+            z-index: 10;
+        }
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: #f9fafb;
+            border-radius: 2.5rem;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            padding: 0.5rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #1f2937;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #092c47 0%, #0a1929 100%);
+            padding: 1rem 1.5rem 2rem;
+            color: white;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .greeting h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .greeting p {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        /* Quick Action */
+        .quick-action {
+            background: #13bf87;
+            padding: 1.25rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+        .quick-action h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .quick-action p {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+        .quick-action-button {
+            background: white;
+            color: #13bf87;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        /* Content */
+        .content {
+            padding: 1.5rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.25rem;
+            border-radius: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .stat-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .stat-icon {
+            font-size: 1.25rem;
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            text-transform: uppercase;
+        }
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #092c47;
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #092c47;
+            margin-bottom: 1rem;
+        }
+
+        /* Order Card */
+        .order-card {
+            background: white;
+            padding: 1.25rem;
+            border-radius: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+        }
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.75rem;
+        }
+        .order-id {
+            font-weight: 600;
+            color: #092c47;
+            margin-bottom: 0.25rem;
+        }
+        .order-date {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-production {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .order-progress {
+            margin-top: 0.75rem;
+        }
+        .progress-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        .progress-bar {
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #13bf87;
+            border-radius: 3px;
+        }
+
+        /* Quick Links */
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .quick-link {
+            background: white;
+            padding: 1rem;
+            border-radius: 1rem;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .quick-link-icon {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+        .quick-link-label {
+            font-size: 0.75rem;
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 0.75rem 0;
+            border-top: 1px solid #e5e7eb;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+        .nav-item {
+            text-align: center;
+            text-decoration: none;
+            padding: 0.5rem;
+        }
+        .nav-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+        .nav-label {
+            font-size: 0.625rem;
+            color: #6b7280;
+        }
+        .nav-item.active .nav-icon {
+            color: #092c47;
+        }
+        .nav-item.active .nav-label {
+            color: #092c47;
+            font-weight: 600;
+        }
+
+        /* Screen Label */
+        .screen-label {
+            text-align: center;
+            margin-top: 1rem;
+            color: #666;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="phone-frame">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+                <!-- Status Bar -->
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>📶 📡 🔋</span>
+                </div>
+
+                <!-- Header -->
+                <div class="header">
+                    <div class="header-top">
+                        <div class="greeting">
+                            <h2>Welcome back!</h2>
+                            <p>John Doe</p>
+                        </div>
+                        <div class="notification-icon">🔔</div>
+                    </div>
+
+                    <!-- Quick Action -->
+                    <div class="quick-action">
+                        <h3>Get Instant Quote</h3>
+                        <p>Upload a diagram and receive pricing in seconds</p>
+                        <a href="#" class="quick-action-button">Upload Now</a>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div class="content">
+                    <!-- Stats Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span class="stat-icon">⚡</span>
+                                <span class="stat-label">Active Quotes</span>
+                            </div>
+                            <div class="stat-value">3</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span class="stat-icon">📦</span>
+                                <span class="stat-label">In Production</span>
+                            </div>
+                            <div class="stat-value">2</div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Orders -->
+                    <h3 class="section-title">Recent Orders</h3>
+
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div>
+                                <div class="order-id">Order #CW-789</div>
+                                <div class="order-date">Dec 3, 2024</div>
+                            </div>
+                            <span class="status-badge status-production">In Production</span>
+                        </div>
+                        <div class="order-progress">
+                            <div class="progress-label">Progress: 65%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div>
+                                <div class="order-id">Order #CW-756</div>
+                                <div class="order-date">Nov 28, 2024</div>
+                            </div>
+                            <span class="status-badge" style="background: #fef3c7; color: #92400e;">Shipped</span>
+                        </div>
+                        <div class="order-progress">
+                            <div class="progress-label">Arriving Dec 5</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div class="quick-links">
+                        <a href="#" class="quick-link">
+                            <div class="quick-link-icon">📄</div>
+                            <div class="quick-link-label">My Quotes</div>
+                        </a>
+                        <a href="#" class="quick-link">
+                            <div class="quick-link-icon">💬</div>
+                            <div class="quick-link-label">Support</div>
+                        </a>
+                        <a href="#" class="quick-link">
+                            <div class="quick-link-icon">📊</div>
+                            <div class="quick-link-label">Reports</div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation -->
+                <div class="bottom-nav">
+                    <a href="#" class="nav-item active">
+                        <div class="nav-icon">🏠</div>
+                        <div class="nav-label">Home</div>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <div class="nav-icon">💰</div>
+                        <div class="nav-label">Quote</div>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <div class="nav-icon">📦</div>
+                        <div class="nav-label">Orders</div>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <div class="nav-icon">👤</div>
+                        <div class="nav-label">Profile</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="screen-label">Home Screen - Mobile App</div>
+    </div>
+</body>
+</html>

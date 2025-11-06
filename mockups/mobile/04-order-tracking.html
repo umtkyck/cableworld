@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CableWorld Mobile - Order Tracking Screen</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        /* Phone Frame */
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: #000;
+            border-radius: 3rem;
+            padding: 1rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 30px;
+            background: #000;
+            border-radius: 0 0 1rem 1rem;
+            z-index: 10;
+        }
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: #f9fafb;
+            border-radius: 2.5rem;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .back-button {
+            font-size: 1.5rem;
+            text-decoration: none;
+        }
+        .header-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #092c47;
+        }
+
+        /* Content */
+        .content {
+            padding: 1.5rem;
+        }
+
+        /* Map Placeholder */
+        .map-placeholder {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            height: 200px;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .map-pin {
+            font-size: 3rem;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Status Card */
+        .status-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+        .status-info h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #092c47;
+            margin-bottom: 0.25rem;
+        }
+        .status-info p {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        .status-badge {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .tracking-number {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: #f9fafb;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .tracking-number span {
+            font-family: monospace;
+            font-weight: 600;
+            color: #092c47;
+            flex: 1;
+        }
+        .copy-button {
+            color: #13bf87;
+            font-size: 1.25rem;
+            cursor: pointer;
+        }
+        .progress-section {
+            margin-top: 1rem;
+        }
+        .progress-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #092c47;
+            margin-bottom: 0.5rem;
+        }
+        .progress-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #13bf87, #0ea770);
+            border-radius: 4px;
+            width: 75%;
+        }
+        .progress-text {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        /* Timeline */
+        .timeline {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        .timeline-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #092c47;
+            margin-bottom: 1.5rem;
+        }
+        .timeline-item {
+            display: flex;
+            gap: 1rem;
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+        .timeline-item:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 11px;
+            top: 32px;
+            bottom: 0;
+            width: 2px;
+            background: #e5e7eb;
+        }
+        .timeline-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+        .timeline-dot.active {
+            background: #13bf87;
+            color: white;
+        }
+        .timeline-dot.inactive {
+            background: #e5e7eb;
+            color: #9ca3af;
+        }
+        .timeline-content {
+            flex: 1;
+            padding-top: 0.125rem;
+        }
+        .timeline-title-text {
+            font-weight: 600;
+            color: #092c47;
+            margin-bottom: 0.25rem;
+            font-size: 0.875rem;
+        }
+        .timeline-location {
+            color: #6b7280;
+            font-size: 0.75rem;
+            margin-bottom: 0.25rem;
+        }
+        .timeline-time {
+            color: #9ca3af;
+            font-size: 0.75rem;
+        }
+
+        /* Delivery Info */
+        .delivery-info {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .delivery-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #092c47;
+            margin-bottom: 1rem;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        .info-value {
+            color: #092c47;
+            font-weight: 500;
+            font-size: 0.875rem;
+            text-align: right;
+        }
+
+        /* Screen Label */
+        .screen-label {
+            text-align: center;
+            margin-top: 1rem;
+            color: #666;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="phone-frame">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+                <!-- Header -->
+                <div class="header">
+                    <a href="#" class="back-button">←</a>
+                    <h1 class="header-title">Track Order</h1>
+                </div>
+
+                <!-- Content -->
+                <div class="content">
+                    <!-- Map Placeholder -->
+                    <div class="map-placeholder">
+                        <div class="map-pin">📍</div>
+                    </div>
+
+                    <!-- Status Card -->
+                    <div class="status-card">
+                        <div class="status-header">
+                            <div class="status-info">
+                                <h3>In Transit</h3>
+                                <p>Order #CW-2024-00789</p>
+                            </div>
+                            <span class="status-badge">Arriving Dec 5</span>
+                        </div>
+
+                        <div class="tracking-number">
+                            <span>1234567890123456</span>
+                            <div class="copy-button">📋</div>
+                        </div>
+
+                        <div class="progress-section">
+                            <div class="progress-label">Delivery Progress</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                            <div class="progress-text">Currently in Los Angeles, CA • 2 days remaining</div>
+                        </div>
+                    </div>
+
+                    <!-- Timeline -->
+                    <div class="timeline">
+                        <h3 class="timeline-title">Shipping Updates</h3>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot active">✓</div>
+                            <div class="timeline-content">
+                                <div class="timeline-title-text">Out for Delivery</div>
+                                <div class="timeline-location">Los Angeles, CA</div>
+                                <div class="timeline-time">Today, 8:45 AM</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot active">✓</div>
+                            <div class="timeline-content">
+                                <div class="timeline-title-text">Arrived at Facility</div>
+                                <div class="timeline-location">Los Angeles Distribution Center</div>
+                                <div class="timeline-time">Today, 6:12 AM</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot active">✓</div>
+                            <div class="timeline-content">
+                                <div class="timeline-title-text">In Transit</div>
+                                <div class="timeline-location">Phoenix, AZ</div>
+                                <div class="timeline-time">Yesterday, 11:30 PM</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot active">✓</div>
+                            <div class="timeline-content">
+                                <div class="timeline-title-text">Departed Facility</div>
+                                <div class="timeline-location">Dallas, TX</div>
+                                <div class="timeline-time">Dec 2, 2:45 PM</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot active">✓</div>
+                            <div class="timeline-content">
+                                <div class="timeline-title-text">Shipped</div>
+                                <div class="timeline-location">CableWorld Facility</div>
+                                <div class="timeline-time">Dec 1, 9:00 AM</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Info -->
+                    <div class="delivery-info">
+                        <h3 class="delivery-title">Delivery Information</h3>
+                        <div class="info-row">
+                            <span class="info-label">Carrier</span>
+                            <span class="info-value">FedEx Ground</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Service</span>
+                            <span class="info-value">Standard Shipping</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Weight</span>
+                            <span class="info-value">4.2 lbs</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Estimated Delivery</span>
+                            <span class="info-value">Dec 5, 2024</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="screen-label">Order Tracking Screen - Mobile App</div>
+    </div>
+</body>
+</html>
