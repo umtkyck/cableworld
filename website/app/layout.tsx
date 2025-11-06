@@ -7,7 +7,7 @@ import Footer from '@/components/Footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Loombotic - Instant Cable Harness Manufacturing',
+  title: 'CableWorld - Instant Cable Harness Manufacturing',
   description: 'Get instant quotes for custom cable and wire harnesses. Upload your design and receive quotes in under 60 seconds from our global manufacturer network.',
   keywords: ['cable harness', 'wire harness', 'custom manufacturing', 'instant quotes', 'PCB assembly'],
 }

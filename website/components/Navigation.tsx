@@ -15,9 +15,9 @@ export default function Navigation() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <div className="w-10 h-10 bg-gradient-to-br from-accent-green to-accent-blue rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">L</span>
+              <span className="text-white font-bold text-xl">C</span>
             </div>
-            <span className="text-2xl font-bold text-primary-500">Loombotic</span>
+            <span className="text-2xl font-bold text-primary-500">CableWorld</span>
           </Link>
 
           {/* Desktop Navigation */}

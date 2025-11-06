@@ -48,14 +48,14 @@ export default function Benefits() {
             {/* Floating Card */}
             <div className="absolute -bottom-6 -right-6 bg-white rounded-xl shadow-large p-6 max-w-xs">
               <div className="text-4xl font-bold text-accent-green mb-2">10,000+</div>
-              <p className="text-slate-600">Engineers trust Loombotic for their critical projects</p>
+              <p className="text-slate-600">Engineers trust CableWorld for their critical projects</p>
             </div>
           </div>
 
           {/* Right - Benefits */}
           <div className="animate-slide-up animation-delay-200">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">
-              Why Leading Companies Choose Loombotic
+              Why Leading Companies Choose CableWorld
             </h2>
             <p className="text-xl text-slate-600 mb-8">
               Join thousands of engineers who have accelerated their product development with our platform.

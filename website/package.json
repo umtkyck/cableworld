@@ -1,7 +1,7 @@
 {
-  "name": "loombotic-website",
+  "name": "cableworld-website",
   "version": "1.0.0",
-  "description": "Loombotic - Cable and Wire Harness Manufacturing Platform",
+  "description": "CableWorld - Cable and Wire Harness Manufacturing Platform",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
