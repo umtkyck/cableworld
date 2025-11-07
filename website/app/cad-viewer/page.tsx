@@ -1,8 +1,21 @@
 'use client'
 
 import { useState } from 'react'
-import CADViewer from '@/components/CADViewer'
+import dynamic from 'next/dynamic'
 import { Box, Upload, CheckCircle } from 'lucide-react'
+
+// Dynamically import CADViewer with no SSR to avoid Three.js server-side rendering issues
+const CADViewer = dynamic(() => import('@/components/CADViewer'), {
+  ssr: false,
+  loading: () => (
+    <div className="flex items-center justify-center min-h-[500px]">
+      <div className="flex flex-col items-center space-y-4">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
+        <p className="text-sm text-slate-600">Loading CAD Viewer...</p>
+      </div>
+    </div>
+  ),
+})
 
 export default function CADViewerPage() {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
