@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Search, Plus, Trash2, Download, Save, Calculator, Zap, Cable as CableIcon, Circle } from 'lucide-react'
+import TestServicesAddOn from '@/components/TestServicesAddOn'
 
 interface Connector {
   id: string
@@ -50,6 +51,9 @@ export default function CableDesignerPage() {
   // Pin connections
   const [connections, setConnections] = useState<PinConnection[]>([])
   const [selectedFromPin, setSelectedFromPin] = useState<number | null>(null)
+
+  // Test services
+  const [testServicesTotal, setTestServicesTotal] = useState<number>(0)
 
   // Search
   const [searchQuery, setSearchQuery] = useState('')
@@ -121,6 +125,9 @@ export default function CableDesignerPage() {
     // Assembly overhead
     const overhead = total * 0.15
     total += overhead
+
+    // Add test services
+    total += testServicesTotal
 
     return total
   }
@@ -474,6 +481,12 @@ export default function CableDesignerPage() {
                     <span className="font-medium">${(calculateQuote() * 0.15 / 1.15).toFixed(2)}</span>
                   </div>
                 )}
+                {testServicesTotal > 0 && (
+                  <div className="flex justify-between text-sm border-t border-slate-200 pt-3 mt-3">
+                    <span className="text-slate-600 font-semibold">Test Services:</span>
+                    <span className="font-semibold text-green-600">${testServicesTotal.toFixed(2)}</span>
+                  </div>
+                )}
               </div>
 
               <div className="border-t-2 border-slate-300 pt-4 mb-6">
@@ -509,6 +522,13 @@ export default function CableDesignerPage() {
             </div>
           </div>
 
+        </div>
+
+        {/* Test Services Section */}
+        <div className="mt-8">
+          <TestServicesAddOn
+            onSelectionChange={(total) => setTestServicesTotal(total)}
+          />
         </div>
       </div>
     </div>
