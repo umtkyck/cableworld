@@ -41,7 +41,11 @@ export default function Navigation() {
                 <ChevronDown className="w-4 h-4" />
               </button>
               <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-large border border-slate-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                <Link href="/cable-harnesses" className="block px-4 py-3 hover:bg-slate-50 rounded-t-lg">
+                <Link href="/cable-designer" className="block px-4 py-3 hover:bg-slate-50 rounded-t-lg">
+                  <div className="font-semibold text-slate-900">Cable Designer</div>
+                  <div className="text-sm text-slate-600">Design custom cables</div>
+                </Link>
+                <Link href="/cable-harnesses" className="block px-4 py-3 hover:bg-slate-50">
                   <div className="font-semibold text-slate-900">Cable Harnesses</div>
                   <div className="text-sm text-slate-600">Custom wire assemblies</div>
                 </Link>
@@ -131,6 +135,9 @@ export default function Navigation() {
             </button>
             {productsOpen && (
               <div className="pl-4 space-y-2">
+                <Link href="/cable-designer" className="block px-4 py-2 text-slate-600 hover:bg-slate-50 rounded-lg">
+                  Cable Designer
+                </Link>
                 <Link href="/cable-harnesses" className="block px-4 py-2 text-slate-600 hover:bg-slate-50 rounded-lg">
                   Cable Harnesses
                 </Link>
