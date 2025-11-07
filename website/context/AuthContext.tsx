@@ -7,7 +7,11 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-  updateProfile
+  updateProfile,
+  signInWithPopup,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  OAuthProvider
 } from 'firebase/auth'
 import { auth } from '@/lib/firebase'
 
@@ -16,6 +20,9 @@ interface AuthContextType {
   loading: boolean
   signUp: (email: string, password: string, displayName: string) => Promise<void>
   signIn: (email: string, password: string) => Promise<void>
+  signInWithGoogle: () => Promise<void>
+  signInWithFacebook: () => Promise<void>
+  signInWithApple: () => Promise<void>
   logout: () => Promise<void>
 }
 
@@ -60,6 +67,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  const signInWithGoogle = async () => {
+    try {
+      const provider = new GoogleAuthProvider()
+      const userCredential = await signInWithPopup(auth, provider)
+      setUser(userCredential.user)
+    } catch (error: any) {
+      console.error('Google sign in error:', error)
+      throw new Error(error.message || 'Failed to sign in with Google')
+    }
+  }
+
+  const signInWithFacebook = async () => {
+    try {
+      const provider = new FacebookAuthProvider()
+      const userCredential = await signInWithPopup(auth, provider)
+      setUser(userCredential.user)
+    } catch (error: any) {
+      console.error('Facebook sign in error:', error)
+      throw new Error(error.message || 'Failed to sign in with Facebook')
+    }
+  }
+
+  const signInWithApple = async () => {
+    try {
+      const provider = new OAuthProvider('apple.com')
+      const userCredential = await signInWithPopup(auth, provider)
+      setUser(userCredential.user)
+    } catch (error: any) {
+      console.error('Apple sign in error:', error)
+      throw new Error(error.message || 'Failed to sign in with Apple')
+    }
+  }
+
   const logout = async () => {
     try {
       await signOut(auth)
@@ -71,7 +111,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, signUp, signIn, logout }}>
+    <AuthContext.Provider value={{
+      user,
+      loading,
+      signUp,
+      signIn,
+      signInWithGoogle,
+      signInWithFacebook,
+      signInWithApple,
+      logout
+    }}>
       {children}
     </AuthContext.Provider>
   )
