@@ -370,7 +370,9 @@ export default function MarketplacePage() {
                       <div className="flex items-center gap-2 mb-1">
                         <h3 className="text-xl font-bold text-slate-900">{supplier.name}</h3>
                         {supplier.verified && (
-                          <CheckCircle className="w-5 h-5 text-blue-500" title="Verified Supplier" />
+                          <span title="Verified Supplier">
+                            <CheckCircle className="w-5 h-5 text-blue-500" />
+                          </span>
                         )}
                       </div>
                       <div className="flex items-center gap-2 text-sm text-slate-600">
