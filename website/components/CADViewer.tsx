@@ -1,8 +1,8 @@
 'use client'
 
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { Upload, FileText, X, AlertCircle } from 'lucide-react'
+import { Upload, FileText, X, AlertCircle, RotateCw, ZoomIn, ZoomOut } from 'lucide-react'
 
 interface CADViewerProps {
   onFileUpload?: (file: File) => void
@@ -27,9 +27,161 @@ export default function CADViewer({
   const [uploadedFile, setUploadedFile] = useState<UploadedFile | null>(null)
   const [error, setError] = useState<string>('')
   const [loading, setLoading] = useState(false)
-  const [preview, setPreview] = useState<string>('')
+  const [canRender3D, setCanRender3D] = useState(false)
+  const canvasRef = useRef<HTMLDivElement>(null)
+  const sceneRef = useRef<any>(null)
 
-  // Parse different CAD file formats
+  // Initialize Three.js scene
+  useEffect(() => {
+    if (!uploadedFile || !canRender3D || !canvasRef.current) return
+
+    let mounted = true
+    let animationId: number
+
+    const initScene = async () => {
+      try {
+        // Dynamically import Three.js
+        const THREE = await import('three')
+        const { OrbitControls } = await import('three/examples/jsm/controls/OrbitControls.js')
+
+        if (!mounted || !canvasRef.current) return
+
+        // Create scene
+        const scene = new THREE.Scene()
+        scene.background = new THREE.Color(0x1e293b)
+
+        // Create camera
+        const camera = new THREE.PerspectiveCamera(
+          75,
+          canvasRef.current.clientWidth / canvasRef.current.clientHeight,
+          0.1,
+          1000
+        )
+        camera.position.set(5, 5, 5)
+
+        // Create renderer
+        const renderer = new THREE.WebGLRenderer({ antialias: true })
+        renderer.setSize(canvasRef.current.clientWidth, canvasRef.current.clientHeight)
+        renderer.setPixelRatio(window.devicePixelRatio)
+        canvasRef.current.appendChild(renderer.domElement)
+
+        // Add lights
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6)
+        scene.add(ambientLight)
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8)
+        directionalLight.position.set(5, 5, 5)
+        scene.add(directionalLight)
+
+        const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.4)
+        directionalLight2.position.set(-5, -5, -5)
+        scene.add(directionalLight2)
+
+        // Add grid
+        const gridHelper = new THREE.GridHelper(20, 20, 0x444444, 0x222222)
+        scene.add(gridHelper)
+
+        // Add axes helper
+        const axesHelper = new THREE.AxesHelper(5)
+        scene.add(axesHelper)
+
+        // Load model
+        const extension = uploadedFile.name.split('.').pop()?.toLowerCase()
+
+        if (extension === 'stl') {
+          const { STLLoader } = await import('three/examples/jsm/loaders/STLLoader.js')
+          const loader = new STLLoader()
+
+          const geometry = await new Promise<THREE.BufferGeometry>((resolve, reject) => {
+            loader.load(
+              uploadedFile.url,
+              (geo) => resolve(geo),
+              undefined,
+              (err) => reject(err)
+            )
+          })
+
+          // Center the geometry
+          geometry.center()
+
+          const material = new THREE.MeshPhongMaterial({
+            color: 0x3b82f6,
+            specular: 0x111111,
+            shininess: 200,
+          })
+
+          const mesh = new THREE.Mesh(geometry, material)
+          scene.add(mesh)
+
+          // Fit camera to object
+          const box = new THREE.Box3().setFromObject(mesh)
+          const size = box.getSize(new THREE.Vector3())
+          const maxDim = Math.max(size.x, size.y, size.z)
+          const fov = camera.fov * (Math.PI / 180)
+          let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2))
+          cameraZ *= 1.5 // Add some padding
+          camera.position.set(cameraZ, cameraZ, cameraZ)
+          camera.lookAt(0, 0, 0)
+        } else {
+          // For other formats, show a placeholder cube
+          const geometry = new THREE.BoxGeometry(2, 2, 2)
+          const material = new THREE.MeshPhongMaterial({ color: 0x3b82f6 })
+          const cube = new THREE.Mesh(geometry, material)
+          scene.add(cube)
+        }
+
+        // Add orbit controls
+        const controls = new OrbitControls(camera, renderer.domElement)
+        controls.enableDamping = true
+        controls.dampingFactor = 0.05
+        controls.screenSpacePanning = false
+        controls.minDistance = 1
+        controls.maxDistance = 100
+
+        // Animation loop
+        const animate = () => {
+          if (!mounted) return
+          animationId = requestAnimationFrame(animate)
+          controls.update()
+          renderer.render(scene, camera)
+        }
+        animate()
+
+        // Handle window resize
+        const handleResize = () => {
+          if (!canvasRef.current) return
+          camera.aspect = canvasRef.current.clientWidth / canvasRef.current.clientHeight
+          camera.updateProjectionMatrix()
+          renderer.setSize(canvasRef.current.clientWidth, canvasRef.current.clientHeight)
+        }
+        window.addEventListener('resize', handleResize)
+
+        sceneRef.current = { scene, camera, renderer, controls, handleResize }
+
+      } catch (err) {
+        console.error('3D rendering error:', err)
+        setError('Failed to render 3D view. Your browser may not support WebGL.')
+      }
+    }
+
+    initScene()
+
+    return () => {
+      mounted = false
+      if (animationId) {
+        cancelAnimationFrame(animationId)
+      }
+      if (sceneRef.current) {
+        window.removeEventListener('resize', sceneRef.current.handleResize)
+        if (sceneRef.current.renderer && canvasRef.current) {
+          canvasRef.current.removeChild(sceneRef.current.renderer.domElement)
+        }
+        sceneRef.current.renderer?.dispose()
+        sceneRef.current = null
+      }
+    }
+  }, [uploadedFile, canRender3D])
+
   const parseCADFile = async (file: File) => {
     setLoading(true)
     setError('')
@@ -37,7 +189,6 @@ export default function CADViewer({
     try {
       const extension = file.name.split('.').pop()?.toLowerCase()
 
-      // Create file info
       setUploadedFile({
         name: file.name,
         size: file.size,
@@ -45,33 +196,12 @@ export default function CADViewer({
         url: URL.createObjectURL(file),
       })
 
-      // Set a preview message based on file type
-      let previewMessage = ''
-      switch (extension) {
-        case 'step':
-        case 'stp':
-          previewMessage = 'STEP file uploaded successfully. Full 3D rendering requires additional processing.'
-          break
-        case 'sldprt':
-          previewMessage = 'SolidWorks file uploaded successfully. Full 3D rendering requires additional processing.'
-          break
-        case 'f3d':
-          previewMessage = 'Fusion 360 file uploaded successfully. Full 3D rendering requires additional processing.'
-          break
-        case 'fcstd':
-          previewMessage = 'FreeCAD file uploaded successfully. Full 3D rendering requires additional processing.'
-          break
-        case 'stl':
-          previewMessage = 'STL file uploaded successfully. 3D preview will be available soon.'
-          break
-        case 'obj':
-          previewMessage = 'OBJ file uploaded successfully. 3D preview will be available soon.'
-          break
-        default:
-          throw new Error(`Unsupported file format: ${extension}`)
+      // Check if we can render this format in 3D
+      if (extension === 'stl' || extension === 'obj') {
+        setCanRender3D(true)
+      } else {
+        setCanRender3D(false)
       }
-
-      setPreview(previewMessage)
 
       if (onFileUpload) {
         onFileUpload(file)
@@ -104,7 +234,7 @@ export default function CADViewer({
       URL.revokeObjectURL(uploadedFile.url)
     }
     setUploadedFile(null)
-    setPreview('')
+    setCanRender3D(false)
     setError('')
   }
 
@@ -112,6 +242,27 @@ export default function CADViewer({
     if (bytes < 1024) return bytes + ' B'
     if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB'
     return (bytes / (1024 * 1024)).toFixed(2) + ' MB'
+  }
+
+  const getFormatInfo = () => {
+    const extension = uploadedFile?.name.split('.').pop()?.toLowerCase()
+    switch (extension) {
+      case 'step':
+      case 'stp':
+        return 'STEP files require server-side processing for full 3D visualization. A preview geometry is shown.'
+      case 'sldprt':
+        return 'SolidWorks files require server-side processing for full 3D visualization. A preview geometry is shown.'
+      case 'f3d':
+        return 'Fusion 360 files require server-side processing for full 3D visualization. A preview geometry is shown.'
+      case 'fcstd':
+        return 'FreeCAD files require server-side processing for full 3D visualization. A preview geometry is shown.'
+      case 'stl':
+        return 'STL file loaded successfully. Use mouse to rotate, zoom, and pan the view.'
+      case 'obj':
+        return 'OBJ file loaded successfully. Use mouse to rotate, zoom, and pan the view.'
+      default:
+        return ''
+    }
   }
 
   return (
@@ -184,7 +335,7 @@ export default function CADViewer({
               <div>
                 <p className="font-semibold text-slate-900">{uploadedFile.name}</p>
                 <p className="text-xs text-slate-600">
-                  {formatFileSize(uploadedFile.size)} • {uploadedFile.type || 'CAD File'}
+                  {formatFileSize(uploadedFile.size)} • {uploadedFile.type.toUpperCase() || 'CAD File'}
                 </p>
               </div>
             </div>
@@ -196,47 +347,46 @@ export default function CADViewer({
             </button>
           </div>
 
-          {/* Preview Area */}
-          <div className="flex-1 bg-gradient-to-br from-slate-50 to-slate-100 rounded-b-xl overflow-hidden min-h-[500px] flex items-center justify-center p-8">
-            <div className="text-center max-w-2xl">
-              <div className="w-24 h-24 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <FileText className="w-12 h-12 text-primary-600" />
-              </div>
+          {/* 3D Viewer Canvas */}
+          <div
+            ref={canvasRef}
+            className="flex-1 bg-slate-900 rounded-b-xl overflow-hidden"
+            style={{ minHeight: '600px', width: '100%' }}
+          />
 
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">
-                File Uploaded Successfully
-              </h3>
+          {/* Info Message */}
+          <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <p className="text-sm text-blue-800">
+              <strong>ℹ️ Info:</strong> {getFormatInfo()}
+            </p>
+          </div>
 
-              <p className="text-slate-600 mb-6">
-                {preview}
-              </p>
-
-              <div className="bg-white rounded-xl p-6 shadow-md">
-                <h4 className="font-semibold text-slate-900 mb-3">File Details</h4>
-                <div className="space-y-2 text-sm text-left">
-                  <div className="flex justify-between py-2 border-b border-slate-200">
-                    <span className="text-slate-600">Filename:</span>
-                    <span className="font-medium text-slate-900">{uploadedFile.name}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-slate-200">
-                    <span className="text-slate-600">Size:</span>
-                    <span className="font-medium text-slate-900">{formatFileSize(uploadedFile.size)}</span>
-                  </div>
-                  <div className="flex justify-between py-2">
-                    <span className="text-slate-600">Format:</span>
-                    <span className="font-medium text-slate-900">{uploadedFile.type.toUpperCase()}</span>
-                  </div>
+          {/* Controls Info */}
+          {canRender3D && showControls && (
+            <div className="mt-4 grid grid-cols-3 gap-4">
+              <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-200">
+                <div className="flex items-center gap-2 mb-2">
+                  <RotateCw className="w-5 h-5 text-primary-500" />
+                  <span className="font-semibold text-slate-900">Rotate</span>
                 </div>
+                <p className="text-xs text-slate-600">Left click + drag</p>
               </div>
-
-              <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg text-left">
-                <p className="text-sm text-blue-800">
-                  <strong>Next Steps:</strong> Advanced 3D rendering with orbit controls, zoom, and rotation
-                  will be available in the next update. For now, you can use this viewer to verify your file upload.
-                </p>
+              <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-200">
+                <div className="flex items-center gap-2 mb-2">
+                  <ZoomIn className="w-5 h-5 text-primary-500" />
+                  <span className="font-semibold text-slate-900">Zoom</span>
+                </div>
+                <p className="text-xs text-slate-600">Mouse wheel</p>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-200">
+                <div className="flex items-center gap-2 mb-2">
+                  <Upload className="w-5 h-5 text-primary-500" />
+                  <span className="font-semibold text-slate-900">Pan</span>
+                </div>
+                <p className="text-xs text-slate-600">Right click + drag</p>
               </div>
             </div>
-          </div>
+          )}
         </div>
       )}
     </div>

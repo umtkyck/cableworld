@@ -49,6 +49,10 @@ export default function Navigation() {
                   <div className="font-semibold text-slate-900">Connectors</div>
                   <div className="text-sm text-slate-600">Premium components</div>
                 </Link>
+                <Link href="/cad-viewer" className="block px-4 py-3 hover:bg-slate-50">
+                  <div className="font-semibold text-slate-900">CAD Viewer</div>
+                  <div className="text-sm text-slate-600">View 3D CAD files</div>
+                </Link>
                 <Link href="/services" className="block px-4 py-3 hover:bg-slate-50 rounded-b-lg">
                   <div className="font-semibold text-slate-900">Design Services</div>
                   <div className="text-sm text-slate-600">Expert consultation</div>
@@ -58,9 +62,6 @@ export default function Navigation() {
 
             <Link href="/shop" className="text-slate-700 hover:text-primary-500 transition">
               Shop
-            </Link>
-            <Link href="/blog" className="text-slate-700 hover:text-primary-500 transition">
-              Blog
             </Link>
             <Link href="/pricing" className="text-slate-700 hover:text-primary-500 transition">
               Pricing
@@ -135,6 +136,9 @@ export default function Navigation() {
                 </Link>
                 <Link href="/connectors" className="block px-4 py-2 text-slate-600 hover:bg-slate-50 rounded-lg">
                   Connectors
+                </Link>
+                <Link href="/cad-viewer" className="block px-4 py-2 text-slate-600 hover:bg-slate-50 rounded-lg">
+                  CAD Viewer
                 </Link>
                 <Link href="/services" className="block px-4 py-2 text-slate-600 hover:bg-slate-50 rounded-lg">
                   Design Services
