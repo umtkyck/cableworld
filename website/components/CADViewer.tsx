@@ -1,11 +1,8 @@
 'use client'
 
-import React, { useState, useRef, Suspense } from 'react'
-import { Canvas } from '@react-three/fiber'
-import { OrbitControls, PerspectiveCamera, Grid, Environment } from '@react-three/drei'
+import React, { useState, useRef } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { Upload, FileText, X, ZoomIn, ZoomOut, RotateCw, Download, AlertCircle } from 'lucide-react'
-import * as THREE from 'three'
+import { Upload, FileText, X, AlertCircle } from 'lucide-react'
 
 interface CADViewerProps {
   onFileUpload?: (file: File) => void
@@ -21,64 +18,6 @@ interface UploadedFile {
   url: string
 }
 
-// 3D Model component that displays the loaded geometry
-function Model({ geometry, color = '#3b82f6' }: { geometry?: THREE.BufferGeometry; color?: string }) {
-  if (!geometry) return null
-
-  return (
-    <mesh geometry={geometry}>
-      <meshStandardMaterial
-        color={color}
-        metalness={0.3}
-        roughness={0.4}
-        side={THREE.DoubleSide}
-      />
-    </mesh>
-  )
-}
-
-// Scene component with lighting and controls
-function Scene({ geometry }: { geometry?: THREE.BufferGeometry }) {
-  return (
-    <>
-      <PerspectiveCamera makeDefault position={[10, 10, 10]} />
-      <OrbitControls
-        enableDamping
-        dampingFactor={0.05}
-        minDistance={5}
-        maxDistance={50}
-      />
-
-      {/* Lighting */}
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[10, 10, 5]} intensity={1} castShadow />
-      <directionalLight position={[-10, -10, -5]} intensity={0.5} />
-      <pointLight position={[0, 10, 0]} intensity={0.5} />
-
-      {/* Environment */}
-      <Environment preset="studio" />
-
-      {/* Grid */}
-      <Grid
-        args={[50, 50]}
-        cellSize={1}
-        cellThickness={0.5}
-        cellColor="#6e6e6e"
-        sectionSize={5}
-        sectionThickness={1}
-        sectionColor="#9d4b4b"
-        fadeDistance={25}
-        fadeStrength={1}
-        followCamera={false}
-        infiniteGrid
-      />
-
-      {/* Model */}
-      {geometry && <Model geometry={geometry} />}
-    </>
-  )
-}
-
 export default function CADViewer({
   onFileUpload,
   initialFile,
@@ -86,10 +25,9 @@ export default function CADViewer({
   showControls = true,
 }: CADViewerProps) {
   const [uploadedFile, setUploadedFile] = useState<UploadedFile | null>(null)
-  const [geometry, setGeometry] = useState<THREE.BufferGeometry>()
   const [error, setError] = useState<string>('')
   const [loading, setLoading] = useState(false)
-  const canvasRef = useRef<HTMLDivElement>(null)
+  const [preview, setPreview] = useState<string>('')
 
   // Parse different CAD file formats
   const parseCADFile = async (file: File) => {
@@ -99,50 +37,41 @@ export default function CADViewer({
     try {
       const extension = file.name.split('.').pop()?.toLowerCase()
 
-      // For now, create a placeholder geometry
-      // In production, you would use appropriate parsers for each format
-      let loadedGeometry: THREE.BufferGeometry
-
-      switch (extension) {
-        case 'step':
-        case 'stp':
-          // STEP file parsing would require opencascade.js or similar
-          loadedGeometry = createPlaceholderGeometry('STEP')
-          break
-        case 'sldprt':
-          // SolidWorks file parsing
-          loadedGeometry = createPlaceholderGeometry('SolidWorks')
-          break
-        case 'f3d':
-          // Fusion 360 file parsing
-          loadedGeometry = createPlaceholderGeometry('Fusion 360')
-          break
-        case 'fcstd':
-          // FreeCAD file parsing
-          loadedGeometry = createPlaceholderGeometry('FreeCAD')
-          break
-        case 'stl':
-          // STL file parsing using Three.js STLLoader
-          const { STLLoader } = await import('three/examples/jsm/loaders/STLLoader.js')
-          const stlLoader = new STLLoader()
-          const arrayBuffer = await file.arrayBuffer()
-          loadedGeometry = stlLoader.parse(arrayBuffer)
-          break
-        case 'obj':
-          // OBJ file parsing using Three.js OBJLoader
-          loadedGeometry = createPlaceholderGeometry('OBJ')
-          break
-        default:
-          throw new Error(`Unsupported file format: ${extension}`)
-      }
-
-      setGeometry(loadedGeometry)
+      // Create file info
       setUploadedFile({
         name: file.name,
         size: file.size,
         type: file.type || extension || 'unknown',
         url: URL.createObjectURL(file),
       })
+
+      // Set a preview message based on file type
+      let previewMessage = ''
+      switch (extension) {
+        case 'step':
+        case 'stp':
+          previewMessage = 'STEP file uploaded successfully. Full 3D rendering requires additional processing.'
+          break
+        case 'sldprt':
+          previewMessage = 'SolidWorks file uploaded successfully. Full 3D rendering requires additional processing.'
+          break
+        case 'f3d':
+          previewMessage = 'Fusion 360 file uploaded successfully. Full 3D rendering requires additional processing.'
+          break
+        case 'fcstd':
+          previewMessage = 'FreeCAD file uploaded successfully. Full 3D rendering requires additional processing.'
+          break
+        case 'stl':
+          previewMessage = 'STL file uploaded successfully. 3D preview will be available soon.'
+          break
+        case 'obj':
+          previewMessage = 'OBJ file uploaded successfully. 3D preview will be available soon.'
+          break
+        default:
+          throw new Error(`Unsupported file format: ${extension}`)
+      }
+
+      setPreview(previewMessage)
 
       if (onFileUpload) {
         onFileUpload(file)
@@ -153,20 +82,6 @@ export default function CADViewer({
     } finally {
       setLoading(false)
     }
-  }
-
-  // Create a placeholder geometry for unsupported formats
-  // In production, this would be replaced with actual parsers
-  const createPlaceholderGeometry = (format: string): THREE.BufferGeometry => {
-    console.log(`Creating placeholder for ${format} format`)
-
-    // Create a simple box as placeholder
-    const geometry = new THREE.BoxGeometry(5, 5, 5)
-
-    // Add custom attributes to show this is a placeholder
-    geometry.userData = { format, placeholder: true }
-
-    return geometry
   }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -189,7 +104,7 @@ export default function CADViewer({
       URL.revokeObjectURL(uploadedFile.url)
     }
     setUploadedFile(null)
-    setGeometry(undefined)
+    setPreview('')
     setError('')
   }
 
@@ -281,46 +196,47 @@ export default function CADViewer({
             </button>
           </div>
 
-          {/* 3D Canvas */}
-          <div ref={canvasRef} className="flex-1 bg-slate-900 rounded-b-xl overflow-hidden min-h-[500px]">
-            <Canvas shadows>
-              <Suspense fallback={null}>
-                <Scene geometry={geometry} />
-              </Suspense>
-            </Canvas>
-          </div>
+          {/* Preview Area */}
+          <div className="flex-1 bg-gradient-to-br from-slate-50 to-slate-100 rounded-b-xl overflow-hidden min-h-[500px] flex items-center justify-center p-8">
+            <div className="text-center max-w-2xl">
+              <div className="w-24 h-24 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <FileText className="w-12 h-12 text-primary-600" />
+              </div>
 
-          {/* Controls */}
-          {showControls && (
-            <div className="mt-4 flex items-center justify-center gap-2">
-              <button className="btn-secondary flex items-center gap-2">
-                <ZoomIn className="w-4 h-4" />
-                Zoom In
-              </button>
-              <button className="btn-secondary flex items-center gap-2">
-                <ZoomOut className="w-4 h-4" />
-                Zoom Out
-              </button>
-              <button className="btn-secondary flex items-center gap-2">
-                <RotateCw className="w-4 h-4" />
-                Reset View
-              </button>
-              <button className="btn-secondary flex items-center gap-2">
-                <Download className="w-4 h-4" />
-                Export
-              </button>
-            </div>
-          )}
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">
+                File Uploaded Successfully
+              </h3>
 
-          {/* Info Message for Placeholder */}
-          {geometry?.userData?.placeholder && (
-            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <p className="text-sm text-blue-800">
-                <strong>Preview Mode:</strong> Full {geometry.userData.format} file parsing requires additional
-                server-side processing. This is a placeholder representation of your uploaded file.
+              <p className="text-slate-600 mb-6">
+                {preview}
               </p>
+
+              <div className="bg-white rounded-xl p-6 shadow-md">
+                <h4 className="font-semibold text-slate-900 mb-3">File Details</h4>
+                <div className="space-y-2 text-sm text-left">
+                  <div className="flex justify-between py-2 border-b border-slate-200">
+                    <span className="text-slate-600">Filename:</span>
+                    <span className="font-medium text-slate-900">{uploadedFile.name}</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b border-slate-200">
+                    <span className="text-slate-600">Size:</span>
+                    <span className="font-medium text-slate-900">{formatFileSize(uploadedFile.size)}</span>
+                  </div>
+                  <div className="flex justify-between py-2">
+                    <span className="text-slate-600">Format:</span>
+                    <span className="font-medium text-slate-900">{uploadedFile.type.toUpperCase()}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg text-left">
+                <p className="text-sm text-blue-800">
+                  <strong>Next Steps:</strong> Advanced 3D rendering with orbit controls, zoom, and rotation
+                  will be available in the next update. For now, you can use this viewer to verify your file upload.
+                </p>
+              </div>
             </div>
-          )}
+          </div>
         </div>
       )}
     </div>
