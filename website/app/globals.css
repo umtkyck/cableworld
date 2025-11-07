@@ -8,7 +8,7 @@
   }
 
   body {
-    @apply bg-white text-slate-800 antialiased;
+    @apply bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 antialiased;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -38,7 +38,7 @@
   }
 
   .card {
-    @apply bg-white rounded-xl shadow-soft border border-slate-200 p-6 transition-shadow hover:shadow-medium;
+    @apply bg-white dark:bg-slate-800 rounded-xl shadow-soft border border-slate-200 dark:border-slate-700 p-6 transition-shadow hover:shadow-medium;
   }
 
   .section-padding {
@@ -65,5 +65,13 @@
 
   .animation-delay-600 {
     animation-delay: 600ms;
+  }
+
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
   }
 }
