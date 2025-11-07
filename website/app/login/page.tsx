@@ -1,18 +1,34 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Mail, Lock, ArrowRight } from 'lucide-react'
+import { Mail, Lock, ArrowRight, AlertCircle } from 'lucide-react'
+import { useAuth } from '@/context/AuthContext'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const { signIn } = useAuth()
+  const router = useRouter()
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // In production: API call
-    console.log('Login:', { email, password })
-    alert('Login functionality coming soon!')
+    setError('')
+    setLoading(true)
+
+    try {
+      await signIn(email, password)
+      // Redirect to dashboard on successful login
+      router.push('/dashboard')
+    } catch (err: any) {
+      setError(err.message || 'Failed to sign in. Please check your credentials.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -24,6 +40,13 @@ export default function LoginPage() {
         </div>
 
         <div className="bg-white rounded-2xl shadow-large p-8">
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-red-800">{error}</p>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -38,6 +61,7 @@ export default function LoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-12 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="you@company.com"
+                  disabled={loading}
                 />
               </div>
             </div>
@@ -55,6 +79,7 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full pl-12 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="••••••••"
+                  disabled={loading}
                 />
               </div>
             </div>
@@ -69,9 +94,22 @@ export default function LoginPage() {
               </Link>
             </div>
 
-            <button type="submit" className="btn-primary w-full justify-center">
-              Sign In
-              <ArrowRight className="w-5 h-5 ml-2" />
+            <button
+              type="submit"
+              className="btn-primary w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  Signing in...
+                </>
+              ) : (
+                <>
+                  Sign In
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </>
+              )}
             </button>
           </form>
 
@@ -86,7 +124,7 @@ export default function LoginPage() {
 
           <div className="mt-6 pt-6 border-t">
             <p className="text-xs text-center text-slate-500">
-              Protected by industry-standard encryption
+              🔒 Protected by Firebase Authentication
             </p>
           </div>
         </div>

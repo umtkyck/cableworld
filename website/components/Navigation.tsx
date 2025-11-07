@@ -2,14 +2,27 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Menu, X, ChevronDown, ShoppingCart } from 'lucide-react'
+import { Menu, X, ChevronDown, ShoppingCart, LogOut, User as UserIcon } from 'lucide-react'
 import Logo from './Logo'
 import { useCart } from '@/context/CartContext'
+import { useAuth } from '@/context/AuthContext'
+import { useRouter } from 'next/navigation'
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [productsOpen, setProductsOpen] = useState(false)
   const { cartCount } = useCart()
+  const { user, logout } = useAuth()
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    try {
+      await logout()
+      router.push('/')
+    } catch (error) {
+      console.error('Logout failed:', error)
+    }
+  }
 
   return (
     <nav className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
@@ -59,9 +72,11 @@ export default function Navigation() {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link href="/dashboard" className="text-slate-700 hover:text-primary-500 transition">
-              Dashboard
-            </Link>
+            {user && (
+              <Link href="/dashboard" className="text-slate-700 hover:text-primary-500 transition">
+                Dashboard
+              </Link>
+            )}
             <Link href="/cart" className="relative p-2 text-slate-700 hover:text-primary-500 transition">
               <ShoppingCart className="w-6 h-6" />
               {cartCount > 0 && (
@@ -70,9 +85,25 @@ export default function Navigation() {
                 </span>
               )}
             </Link>
-            <Link href="/login" className="text-slate-700 hover:text-primary-500 transition">
-              Sign In
-            </Link>
+            {user ? (
+              <>
+                <div className="flex items-center gap-2 text-slate-700">
+                  <UserIcon className="w-5 h-5" />
+                  <span className="font-medium">{user.displayName || user.email}</span>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="text-slate-700 hover:text-red-500 transition flex items-center gap-2"
+                >
+                  <LogOut className="w-5 h-5" />
+                  Sign Out
+                </button>
+              </>
+            ) : (
+              <Link href="/login" className="text-slate-700 hover:text-primary-500 transition">
+                Sign In
+              </Link>
+            )}
             <Link href="/quote" className="btn-primary">
               Get Quote
             </Link>
