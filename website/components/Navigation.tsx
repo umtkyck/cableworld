@@ -67,6 +67,9 @@ export default function Navigation() {
             <Link href="/shop" className="text-slate-700 hover:text-primary-500 transition">
               Shop
             </Link>
+            <Link href="/marketplace" className="text-slate-700 hover:text-primary-500 transition">
+              Marketplace
+            </Link>
             <Link href="/pricing" className="text-slate-700 hover:text-primary-500 transition">
               Pricing
             </Link>
@@ -154,6 +157,9 @@ export default function Navigation() {
             )}
             <Link href="/shop" className="block px-4 py-2 text-slate-700 hover:bg-slate-50 rounded-lg">
               Shop
+            </Link>
+            <Link href="/marketplace" className="block px-4 py-2 text-slate-700 hover:bg-slate-50 rounded-lg">
+              Marketplace
             </Link>
             <Link href="/how-it-works" className="block px-4 py-2 text-slate-700 hover:bg-slate-50 rounded-lg">
               How It Works
