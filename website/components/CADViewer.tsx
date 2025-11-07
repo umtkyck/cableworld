@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { Upload, FileText, X, AlertCircle, RotateCw, ZoomIn, ZoomOut } from 'lucide-react'
+import type * as THREE from 'three'
 
 interface CADViewerProps {
   onFileUpload?: (file: File) => void
