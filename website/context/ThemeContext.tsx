@@ -47,11 +47,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     })
   }
 
-  // Prevent flash of unstyled content
-  if (!mounted) {
-    return <>{children}</>
-  }
-
   return (
     <ThemeContext.Provider value={{ isDark, toggleTheme }}>
       {children}
@@ -62,7 +57,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 export function useTheme() {
   const context = useContext(ThemeContext)
   if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider')
+    // Return default values for SSR/build time
+    return { isDark: false, toggleTheme: () => {} }
   }
   return context
 }
