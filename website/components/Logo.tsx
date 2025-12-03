@@ -6,21 +6,25 @@ interface LogoProps {
 
 export default function Logo({ variant = 'default', showText = true, size = 'md' }: LogoProps) {
   const sizes = {
-    sm: { container: 'w-8 h-8', text: 'text-lg' },
-    md: { container: 'w-10 h-10', text: 'text-2xl' },
-    lg: { container: 'w-12 h-12', text: 'text-3xl' }
+    sm: { container: 'w-8 h-8', text: 'text-lg', subtext: 'text-[8px]' },
+    md: { container: 'w-10 h-10', text: 'text-xl', subtext: 'text-[9px]' },
+    lg: { container: 'w-14 h-14', text: 'text-2xl', subtext: 'text-xs' }
   };
 
   const colors = {
     default: {
       primary: '#f97316', // orange-500
       secondary: '#10b981', // emerald-500
-      text: 'text-slate-800 dark:text-white'
+      accent: '#fbbf24', // amber-400
+      text: 'text-slate-800 dark:text-white',
+      subtext: 'text-slate-500 dark:text-slate-400'
     },
     white: {
       primary: '#f97316',
       secondary: '#10b981',
-      text: 'text-white'
+      accent: '#fbbf24',
+      text: 'text-white',
+      subtext: 'text-slate-300'
     }
   };
 
@@ -28,8 +32,8 @@ export default function Logo({ variant = 'default', showText = true, size = 'md'
   const currentColors = colors[variant];
 
   return (
-    <div className="flex items-center space-x-2">
-      <div className={`${currentSize.container} relative`}>
+    <div className="flex items-center gap-2.5">
+      <div className={`${currentSize.container} relative flex-shrink-0`}>
         <svg
           viewBox="0 0 100 100"
           fill="none"
@@ -37,57 +41,79 @@ export default function Logo({ variant = 'default', showText = true, size = 'md'
           className="w-full h-full"
         >
           <defs>
-            <linearGradient id="harnessGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor={currentColors.primary} />
+              <stop offset="50%" stopColor={currentColors.accent} />
               <stop offset="100%" stopColor={currentColors.secondary} />
+            </linearGradient>
+            <linearGradient id="wireGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor={currentColors.primary} />
+              <stop offset="100%" stopColor={currentColors.accent} />
+            </linearGradient>
+            <linearGradient id="wireGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor={currentColors.secondary} />
+              <stop offset="100%" stopColor={currentColors.primary} />
             </linearGradient>
           </defs>
 
-          {/* Shopping Cart Body */}
+          {/* Background Circle */}
+          <circle cx="50" cy="50" r="46" fill="url(#logoGradient)" opacity="0.1" />
+
+          {/* Modern Shopping Cart - Rounded Style */}
           <path
-            d="M 20 30 L 28 30 L 38 65 L 75 65 L 85 40 L 35 40"
-            stroke="url(#harnessGradient)"
+            d="M 18 25 C 18 23 20 22 22 23 L 26 25 L 30 55 C 30 58 32 60 35 60 L 72 60 C 75 60 77 58 78 55 L 84 32 C 85 29 83 27 80 27 L 32 27"
+            stroke="url(#logoGradient)"
             strokeWidth="5"
             fill="none"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
 
-          {/* Cart Wheels */}
-          <circle cx="45" cy="78" r="7" stroke="url(#harnessGradient)" strokeWidth="4" fill="none" />
-          <circle cx="68" cy="78" r="7" stroke="url(#harnessGradient)" strokeWidth="4" fill="none" />
+          {/* Cart Wheels - Modern */}
+          <circle cx="40" cy="72" r="6" fill="url(#logoGradient)" />
+          <circle cx="40" cy="72" r="2.5" fill={variant === 'white' ? '#1e293b' : 'white'} />
+          <circle cx="66" cy="72" r="6" fill="url(#logoGradient)" />
+          <circle cx="66" cy="72" r="2.5" fill={variant === 'white' ? '#1e293b' : 'white'} />
 
-          {/* Cable Harness Wires in Cart */}
+          {/* Cable Harness Wires - Professional Style */}
           <path
-            d="M 42 48 Q 55 42, 65 48"
-            stroke={currentColors.primary}
-            strokeWidth="3"
+            d="M 38 38 Q 50 32, 62 38 Q 74 44, 74 38"
+            stroke="url(#wireGradient1)"
+            strokeWidth="3.5"
             fill="none"
             strokeLinecap="round"
           />
           <path
-            d="M 45 54 Q 55 48, 70 54"
-            stroke={currentColors.secondary}
-            strokeWidth="3"
+            d="M 36 46 Q 48 40, 60 46 Q 72 52, 76 46"
+            stroke="url(#wireGradient2)"
+            strokeWidth="3.5"
             fill="none"
             strokeLinecap="round"
           />
 
-          {/* Connector Nodes */}
-          <circle cx="42" cy="48" r="3" fill={currentColors.primary} />
-          <circle cx="65" cy="48" r="3" fill={currentColors.primary} />
-          <circle cx="45" cy="54" r="3" fill={currentColors.secondary} />
-          <circle cx="70" cy="54" r="3" fill={currentColors.secondary} />
+          {/* Connector Dots */}
+          <circle cx="38" cy="38" r="4" fill={currentColors.primary} />
+          <circle cx="74" cy="38" r="4" fill={currentColors.accent} />
+          <circle cx="36" cy="46" r="4" fill={currentColors.secondary} />
+          <circle cx="76" cy="46" r="4" fill={currentColors.primary} />
 
-          {/* Handle accent */}
-          <circle cx="20" cy="30" r="4" fill="url(#harnessGradient)" />
+          {/* Sparkle/Quality Badge */}
+          <circle cx="82" cy="18" r="10" fill={currentColors.secondary} />
+          <path
+            d="M 82 12 L 83 16 L 87 17 L 83 18 L 82 22 L 81 18 L 77 17 L 81 16 Z"
+            fill="white"
+          />
         </svg>
       </div>
 
       {showText && (
-        <div className="flex flex-col leading-none">
-          <span className={`${currentSize.text} font-bold ${currentColors.text}`}>
-            Harness<span className="text-orange-500">Cart</span>
+        <div className="flex flex-col leading-tight">
+          <span className={`${currentSize.text} font-bold tracking-tight ${currentColors.text}`}>
+            <span className="text-orange-500">Harness</span>
+            <span className="text-emerald-500">Cart</span>
+          </span>
+          <span className={`${currentSize.subtext} font-medium tracking-wider uppercase ${currentColors.subtext}`}>
+            Cable Solutions
           </span>
         </div>
       )}
