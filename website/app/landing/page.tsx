@@ -1,13 +1,12 @@
-import Hero3D from '@/components/three/Hero3D'
-import Features3D from '@/components/three/Features3D'
-import Showcase3D from '@/components/three/Showcase3D'
-import CTA3D from '@/components/three/CTA3D'
+'use client'
 
-export const metadata = {
-  title: 'CableWorld - AI-Powered Cable Harness Manufacturing Platform',
-  description: 'Experience the future of cable harness manufacturing with cutting-edge WebGL visualization, AI-powered instant quotes, and a global network of certified manufacturers.',
-  keywords: 'cable harness, wire harness, manufacturing, AI, WebGL, 3D visualization, instant quotes',
-}
+import dynamic from 'next/dynamic'
+
+// Dynamic imports with SSR disabled for Three.js components
+const Hero3D = dynamic(() => import('@/components/three/Hero3D'), { ssr: false })
+const Features3D = dynamic(() => import('@/components/three/Features3D'), { ssr: false })
+const Showcase3D = dynamic(() => import('@/components/three/Showcase3D'), { ssr: false })
+const CTA3D = dynamic(() => import('@/components/three/CTA3D'), { ssr: false })
 
 export default function LandingPage() {
   return (

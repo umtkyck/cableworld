@@ -29,7 +29,7 @@ describe('LoginPage', () => {
     render(<LoginPage />)
 
     expect(screen.getByText('Welcome Back')).toBeInTheDocument()
-    expect(screen.getByText('Sign in to your CableWorld account')).toBeInTheDocument()
+    expect(screen.getByText('Sign in to your Harness Cart account')).toBeInTheDocument()
     expect(screen.getByLabelText(/email address/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument()

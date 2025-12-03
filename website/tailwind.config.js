@@ -10,21 +10,21 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          50: '#e6f0f7',
-          100: '#cce1ef',
-          200: '#99c3df',
-          300: '#66a5cf',
-          400: '#3387bf',
-          500: '#092c47', // Main dark blue
-          600: '#072338',
-          700: '#051a2a',
-          800: '#04121c',
-          900: '#02090e',
+          50: '#fff7ed',
+          100: '#ffedd5',
+          200: '#fed7aa',
+          300: '#fdba74',
+          400: '#fb923c',
+          500: '#f97316', // Main orange
+          600: '#ea580c',
+          700: '#c2410c',
+          800: '#9a3412',
+          900: '#7c2d12',
         },
         accent: {
-          green: '#13bf87',
-          yellow: '#ffc118',
-          blue: '#4800e3',
+          green: '#10b981', // Emerald green
+          orange: '#f97316', // Orange
+          teal: '#14b8a6', // Teal
         },
         slate: {
           50: '#f8fafc',
@@ -37,6 +37,7 @@ module.exports = {
           700: '#334155',
           800: '#1e293b',
           900: '#0f172a',
+          950: '#020617',
         }
       },
       fontFamily: {
@@ -47,12 +48,16 @@ module.exports = {
         'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
         'medium': '0 4px 25px -3px rgba(0, 0, 0, 0.1), 0 10px 30px -2px rgba(0, 0, 0, 0.06)',
         'large': '0 10px 50px -5px rgba(0, 0, 0, 0.15), 0 20px 40px -5px rgba(0, 0, 0, 0.1)',
+        'glow-orange': '0 0 40px rgba(249, 115, 22, 0.3)',
+        'glow-green': '0 0 40px rgba(16, 185, 129, 0.3)',
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in',
         'slide-up': 'slideUp 0.5s ease-out',
         'scale-in': 'scaleIn 0.3s ease-out',
         'blob': 'blob 12s infinite',
+        'float': 'float 6s ease-in-out infinite',
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       keyframes: {
         fadeIn: {
@@ -81,10 +86,14 @@ module.exports = {
             transform: 'translate(0px, 0px) scale(1)',
           },
         },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
       },
-      animationDelay: {
-        '2000': '2s',
-        '4000': '4s',
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'hero-gradient': 'linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #1e293b 100%)',
       },
     },
   },

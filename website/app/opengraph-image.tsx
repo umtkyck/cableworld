@@ -1,14 +1,12 @@
 import { ImageResponse } from 'next/og'
 
-// Image metadata
-export const alt = 'CableWorld - Instant Cable Harness Manufacturing'
+export const alt = 'Harness Cart - Instant Cable Harness Manufacturing'
 export const size = {
   width: 1200,
   height: 630,
 }
 export const contentType = 'image/png'
 
-// Open Graph Image generation
 export default async function OpenGraphImage() {
   return new ImageResponse(
     (
@@ -20,11 +18,11 @@ export default async function OpenGraphImage() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'linear-gradient(135deg, #092c47 0%, #051a2a 100%)',
+          background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #1e293b 100%)',
           position: 'relative',
         }}
       >
-        {/* Background Grid Pattern */}
+        {/* Background Pattern */}
         <div
           style={{
             position: 'absolute',
@@ -32,12 +30,11 @@ export default async function OpenGraphImage() {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)',
-            backgroundSize: '40px 40px',
+            backgroundImage: 'radial-gradient(circle at 20% 30%, rgba(249,115,22,0.15) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(16,185,129,0.15) 0%, transparent 40%)',
           }}
         />
 
-        {/* Logo and Brand */}
+        {/* Content */}
         <div
           style={{
             display: 'flex',
@@ -47,97 +44,74 @@ export default async function OpenGraphImage() {
             zIndex: 1,
           }}
         >
-          {/* Logo SVG */}
-          <svg
-            width="200"
-            height="200"
-            viewBox="0 0 100 100"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+          {/* Logo Icon */}
+          <div
+            style={{
+              width: 160,
+              height: 160,
+              borderRadius: 32,
+              background: 'linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #10b981 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: 30,
+              boxShadow: '0 20px 60px rgba(249,115,22,0.3)',
+            }}
           >
-            <defs>
-              <linearGradient id="cableGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#10b981" />
-                <stop offset="100%" stopColor="#3b82f6" />
-              </linearGradient>
-            </defs>
-
-            {/* Main Circle Background */}
-            <circle cx="50" cy="50" r="48" fill="url(#cableGradient)" opacity="0.2" />
-
-            {/* Connection Nodes */}
-            <circle cx="30" cy="35" r="4" fill="url(#cableGradient)" />
-            <circle cx="70" cy="35" r="4" fill="url(#cableGradient)" />
-            <circle cx="30" cy="65" r="4" fill="url(#cableGradient)" />
-            <circle cx="70" cy="65" r="4" fill="url(#cableGradient)" />
-            <circle cx="50" cy="50" r="6" fill="url(#cableGradient)" />
-
-            {/* Cable Connections */}
-            <path
-              d="M 30 35 Q 40 30, 50 35 T 70 35"
-              stroke="url(#cableGradient)"
-              strokeWidth="3"
+            <svg
+              width="110"
+              height="110"
+              viewBox="0 0 100 100"
               fill="none"
-              strokeLinecap="round"
-            />
-
-            <path d="M 30 35 L 50 50" stroke="url(#cableGradient)" strokeWidth="2.5" strokeLinecap="round" />
-            <path d="M 70 35 L 50 50" stroke="url(#cableGradient)" strokeWidth="2.5" strokeLinecap="round" />
-            <path d="M 30 65 L 50 50" stroke="url(#cableGradient)" strokeWidth="2.5" strokeLinecap="round" />
-            <path d="M 70 65 L 50 50" stroke="url(#cableGradient)" strokeWidth="2.5" strokeLinecap="round" />
-
-            <path
-              d="M 30 65 Q 40 70, 50 65 T 70 65"
-              stroke="url(#cableGradient)"
-              strokeWidth="3"
-              fill="none"
-              strokeLinecap="round"
-            />
-
-            {/* C Letter */}
-            <path
-              d="M 70 25 A 25 25 0 0 1 70 75"
-              stroke="url(#cableGradient)"
-              strokeWidth="4"
-              fill="none"
-              strokeLinecap="round"
-              opacity="0.4"
-            />
-          </svg>
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M 18 25 C 18 23 20 22 22 23 L 26 25 L 30 55 C 30 58 32 60 35 60 L 72 60 C 75 60 77 58 78 55 L 84 32 C 85 29 83 27 80 27 L 32 27"
+                stroke="white"
+                strokeWidth="5"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <circle cx="40" cy="72" r="6" fill="white" />
+              <circle cx="66" cy="72" r="6" fill="white" />
+              <path d="M 38 40 Q 55 32, 72 40" stroke="white" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+              <circle cx="38" cy="40" r="4" fill="white" />
+              <circle cx="72" cy="40" r="4" fill="white" />
+            </svg>
+          </div>
 
           {/* Brand Name */}
           <div
             style={{
+              display: 'flex',
               fontSize: 72,
               fontWeight: 700,
-              color: 'white',
-              marginTop: 30,
               letterSpacing: '-0.02em',
             }}
           >
-            CableWorld
+            <span style={{ color: '#f97316' }}>Harness</span>
+            <span style={{ color: '#10b981' }}>Cart</span>
           </div>
 
           {/* Tagline */}
           <div
             style={{
-              fontSize: 32,
-              color: 'rgba(255,255,255,0.8)',
-              marginTop: 20,
-              textAlign: 'center',
+              fontSize: 28,
+              color: 'rgba(255,255,255,0.9)',
+              marginTop: 16,
+              fontWeight: 500,
             }}
           >
-            Instant Cable Harness Manufacturing
+            Cable Solutions • Instant Quotes • Global Network
           </div>
 
           {/* Sub-tagline */}
           <div
             style={{
-              fontSize: 24,
-              background: 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)',
-              backgroundClip: 'text',
-              color: 'transparent',
-              marginTop: 15,
+              fontSize: 22,
+              color: 'rgba(255,255,255,0.6)',
+              marginTop: 12,
             }}
           >
             Get Quotes in Under 60 Seconds

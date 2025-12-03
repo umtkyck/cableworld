@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
         customerEmail: customerEmail || 'unknown',
         customerName: customerName || 'unknown',
       },
-      description: `CableWorld Quote #${quoteId}`,
+      description: `Harness Cart Quote #${quoteId}`,
       receipt_email: customerEmail,
     });
 

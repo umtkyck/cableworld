@@ -90,7 +90,7 @@ export default function HowItWorksPage() {
       <section className="section-padding bg-gradient-to-br from-primary-500 to-primary-600 text-white">
         <div className="container-custom text-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-            How CableWorld Works
+            How Harness Cart Works
           </h1>
           <p className="text-xl sm:text-2xl text-slate-200 max-w-3xl mx-auto mb-8">
             From design to delivery in 5 simple steps

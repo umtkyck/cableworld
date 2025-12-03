@@ -33,8 +33,8 @@ export default function ContactPage() {
     {
       icon: Mail,
       title: 'Email Us',
-      content: 'support@cableworld.com',
-      link: 'mailto:support@cableworld.com'
+      content: 'support@harnesscart.com',
+      link: 'mailto:support@harnesscart.com'
     },
     {
       icon: Phone,

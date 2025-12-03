@@ -1,7 +1,7 @@
 {
-  "name": "cableworld-website",
+  "name": "harnesscart-website",
   "version": "1.0.0",
-  "description": "CableWorld - Cable and Wire Harness Manufacturing Platform",
+  "description": "Harness Cart - Instant Cable and Wire Harness Manufacturing Platform",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

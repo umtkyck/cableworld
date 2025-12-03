@@ -72,7 +72,7 @@ export default function RegisterPage() {
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-slate-900 mb-2">Create Account</h1>
-          <p className="text-slate-600">Join CableWorld and start ordering today</p>
+          <p className="text-slate-600">Join Harness Cart and start ordering today</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-large p-8">

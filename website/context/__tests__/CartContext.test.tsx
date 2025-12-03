@@ -66,7 +66,7 @@ describe('CartContext', () => {
           image: '/saved.jpg',
         },
       ]
-      localStorage.setItem('cableworld_cart', JSON.stringify(savedCart))
+      localStorage.setItem('harnesscart_cart', JSON.stringify(savedCart))
 
       render(
         <CartProvider>
@@ -162,7 +162,7 @@ describe('CartContext', () => {
       })
 
       await waitFor(() => {
-        const savedCart = localStorage.getItem('cableworld_cart')
+        const savedCart = localStorage.getItem('harnesscart_cart')
         expect(savedCart).toBeTruthy()
         const parsedCart = JSON.parse(savedCart!)
         expect(parsedCart).toHaveLength(1)
@@ -225,7 +225,7 @@ describe('CartContext', () => {
       })
 
       await waitFor(() => {
-        const savedCart = localStorage.getItem('cableworld_cart')
+        const savedCart = localStorage.getItem('harnesscart_cart')
         expect(savedCart).toBeTruthy()
         const parsedCart = JSON.parse(savedCart!)
         expect(parsedCart).toHaveLength(0)
@@ -317,7 +317,7 @@ describe('CartContext', () => {
       })
 
       await waitFor(() => {
-        const savedCart = localStorage.getItem('cableworld_cart')
+        const savedCart = localStorage.getItem('harnesscart_cart')
         expect(savedCart).toBeTruthy()
         const parsedCart = JSON.parse(savedCart!)
         expect(parsedCart[0].quantity).toBe(5)
@@ -381,7 +381,7 @@ describe('CartContext', () => {
       })
 
       await waitFor(() => {
-        const savedCart = localStorage.getItem('cableworld_cart')
+        const savedCart = localStorage.getItem('harnesscart_cart')
         expect(savedCart).toBeTruthy()
         const parsedCart = JSON.parse(savedCart!)
         expect(parsedCart).toHaveLength(0)

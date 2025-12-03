@@ -31,7 +31,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   // Load cart from localStorage on mount
   useEffect(() => {
-    const savedCart = localStorage.getItem('cableworld_cart')
+    const savedCart = localStorage.getItem('harnesscart_cart')
     if (savedCart) {
       setCart(JSON.parse(savedCart))
     }
@@ -39,7 +39,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   // Save cart to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('cableworld_cart', JSON.stringify(cart))
+    localStorage.setItem('harnesscart_cart', JSON.stringify(cart))
   }, [cart])
 
   const addToCart = (item: CartItem) => {

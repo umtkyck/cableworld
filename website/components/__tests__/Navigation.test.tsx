@@ -12,7 +12,7 @@ jest.mock('@/context/AuthContext')
 jest.mock('next/navigation')
 jest.mock('../Logo', () => {
   return function Logo() {
-    return <div data-testid="logo">CableWorld Logo</div>
+    return <div data-testid="logo">Harness Cart Logo</div>
   }
 })
 

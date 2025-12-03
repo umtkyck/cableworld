@@ -47,7 +47,7 @@ export default function AboutPage() {
       <section className="section-padding bg-gradient-to-br from-primary-500 to-primary-600 text-white">
         <div className="container-custom text-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-            About CableWorld
+            About Harness Cart
           </h1>
           <p className="text-xl sm:text-2xl text-slate-200 max-w-3xl mx-auto">
             Transforming cable harness manufacturing through technology, transparency, and trust.
@@ -93,7 +93,7 @@ export default function AboutPage() {
             </h3>
             <div className="space-y-4 text-slate-600 text-base sm:text-lg leading-relaxed">
               <p>
-                CableWorld was born from frustration. Our founders, experienced hardware engineers,
+                Harness Cart was born from frustration. Our founders, experienced hardware engineers,
                 spent countless hours waiting weeks for cable harness quotes, only to discover
                 design issues that required expensive rework.
               </p>
@@ -103,7 +103,7 @@ export default function AboutPage() {
                 to a vetted global manufacturer network.
               </p>
               <p>
-                Today, CableWorld serves thousands of engineers worldwide, from startups building
+                Today, Harness Cart serves thousands of engineers worldwide, from startups building
                 their first prototype to Fortune 500 companies manufacturing at scale.
               </p>
             </div>

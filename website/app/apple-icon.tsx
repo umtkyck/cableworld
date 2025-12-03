@@ -1,13 +1,11 @@
 import { ImageResponse } from 'next/og'
 
-// Image metadata
 export const size = {
   width: 180,
   height: 180,
 }
 export const contentType = 'image/png'
 
-// Apple Icon generation
 export default function AppleIcon() {
   return new ImageResponse(
     (
@@ -18,53 +16,62 @@ export default function AppleIcon() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'linear-gradient(135deg, #10b981 0%, #3b82f6 100%)',
+          background: 'linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #10b981 100%)',
+          borderRadius: '36px',
         }}
       >
         <svg
-          width="140"
-          height="140"
+          width="130"
+          height="130"
           viewBox="0 0 100 100"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Connection Nodes */}
-          <circle cx="30" cy="35" r="4" fill="white" />
-          <circle cx="70" cy="35" r="4" fill="white" />
-          <circle cx="30" cy="65" r="4" fill="white" />
-          <circle cx="70" cy="65" r="4" fill="white" />
-          <circle cx="50" cy="50" r="6" fill="white" />
-
-          {/* Cable Connections */}
+          {/* Modern Shopping Cart */}
           <path
-            d="M 30 35 Q 40 30, 50 35 T 70 35"
+            d="M 18 25 C 18 23 20 22 22 23 L 26 25 L 30 55 C 30 58 32 60 35 60 L 72 60 C 75 60 77 58 78 55 L 84 32 C 85 29 83 27 80 27 L 32 27"
+            stroke="white"
+            strokeWidth="5"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {/* Cart Wheels */}
+          <circle cx="40" cy="72" r="6" fill="white" />
+          <circle cx="40" cy="72" r="2" fill="#f97316" />
+          <circle cx="66" cy="72" r="6" fill="white" />
+          <circle cx="66" cy="72" r="2" fill="#10b981" />
+
+          {/* Cable Harness Wires */}
+          <path
+            d="M 38 38 Q 50 32, 62 38 Q 74 44, 74 38"
             stroke="white"
             strokeWidth="3"
             fill="none"
             strokeLinecap="round"
+            opacity="0.95"
           />
-
-          <path d="M 30 35 L 50 50" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M 70 35 L 50 50" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M 30 65 L 50 50" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M 70 65 L 50 50" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
-
           <path
-            d="M 30 65 Q 40 70, 50 65 T 70 65"
+            d="M 36 46 Q 48 40, 60 46 Q 72 52, 76 46"
             stroke="white"
             strokeWidth="3"
             fill="none"
             strokeLinecap="round"
+            opacity="0.95"
           />
 
-          {/* C Letter */}
+          {/* Connector Dots */}
+          <circle cx="38" cy="38" r="3.5" fill="white" />
+          <circle cx="74" cy="38" r="3.5" fill="white" />
+          <circle cx="36" cy="46" r="3.5" fill="white" />
+          <circle cx="76" cy="46" r="3.5" fill="white" />
+
+          {/* Quality Badge */}
+          <circle cx="82" cy="18" r="9" fill="white" />
           <path
-            d="M 70 25 A 25 25 0 0 1 70 75"
-            stroke="white"
-            strokeWidth="4"
-            fill="none"
-            strokeLinecap="round"
-            opacity="0.6"
+            d="M 82 12 L 83 15.5 L 86.5 16.5 L 83 17.5 L 82 21 L 81 17.5 L 77.5 16.5 L 81 15.5 Z"
+            fill="#10b981"
           />
         </svg>
       </div>

@@ -29,7 +29,7 @@ describe('RegisterPage', () => {
     render(<RegisterPage />)
 
     expect(screen.getByText('Create Account')).toBeInTheDocument()
-    expect(screen.getByText('Join CableWorld and start ordering today')).toBeInTheDocument()
+    expect(screen.getByText('Join Harness Cart and start ordering today')).toBeInTheDocument()
     expect(screen.getByLabelText(/full name/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/email address/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/company name/i)).toBeInTheDocument()

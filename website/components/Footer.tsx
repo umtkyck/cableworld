@@ -71,7 +71,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <div className="text-slate-300 text-sm">
-            © 2024 CableWorld. All rights reserved.
+            © 2024 Harness Cart. All rights reserved.
           </div>
           <div className="flex space-x-6 text-sm">
             <Link href="/privacy" className="text-slate-300 hover:text-white transition">Privacy Policy</Link>

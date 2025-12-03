@@ -1,13 +1,11 @@
 import { ImageResponse } from 'next/og'
 
-// Image metadata
 export const size = {
   width: 32,
   height: 32,
 }
 export const contentType = 'image/png'
 
-// Icon generation
 export default function Icon() {
   return new ImageResponse(
     (
@@ -18,64 +16,44 @@ export default function Icon() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'white',
+          background: 'linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #10b981 100%)',
+          borderRadius: '6px',
         }}
       >
         <svg
-          width="32"
-          height="32"
+          width="24"
+          height="24"
           viewBox="0 0 100 100"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <defs>
-            <linearGradient id="cableGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#10b981" />
-              <stop offset="100%" stopColor="#3b82f6" />
-            </linearGradient>
-          </defs>
-
-          {/* Main Circle Background */}
-          <circle cx="50" cy="50" r="48" fill="url(#cableGradient)" opacity="0.1" />
-
-          {/* Connection Nodes */}
-          <circle cx="30" cy="35" r="4" fill="url(#cableGradient)" />
-          <circle cx="70" cy="35" r="4" fill="url(#cableGradient)" />
-          <circle cx="30" cy="65" r="4" fill="url(#cableGradient)" />
-          <circle cx="70" cy="65" r="4" fill="url(#cableGradient)" />
-          <circle cx="50" cy="50" r="6" fill="url(#cableGradient)" />
-
-          {/* Cable Connections */}
+          {/* Modern Shopping Cart */}
           <path
-            d="M 30 35 Q 40 30, 50 35 T 70 35"
-            stroke="url(#cableGradient)"
-            strokeWidth="3"
+            d="M 18 25 C 18 23 20 22 22 23 L 26 25 L 30 55 C 30 58 32 60 35 60 L 72 60 C 75 60 77 58 78 55 L 84 32 C 85 29 83 27 80 27 L 32 27"
+            stroke="white"
+            strokeWidth="6"
             fill="none"
             strokeLinecap="round"
+            strokeLinejoin="round"
           />
 
-          <path d="M 30 35 L 50 50" stroke="url(#cableGradient)" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M 70 35 L 50 50" stroke="url(#cableGradient)" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M 30 65 L 50 50" stroke="url(#cableGradient)" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M 70 65 L 50 50" stroke="url(#cableGradient)" strokeWidth="2.5" strokeLinecap="round" />
+          {/* Cart Wheels */}
+          <circle cx="40" cy="72" r="7" fill="white" />
+          <circle cx="66" cy="72" r="7" fill="white" />
 
+          {/* Cable Wire */}
           <path
-            d="M 30 65 Q 40 70, 50 65 T 70 65"
-            stroke="url(#cableGradient)"
-            strokeWidth="3"
-            fill="none"
-            strokeLinecap="round"
-          />
-
-          {/* C Letter */}
-          <path
-            d="M 70 25 A 25 25 0 0 1 70 75"
-            stroke="url(#cableGradient)"
+            d="M 38 40 Q 55 32, 72 40"
+            stroke="white"
             strokeWidth="4"
             fill="none"
             strokeLinecap="round"
-            opacity="0.4"
+            opacity="0.9"
           />
+
+          {/* Connector Dots */}
+          <circle cx="38" cy="40" r="4" fill="white" />
+          <circle cx="72" cy="40" r="4" fill="white" />
         </svg>
       </div>
     ),

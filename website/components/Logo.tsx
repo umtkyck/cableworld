@@ -6,21 +6,25 @@ interface LogoProps {
 
 export default function Logo({ variant = 'default', showText = true, size = 'md' }: LogoProps) {
   const sizes = {
-    sm: { container: 'w-8 h-8', text: 'text-lg' },
-    md: { container: 'w-10 h-10', text: 'text-2xl' },
-    lg: { container: 'w-12 h-12', text: 'text-3xl' }
+    sm: { container: 'w-8 h-8', text: 'text-lg', subtext: 'text-[8px]' },
+    md: { container: 'w-10 h-10', text: 'text-xl', subtext: 'text-[9px]' },
+    lg: { container: 'w-14 h-14', text: 'text-2xl', subtext: 'text-xs' }
   };
 
   const colors = {
     default: {
-      gradient1: '#10b981', // accent-green
-      gradient2: '#3b82f6', // accent-blue
-      text: 'text-primary-500'
+      primary: '#f97316', // orange-500
+      secondary: '#10b981', // emerald-500
+      accent: '#fbbf24', // amber-400
+      text: 'text-slate-800 dark:text-white',
+      subtext: 'text-slate-500 dark:text-slate-400'
     },
     white: {
-      gradient1: '#10b981',
-      gradient2: '#3b82f6',
-      text: 'text-white'
+      primary: '#f97316',
+      secondary: '#10b981',
+      accent: '#fbbf24',
+      text: 'text-white',
+      subtext: 'text-slate-300'
     }
   };
 
@@ -28,8 +32,8 @@ export default function Logo({ variant = 'default', showText = true, size = 'md'
   const currentColors = colors[variant];
 
   return (
-    <div className="flex items-center space-x-2">
-      <div className={`${currentSize.container} relative`}>
+    <div className="flex items-center gap-2.5">
+      <div className={`${currentSize.container} relative flex-shrink-0`}>
         <svg
           viewBox="0 0 100 100"
           fill="none"
@@ -37,84 +41,81 @@ export default function Logo({ variant = 'default', showText = true, size = 'md'
           className="w-full h-full"
         >
           <defs>
-            <linearGradient id="cableGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor={currentColors.gradient1} />
-              <stop offset="100%" stopColor={currentColors.gradient2} />
+            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor={currentColors.primary} />
+              <stop offset="50%" stopColor={currentColors.accent} />
+              <stop offset="100%" stopColor={currentColors.secondary} />
+            </linearGradient>
+            <linearGradient id="wireGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor={currentColors.primary} />
+              <stop offset="100%" stopColor={currentColors.accent} />
+            </linearGradient>
+            <linearGradient id="wireGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor={currentColors.secondary} />
+              <stop offset="100%" stopColor={currentColors.primary} />
             </linearGradient>
           </defs>
 
-          {/* Modern Cable/Circuit Design */}
-          {/* Main Circle Background */}
-          <circle cx="50" cy="50" r="48" fill="url(#cableGradient)" opacity="0.1" />
+          {/* Background Circle */}
+          <circle cx="50" cy="50" r="46" fill="url(#logoGradient)" opacity="0.1" />
 
-          {/* Connection Nodes (Circuit Style) */}
-          <circle cx="30" cy="35" r="4" fill="url(#cableGradient)" />
-          <circle cx="70" cy="35" r="4" fill="url(#cableGradient)" />
-          <circle cx="30" cy="65" r="4" fill="url(#cableGradient)" />
-          <circle cx="70" cy="65" r="4" fill="url(#cableGradient)" />
-          <circle cx="50" cy="50" r="6" fill="url(#cableGradient)" />
-
-          {/* Cable/Wire Connections */}
-          {/* Top connections */}
+          {/* Modern Shopping Cart - Rounded Style */}
           <path
-            d="M 30 35 Q 40 30, 50 35 T 70 35"
-            stroke="url(#cableGradient)"
-            strokeWidth="3"
+            d="M 18 25 C 18 23 20 22 22 23 L 26 25 L 30 55 C 30 58 32 60 35 60 L 72 60 C 75 60 77 58 78 55 L 84 32 C 85 29 83 27 80 27 L 32 27"
+            stroke="url(#logoGradient)"
+            strokeWidth="5"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {/* Cart Wheels - Modern */}
+          <circle cx="40" cy="72" r="6" fill="url(#logoGradient)" />
+          <circle cx="40" cy="72" r="2.5" fill={variant === 'white' ? '#1e293b' : 'white'} />
+          <circle cx="66" cy="72" r="6" fill="url(#logoGradient)" />
+          <circle cx="66" cy="72" r="2.5" fill={variant === 'white' ? '#1e293b' : 'white'} />
+
+          {/* Cable Harness Wires - Professional Style */}
+          <path
+            d="M 38 38 Q 50 32, 62 38 Q 74 44, 74 38"
+            stroke="url(#wireGradient1)"
+            strokeWidth="3.5"
+            fill="none"
+            strokeLinecap="round"
+          />
+          <path
+            d="M 36 46 Q 48 40, 60 46 Q 72 52, 76 46"
+            stroke="url(#wireGradient2)"
+            strokeWidth="3.5"
             fill="none"
             strokeLinecap="round"
           />
 
-          {/* Center connections */}
-          <path
-            d="M 30 35 L 50 50"
-            stroke="url(#cableGradient)"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          />
-          <path
-            d="M 70 35 L 50 50"
-            stroke="url(#cableGradient)"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          />
-          <path
-            d="M 30 65 L 50 50"
-            stroke="url(#cableGradient)"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          />
-          <path
-            d="M 70 65 L 50 50"
-            stroke="url(#cableGradient)"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          />
+          {/* Connector Dots */}
+          <circle cx="38" cy="38" r="4" fill={currentColors.primary} />
+          <circle cx="74" cy="38" r="4" fill={currentColors.accent} />
+          <circle cx="36" cy="46" r="4" fill={currentColors.secondary} />
+          <circle cx="76" cy="46" r="4" fill={currentColors.primary} />
 
-          {/* Bottom connections */}
+          {/* Sparkle/Quality Badge */}
+          <circle cx="82" cy="18" r="10" fill={currentColors.secondary} />
           <path
-            d="M 30 65 Q 40 70, 50 65 T 70 65"
-            stroke="url(#cableGradient)"
-            strokeWidth="3"
-            fill="none"
-            strokeLinecap="round"
-          />
-
-          {/* C Letter Integration (Subtle) */}
-          <path
-            d="M 70 25 A 25 25 0 0 1 70 75"
-            stroke="url(#cableGradient)"
-            strokeWidth="4"
-            fill="none"
-            strokeLinecap="round"
-            opacity="0.4"
+            d="M 82 12 L 83 16 L 87 17 L 83 18 L 82 22 L 81 18 L 77 17 L 81 16 Z"
+            fill="white"
           />
         </svg>
       </div>
 
       {showText && (
-        <span className={`${currentSize.text} font-bold ${currentColors.text}`}>
-          CableWorld
-        </span>
+        <div className="flex flex-col leading-tight">
+          <span className={`${currentSize.text} font-bold tracking-tight ${currentColors.text}`}>
+            <span className="text-orange-500">Harness</span>
+            <span className="text-emerald-500">Cart</span>
+          </span>
+          <span className={`${currentSize.subtext} font-medium tracking-wider uppercase ${currentColors.subtext}`}>
+            Cable Solutions
+          </span>
+        </div>
       )}
     </div>
   );
