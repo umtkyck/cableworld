@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Menu, X, ChevronDown, ShoppingCart, LogOut, User as UserIcon, Moon, Sun } from 'lucide-react'
+import { Menu, X, ChevronDown, ShoppingCart, LogOut, User as UserIcon, Moon, Sun, Truck, X as CloseIcon } from 'lucide-react'
 import Logo from './Logo'
 import { useCart } from '@/context/CartContext'
 import { useAuth } from '@/context/AuthContext'
@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation'
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [productsOpen, setProductsOpen] = useState(false)
+  const [showBanner, setShowBanner] = useState(true)
   const { cartCount } = useCart()
   const { user, logout } = useAuth()
   const { isDark, toggleTheme } = useTheme()
@@ -27,7 +28,29 @@ export default function Navigation() {
   }
 
   return (
-    <nav className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50 shadow-sm">
+    <>
+      {/* Promotional Banner */}
+      {showBanner && (
+        <div className="bg-gradient-to-r from-emerald-600 to-emerald-500 text-white py-2.5 px-4 relative">
+          <div className="container-custom flex items-center justify-center gap-2 text-sm font-medium">
+            <Truck className="w-4 h-4" />
+            <span>Free Worldwide Shipping on orders over $1,000</span>
+            <span className="mx-2 text-emerald-200">|</span>
+            <Link href="/shop" className="underline hover:text-emerald-100 transition font-semibold">
+              Shop Now
+            </Link>
+          </div>
+          <button
+            onClick={() => setShowBanner(false)}
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-1 hover:bg-emerald-700 rounded transition"
+            aria-label="Close banner"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+
+      <nav className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50 shadow-sm">
       <div className="container-custom">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -184,5 +207,6 @@ export default function Navigation() {
         )}
       </div>
     </nav>
+    </>
   )
 }
