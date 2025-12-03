@@ -4,7 +4,7 @@ import Showcase3D from '@/components/three/Showcase3D'
 import CTA3D from '@/components/three/CTA3D'
 
 export const metadata = {
-  title: 'CableWorld - AI-Powered Cable Harness Manufacturing Platform',
+  title: 'Harness Cart - AI-Powered Cable Harness Manufacturing Platform',
   description: 'Experience the future of cable harness manufacturing with cutting-edge WebGL visualization, AI-powered instant quotes, and a global network of certified manufacturers.',
   keywords: 'cable harness, wire harness, manufacturing, AI, WebGL, 3D visualization, instant quotes',
 }

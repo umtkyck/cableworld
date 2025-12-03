@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og'
 
 // Image metadata
-export const alt = 'CableWorld - Instant Cable Harness Manufacturing'
+export const alt = 'Harness Cart - Instant Cable Harness Manufacturing'
 export const size = {
   width: 1200,
   height: 630,
@@ -20,7 +20,7 @@ export default async function OpenGraphImage() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'linear-gradient(135deg, #092c47 0%, #051a2a 100%)',
+          background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
           position: 'relative',
         }}
       >
@@ -32,8 +32,32 @@ export default async function OpenGraphImage() {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)',
-            backgroundSize: '40px 40px',
+            backgroundImage: 'linear-gradient(to right, rgba(249,115,22,0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(16,185,129,0.08) 1px, transparent 1px)',
+            backgroundSize: '50px 50px',
+          }}
+        />
+
+        {/* Decorative circles */}
+        <div
+          style={{
+            position: 'absolute',
+            top: -100,
+            right: -100,
+            width: 400,
+            height: 400,
+            borderRadius: '50%',
+            background: 'linear-gradient(135deg, rgba(249,115,22,0.15) 0%, rgba(16,185,129,0.15) 100%)',
+          }}
+        />
+        <div
+          style={{
+            position: 'absolute',
+            bottom: -150,
+            left: -150,
+            width: 500,
+            height: 500,
+            borderRadius: '50%',
+            background: 'linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(249,115,22,0.1) 100%)',
           }}
         />
 
@@ -49,60 +73,57 @@ export default async function OpenGraphImage() {
         >
           {/* Logo SVG */}
           <svg
-            width="200"
-            height="200"
+            width="180"
+            height="180"
             viewBox="0 0 100 100"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
             <defs>
-              <linearGradient id="cableGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#10b981" />
-                <stop offset="100%" stopColor="#3b82f6" />
+              <linearGradient id="harnessGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#f97316" />
+                <stop offset="100%" stopColor="#10b981" />
               </linearGradient>
             </defs>
 
-            {/* Main Circle Background */}
-            <circle cx="50" cy="50" r="48" fill="url(#cableGradient)" opacity="0.2" />
-
-            {/* Connection Nodes */}
-            <circle cx="30" cy="35" r="4" fill="url(#cableGradient)" />
-            <circle cx="70" cy="35" r="4" fill="url(#cableGradient)" />
-            <circle cx="30" cy="65" r="4" fill="url(#cableGradient)" />
-            <circle cx="70" cy="65" r="4" fill="url(#cableGradient)" />
-            <circle cx="50" cy="50" r="6" fill="url(#cableGradient)" />
-
-            {/* Cable Connections */}
+            {/* Shopping Cart Body */}
             <path
-              d="M 30 35 Q 40 30, 50 35 T 70 35"
-              stroke="url(#cableGradient)"
+              d="M 20 30 L 28 30 L 38 65 L 75 65 L 85 40 L 35 40"
+              stroke="url(#harnessGradient)"
+              strokeWidth="5"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+
+            {/* Cart Wheels */}
+            <circle cx="45" cy="78" r="7" stroke="url(#harnessGradient)" strokeWidth="4" fill="none" />
+            <circle cx="68" cy="78" r="7" stroke="url(#harnessGradient)" strokeWidth="4" fill="none" />
+
+            {/* Cable Harness Wires */}
+            <path
+              d="M 42 48 Q 55 42, 65 48"
+              stroke="#f97316"
+              strokeWidth="3"
+              fill="none"
+              strokeLinecap="round"
+            />
+            <path
+              d="M 45 54 Q 55 48, 70 54"
+              stroke="#10b981"
               strokeWidth="3"
               fill="none"
               strokeLinecap="round"
             />
 
-            <path d="M 30 35 L 50 50" stroke="url(#cableGradient)" strokeWidth="2.5" strokeLinecap="round" />
-            <path d="M 70 35 L 50 50" stroke="url(#cableGradient)" strokeWidth="2.5" strokeLinecap="round" />
-            <path d="M 30 65 L 50 50" stroke="url(#cableGradient)" strokeWidth="2.5" strokeLinecap="round" />
-            <path d="M 70 65 L 50 50" stroke="url(#cableGradient)" strokeWidth="2.5" strokeLinecap="round" />
+            {/* Connector Nodes */}
+            <circle cx="42" cy="48" r="3" fill="#f97316" />
+            <circle cx="65" cy="48" r="3" fill="#f97316" />
+            <circle cx="45" cy="54" r="3" fill="#10b981" />
+            <circle cx="70" cy="54" r="3" fill="#10b981" />
 
-            <path
-              d="M 30 65 Q 40 70, 50 65 T 70 65"
-              stroke="url(#cableGradient)"
-              strokeWidth="3"
-              fill="none"
-              strokeLinecap="round"
-            />
-
-            {/* C Letter */}
-            <path
-              d="M 70 25 A 25 25 0 0 1 70 75"
-              stroke="url(#cableGradient)"
-              strokeWidth="4"
-              fill="none"
-              strokeLinecap="round"
-              opacity="0.4"
-            />
+            {/* Handle accent */}
+            <circle cx="20" cy="30" r="4" fill="url(#harnessGradient)" />
           </svg>
 
           {/* Brand Name */}
@@ -113,9 +134,10 @@ export default async function OpenGraphImage() {
               color: 'white',
               marginTop: 30,
               letterSpacing: '-0.02em',
+              display: 'flex',
             }}
           >
-            CableWorld
+            Harness<span style={{ color: '#f97316' }}>Cart</span>
           </div>
 
           {/* Tagline */}
@@ -134,7 +156,7 @@ export default async function OpenGraphImage() {
           <div
             style={{
               fontSize: 24,
-              background: 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)',
+              background: 'linear-gradient(90deg, #f97316 0%, #10b981 100%)',
               backgroundClip: 'text',
               color: 'transparent',
               marginTop: 15,

@@ -18,64 +18,46 @@ export default function Icon() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'white',
+          background: 'linear-gradient(135deg, #f97316 0%, #10b981 100%)',
+          borderRadius: '6px',
         }}
       >
         <svg
-          width="32"
-          height="32"
+          width="26"
+          height="26"
           viewBox="0 0 100 100"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <defs>
-            <linearGradient id="cableGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#10b981" />
-              <stop offset="100%" stopColor="#3b82f6" />
-            </linearGradient>
-          </defs>
-
-          {/* Main Circle Background */}
-          <circle cx="50" cy="50" r="48" fill="url(#cableGradient)" opacity="0.1" />
-
-          {/* Connection Nodes */}
-          <circle cx="30" cy="35" r="4" fill="url(#cableGradient)" />
-          <circle cx="70" cy="35" r="4" fill="url(#cableGradient)" />
-          <circle cx="30" cy="65" r="4" fill="url(#cableGradient)" />
-          <circle cx="70" cy="65" r="4" fill="url(#cableGradient)" />
-          <circle cx="50" cy="50" r="6" fill="url(#cableGradient)" />
-
-          {/* Cable Connections */}
+          {/* Shopping Cart Body */}
           <path
-            d="M 30 35 Q 40 30, 50 35 T 70 35"
-            stroke="url(#cableGradient)"
-            strokeWidth="3"
+            d="M 20 30 L 28 30 L 38 65 L 75 65 L 85 40 L 35 40"
+            stroke="white"
+            strokeWidth="6"
             fill="none"
             strokeLinecap="round"
+            strokeLinejoin="round"
           />
 
-          <path d="M 30 35 L 50 50" stroke="url(#cableGradient)" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M 70 35 L 50 50" stroke="url(#cableGradient)" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M 30 65 L 50 50" stroke="url(#cableGradient)" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M 70 65 L 50 50" stroke="url(#cableGradient)" strokeWidth="2.5" strokeLinecap="round" />
+          {/* Cart Wheels */}
+          <circle cx="45" cy="78" r="7" stroke="white" strokeWidth="5" fill="none" />
+          <circle cx="68" cy="78" r="7" stroke="white" strokeWidth="5" fill="none" />
 
+          {/* Cable Harness Wires */}
           <path
-            d="M 30 65 Q 40 70, 50 65 T 70 65"
-            stroke="url(#cableGradient)"
-            strokeWidth="3"
-            fill="none"
-            strokeLinecap="round"
-          />
-
-          {/* C Letter */}
-          <path
-            d="M 70 25 A 25 25 0 0 1 70 75"
-            stroke="url(#cableGradient)"
+            d="M 42 50 Q 55 44, 70 50"
+            stroke="white"
             strokeWidth="4"
             fill="none"
             strokeLinecap="round"
-            opacity="0.4"
           />
+
+          {/* Connector Nodes */}
+          <circle cx="42" cy="50" r="4" fill="white" />
+          <circle cx="70" cy="50" r="4" fill="white" />
+
+          {/* Handle accent */}
+          <circle cx="20" cy="30" r="5" fill="white" />
         </svg>
       </div>
     ),

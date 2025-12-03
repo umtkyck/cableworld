@@ -55,7 +55,7 @@ export default function LoginPage() {
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-slate-900 mb-2">Welcome Back</h1>
-          <p className="text-slate-600">Sign in to your CableWorld account</p>
+          <p className="text-slate-600">Sign in to your Harness Cart account</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-large p-8">

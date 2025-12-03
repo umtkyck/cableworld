@@ -7,7 +7,7 @@ export default function Testimonials() {
       role: 'Lead Engineer',
       company: 'RoboTech Industries',
       avatar: 'SC',
-      quote: 'CableWorld cut our prototyping time in half. We can now iterate on designs weekly instead of monthly. Game changer for our product development.',
+      quote: 'Harness Cart cut our prototyping time in half. We can now iterate on designs weekly instead of monthly. Game changer for our product development.',
       rating: 5
     },
     {
@@ -36,7 +36,7 @@ export default function Testimonials() {
             Trusted by Industry Leaders
           </h2>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-            See what engineers and product teams are saying about CableWorld.
+            See what engineers and product teams are saying about Harness Cart.
           </p>
         </div>
 

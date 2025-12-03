@@ -2,13 +2,13 @@ import { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'CableWorld - Instant Cable Harness Manufacturing',
-    short_name: 'CableWorld',
+    name: 'Harness Cart - Instant Cable Harness Manufacturing',
+    short_name: 'Harness Cart',
     description: 'Get instant quotes for custom cable and wire harnesses in under 60 seconds.',
     start_url: '/',
     display: 'standalone',
-    background_color: '#092c47',
-    theme_color: '#13bf87',
+    background_color: '#1e293b',
+    theme_color: '#f97316',
     icons: [
       {
         src: '/icon',

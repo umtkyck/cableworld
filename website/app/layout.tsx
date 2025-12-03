@@ -8,29 +8,29 @@ import ClientProviders from '@/components/ClientProviders'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://cableworld.vercel.app'),
+  metadataBase: new URL('https://harnesscart.vercel.app'),
   title: {
-    default: 'CableWorld - Instant Cable Harness Manufacturing',
-    template: '%s | CableWorld'
+    default: 'Harness Cart - Instant Cable Harness Manufacturing',
+    template: '%s | Harness Cart'
   },
   description: 'Get instant quotes for custom cable and wire harnesses. Upload your design and receive quotes in under 60 seconds from our global manufacturer network.',
   keywords: ['cable harness', 'wire harness', 'custom manufacturing', 'instant quotes', 'PCB assembly', 'cable assembly', 'custom cables', 'wire assembly'],
-  authors: [{ name: 'CableWorld' }],
-  creator: 'CableWorld',
-  publisher: 'CableWorld',
+  authors: [{ name: 'Harness Cart' }],
+  creator: 'Harness Cart',
+  publisher: 'Harness Cart',
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://cableworld.vercel.app',
-    title: 'CableWorld - Instant Cable Harness Manufacturing',
+    url: 'https://harnesscart.vercel.app',
+    title: 'Harness Cart - Instant Cable Harness Manufacturing',
     description: 'Get instant quotes for custom cable and wire harnesses. Upload your design and receive quotes in under 60 seconds from our global manufacturer network.',
-    siteName: 'CableWorld',
+    siteName: 'Harness Cart',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CableWorld - Instant Cable Harness Manufacturing',
+    title: 'Harness Cart - Instant Cable Harness Manufacturing',
     description: 'Get instant quotes for custom cable and wire harnesses in under 60 seconds.',
-    creator: '@cableworld',
+    creator: '@harnesscart',
   },
   robots: {
     index: true,

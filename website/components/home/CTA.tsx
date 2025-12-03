@@ -18,7 +18,7 @@ export default function CTA() {
               Ready to Transform Your Manufacturing Process?
             </h2>
             <p className="text-xl text-slate-200 mb-10 max-w-2xl mx-auto">
-              Join thousands of engineers who are building better products faster with CableWorld.
+              Join thousands of engineers who are building better products faster with Harness Cart.
               Get your first quote today—no credit card required.
             </p>
 
