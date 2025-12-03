@@ -151,12 +151,14 @@ const ParticleField = () => {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
+          args={[positions, 3]}
           count={positions.length / 3}
           array={positions}
           itemSize={3}
         />
         <bufferAttribute
           attach="attributes-color"
+          args={[colors, 3]}
           count={colors.length / 3}
           array={colors}
           itemSize={3}
