@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { Upload, FileText, X, AlertCircle, RotateCw, ZoomIn, ZoomOut } from 'lucide-react'
-import type * as THREE from 'three'
+import { Upload, FileText, X, AlertCircle, RotateCw, ZoomIn, ZoomOut, Loader2 } from 'lucide-react'
 
 interface CADViewerProps {
   onFileUpload?: (file: File) => void
@@ -17,17 +16,19 @@ interface UploadedFile {
   size: number
   type: string
   url: string
+  file: File
 }
 
 export default function CADViewer({
   onFileUpload,
   initialFile,
-  allowedFormats = ['.step', '.stp', '.sldprt', '.f3d', '.fcstd', '.obj', '.stl'],
+  allowedFormats = ['.step', '.stp', '.obj', '.stl'],
   showControls = true,
 }: CADViewerProps) {
   const [uploadedFile, setUploadedFile] = useState<UploadedFile | null>(null)
   const [error, setError] = useState<string>('')
   const [loading, setLoading] = useState(false)
+  const [loadingMessage, setLoadingMessage] = useState('')
   const [canRender3D, setCanRender3D] = useState(false)
   const canvasRef = useRef<HTMLDivElement>(null)
   const sceneRef = useRef<any>(null)
@@ -41,6 +42,8 @@ export default function CADViewer({
 
     const initScene = async () => {
       try {
+        setLoadingMessage('Initializing 3D viewer...')
+
         // Dynamically import Three.js
         const THREE = await import('three')
         const { OrbitControls } = await import('three/examples/jsm/controls/OrbitControls.js')
@@ -56,7 +59,7 @@ export default function CADViewer({
           75,
           canvasRef.current.clientWidth / canvasRef.current.clientHeight,
           0.1,
-          1000
+          10000
         )
         camera.position.set(5, 5, 5)
 
@@ -86,10 +89,11 @@ export default function CADViewer({
         const axesHelper = new THREE.AxesHelper(5)
         scene.add(axesHelper)
 
-        // Load model
+        // Load model based on file extension
         const extension = uploadedFile.name.split('.').pop()?.toLowerCase()
 
         if (extension === 'stl') {
+          setLoadingMessage('Loading STL file...')
           const { STLLoader } = await import('three/examples/jsm/loaders/STLLoader.js')
           const loader = new STLLoader()
 
@@ -102,7 +106,6 @@ export default function CADViewer({
             )
           })
 
-          // Center the geometry
           geometry.center()
 
           const material = new THREE.MeshPhongMaterial({
@@ -115,29 +118,136 @@ export default function CADViewer({
           scene.add(mesh)
 
           // Fit camera to object
-          const box = new THREE.Box3().setFromObject(mesh)
-          const size = box.getSize(new THREE.Vector3())
-          const maxDim = Math.max(size.x, size.y, size.z)
-          const fov = camera.fov * (Math.PI / 180)
-          let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2))
-          cameraZ *= 1.5 // Add some padding
-          camera.position.set(cameraZ, cameraZ, cameraZ)
-          camera.lookAt(0, 0, 0)
-        } else {
-          // For other formats, show a placeholder cube
-          const geometry = new THREE.BoxGeometry(2, 2, 2)
-          const material = new THREE.MeshPhongMaterial({ color: 0x3b82f6 })
-          const cube = new THREE.Mesh(geometry, material)
-          scene.add(cube)
+          fitCameraToObject(camera, mesh, THREE)
+
+        } else if (extension === 'obj') {
+          setLoadingMessage('Loading OBJ file...')
+          const { OBJLoader } = await import('three/examples/jsm/loaders/OBJLoader.js')
+          const loader = new OBJLoader()
+
+          const object = await new Promise<THREE.Group>((resolve, reject) => {
+            loader.load(
+              uploadedFile.url,
+              (obj) => resolve(obj),
+              undefined,
+              (err) => reject(err)
+            )
+          })
+
+          // Apply material to all meshes
+          object.traverse((child) => {
+            if ((child as THREE.Mesh).isMesh) {
+              (child as THREE.Mesh).material = new THREE.MeshPhongMaterial({
+                color: 0x3b82f6,
+                specular: 0x111111,
+                shininess: 200,
+              })
+            }
+          })
+
+          scene.add(object)
+          fitCameraToObject(camera, object, THREE)
+
+        } else if (extension === 'step' || extension === 'stp') {
+          setLoadingMessage('Loading STEP file (this may take a moment)...')
+
+          try {
+            // Read file as ArrayBuffer
+            const arrayBuffer = await uploadedFile.file.arrayBuffer()
+
+            // Dynamic import of occt-import-js
+            const occtImportJs = await import('occt-import-js')
+
+            setLoadingMessage('Initializing STEP parser...')
+
+            // Initialize the WASM module
+            const occt = await occtImportJs.default()
+
+            setLoadingMessage('Parsing STEP geometry...')
+
+            // Parse the STEP file
+            const fileBuffer = new Uint8Array(arrayBuffer)
+            const result = occt.ReadStepFile(fileBuffer, null)
+
+            if (!result.success) {
+              throw new Error('Failed to parse STEP file')
+            }
+
+            setLoadingMessage('Building 3D mesh...')
+
+            // Create a group to hold all meshes
+            const group = new THREE.Group()
+
+            // Process each mesh in the result
+            for (let i = 0; i < result.meshes.length; i++) {
+              const mesh = result.meshes[i]
+
+              // Create geometry from the parsed data
+              const geometry = new THREE.BufferGeometry()
+
+              // Set vertices
+              geometry.setAttribute(
+                'position',
+                new THREE.Float32BufferAttribute(mesh.attributes.position.array, 3)
+              )
+
+              // Set normals if available
+              if (mesh.attributes.normal) {
+                geometry.setAttribute(
+                  'normal',
+                  new THREE.Float32BufferAttribute(mesh.attributes.normal.array, 3)
+                )
+              }
+
+              // Set indices if available
+              if (mesh.index) {
+                geometry.setIndex(new THREE.BufferAttribute(mesh.index.array, 1))
+              }
+
+              // Compute normals if not provided
+              if (!mesh.attributes.normal) {
+                geometry.computeVertexNormals()
+              }
+
+              // Get color from the mesh or use default
+              let color = 0x3b82f6 // Default blue
+              if (mesh.color) {
+                color = new THREE.Color(
+                  mesh.color[0] / 255,
+                  mesh.color[1] / 255,
+                  mesh.color[2] / 255
+                ).getHex()
+              }
+
+              const material = new THREE.MeshPhongMaterial({
+                color: color,
+                specular: 0x111111,
+                shininess: 200,
+                side: THREE.DoubleSide,
+              })
+
+              const threeMesh = new THREE.Mesh(geometry, material)
+              group.add(threeMesh)
+            }
+
+            scene.add(group)
+            fitCameraToObject(camera, group, THREE)
+
+          } catch (stepError: any) {
+            console.error('STEP parsing error:', stepError)
+            throw new Error(`Failed to parse STEP file: ${stepError.message}`)
+          }
         }
+
+        setLoadingMessage('')
 
         // Add orbit controls
         const controls = new OrbitControls(camera, renderer.domElement)
         controls.enableDamping = true
         controls.dampingFactor = 0.05
         controls.screenSpacePanning = false
-        controls.minDistance = 1
-        controls.maxDistance = 100
+        controls.minDistance = 0.1
+        controls.maxDistance = 1000
 
         // Animation loop
         const animate = () => {
@@ -159,10 +269,27 @@ export default function CADViewer({
 
         sceneRef.current = { scene, camera, renderer, controls, handleResize }
 
-      } catch (err) {
+      } catch (err: any) {
         console.error('3D rendering error:', err)
-        setError('Failed to render 3D view. Your browser may not support WebGL.')
+        setError(err.message || 'Failed to render 3D view. Your browser may not support WebGL.')
+        setLoadingMessage('')
       }
+    }
+
+    // Helper function to fit camera to object
+    const fitCameraToObject = (camera: any, object: any, THREE: any) => {
+      const box = new THREE.Box3().setFromObject(object)
+      const size = box.getSize(new THREE.Vector3())
+      const center = box.getCenter(new THREE.Vector3())
+
+      const maxDim = Math.max(size.x, size.y, size.z)
+      const fov = camera.fov * (Math.PI / 180)
+      let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2))
+      cameraZ *= 2 // Add padding
+
+      camera.position.set(center.x + cameraZ, center.y + cameraZ, center.z + cameraZ)
+      camera.lookAt(center)
+      camera.updateProjectionMatrix()
     }
 
     initScene()
@@ -195,10 +322,11 @@ export default function CADViewer({
         size: file.size,
         type: file.type || extension || 'unknown',
         url: URL.createObjectURL(file),
+        file: file,
       })
 
-      // Check if we can render this format in 3D
-      if (extension === 'stl' || extension === 'obj') {
+      // Enable 3D rendering for supported formats
+      if (['stl', 'obj', 'step', 'stp'].includes(extension || '')) {
         setCanRender3D(true)
       } else {
         setCanRender3D(false)
@@ -237,6 +365,7 @@ export default function CADViewer({
     setUploadedFile(null)
     setCanRender3D(false)
     setError('')
+    setLoadingMessage('')
   }
 
   const formatFileSize = (bytes: number) => {
@@ -250,19 +379,13 @@ export default function CADViewer({
     switch (extension) {
       case 'step':
       case 'stp':
-        return 'STEP files require server-side processing for full 3D visualization. A preview geometry is shown.'
-      case 'sldprt':
-        return 'SolidWorks files require server-side processing for full 3D visualization. A preview geometry is shown.'
-      case 'f3d':
-        return 'Fusion 360 files require server-side processing for full 3D visualization. A preview geometry is shown.'
-      case 'fcstd':
-        return 'FreeCAD files require server-side processing for full 3D visualization. A preview geometry is shown.'
+        return 'STEP file loaded. Use mouse to rotate, zoom, and pan the 3D view.'
       case 'stl':
-        return 'STL file loaded successfully. Use mouse to rotate, zoom, and pan the view.'
+        return 'STL file loaded. Use mouse to rotate, zoom, and pan the 3D view.'
       case 'obj':
-        return 'OBJ file loaded successfully. Use mouse to rotate, zoom, and pan the view.'
+        return 'OBJ file loaded. Use mouse to rotate, zoom, and pan the 3D view.'
       default:
-        return ''
+        return 'File loaded successfully.'
     }
   }
 
@@ -351,19 +474,31 @@ export default function CADViewer({
           {/* 3D Viewer Canvas */}
           <div
             ref={canvasRef}
-            className="flex-1 bg-slate-900 rounded-b-xl overflow-hidden"
+            className="flex-1 bg-slate-900 rounded-b-xl overflow-hidden relative"
             style={{ minHeight: '600px', width: '100%' }}
-          />
-
-          {/* Info Message */}
-          <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="text-sm text-blue-800">
-              <strong>ℹ️ Info:</strong> {getFormatInfo()}
-            </p>
+          >
+            {/* Loading overlay */}
+            {loadingMessage && (
+              <div className="absolute inset-0 bg-slate-900/90 flex items-center justify-center z-10">
+                <div className="flex flex-col items-center space-y-4">
+                  <Loader2 className="w-12 h-12 text-primary-500 animate-spin" />
+                  <p className="text-white text-sm">{loadingMessage}</p>
+                </div>
+              </div>
+            )}
           </div>
 
+          {/* Info Message */}
+          {!error && (
+            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-sm text-blue-800">
+                <strong>ℹ️ Info:</strong> {getFormatInfo()}
+              </p>
+            </div>
+          )}
+
           {/* Controls Info */}
-          {canRender3D && showControls && (
+          {canRender3D && showControls && !loadingMessage && (
             <div className="mt-4 grid grid-cols-3 gap-4">
               <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-200">
                 <div className="flex items-center gap-2 mb-2">
