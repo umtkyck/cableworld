@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { Upload, FileText, X, AlertCircle, RotateCw, ZoomIn, ZoomOut, Loader2 } from 'lucide-react'
+import type { BufferGeometry, Group, Mesh } from 'three'
 
 interface CADViewerProps {
   onFileUpload?: (file: File) => void
@@ -97,7 +98,7 @@ export default function CADViewer({
           const { STLLoader } = await import('three/examples/jsm/loaders/STLLoader.js')
           const loader = new STLLoader()
 
-          const geometry = await new Promise<THREE.BufferGeometry>((resolve, reject) => {
+          const geometry = await new Promise<BufferGeometry>((resolve, reject) => {
             loader.load(
               uploadedFile.url,
               (geo) => resolve(geo),
@@ -125,7 +126,7 @@ export default function CADViewer({
           const { OBJLoader } = await import('three/examples/jsm/loaders/OBJLoader.js')
           const loader = new OBJLoader()
 
-          const object = await new Promise<THREE.Group>((resolve, reject) => {
+          const object = await new Promise<Group>((resolve, reject) => {
             loader.load(
               uploadedFile.url,
               (obj) => resolve(obj),
@@ -136,8 +137,8 @@ export default function CADViewer({
 
           // Apply material to all meshes
           object.traverse((child) => {
-            if ((child as THREE.Mesh).isMesh) {
-              (child as THREE.Mesh).material = new THREE.MeshPhongMaterial({
+            if ((child as Mesh).isMesh) {
+              (child as Mesh).material = new THREE.MeshPhongMaterial({
                 color: 0x3b82f6,
                 specular: 0x111111,
                 shininess: 200,
