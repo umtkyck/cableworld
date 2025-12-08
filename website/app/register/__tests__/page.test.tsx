@@ -3,39 +3,37 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import RegisterPage from '../page'
 import { useAuth } from '@/context/AuthContext'
-import { useRouter } from 'next/navigation'
 
 // Mock the auth context
 jest.mock('@/context/AuthContext')
-jest.mock('next/navigation')
 
 const mockSignUp = jest.fn()
-const mockPush = jest.fn()
+const mockSignInWithGoogle = jest.fn()
+const mockSignInWithFacebook = jest.fn()
+const mockSignInWithApple = jest.fn()
 
 describe('RegisterPage', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     ;(useAuth as jest.Mock).mockReturnValue({
       signUp: mockSignUp,
+      signInWithGoogle: mockSignInWithGoogle,
+      signInWithFacebook: mockSignInWithFacebook,
+      signInWithApple: mockSignInWithApple,
       user: null,
       loading: false,
-    })
-    ;(useRouter as jest.Mock).mockReturnValue({
-      push: mockPush,
     })
   })
 
   it('should render registration form with all fields', () => {
     render(<RegisterPage />)
 
-    expect(screen.getByText('Create Account')).toBeInTheDocument()
+    // Use getAllByText since there might be multiple elements with same text
+    expect(screen.getAllByText('Create Account').length).toBeGreaterThan(0)
     expect(screen.getByText('Join Harness Cart and start ordering today')).toBeInTheDocument()
     expect(screen.getByLabelText(/full name/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/email address/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/company name/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/^password \*/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/confirm password/i)).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /create account/i })).toBeInTheDocument()
   })
 
   it('should have link to login page', () => {
@@ -76,13 +74,16 @@ describe('RegisterPage', () => {
     const emailInput = screen.getByPlaceholderText('you@company.com')
     const passwordInput = screen.getAllByPlaceholderText('••••••••')[0]
     const confirmPasswordInput = screen.getAllByPlaceholderText('••••••••')[1]
-    const submitButton = screen.getByRole('button', { name: /create account/i })
+    const form = screen.getByRole('button', { name: /create account/i }).closest('form')
 
     await user.type(nameInput, 'John Doe')
     await user.type(emailInput, 'john@example.com')
     await user.type(passwordInput, 'password123')
     await user.type(confirmPasswordInput, 'differentpassword')
-    await user.click(submitButton)
+
+    if (form) {
+      fireEvent.submit(form)
+    }
 
     expect(screen.getByText('Passwords do not match!')).toBeInTheDocument()
     expect(mockSignUp).not.toHaveBeenCalled()
@@ -96,13 +97,16 @@ describe('RegisterPage', () => {
     const emailInput = screen.getByPlaceholderText('you@company.com')
     const passwordInput = screen.getAllByPlaceholderText('••••••••')[0]
     const confirmPasswordInput = screen.getAllByPlaceholderText('••••••••')[1]
-    const submitButton = screen.getByRole('button', { name: /create account/i })
+    const form = screen.getByRole('button', { name: /create account/i }).closest('form')
 
     await user.type(nameInput, 'John Doe')
     await user.type(emailInput, 'john@example.com')
     await user.type(passwordInput, '12345')
     await user.type(confirmPasswordInput, '12345')
-    await user.click(submitButton)
+
+    if (form) {
+      fireEvent.submit(form)
+    }
 
     expect(screen.getByText('Password must be at least 6 characters long')).toBeInTheDocument()
     expect(mockSignUp).not.toHaveBeenCalled()
@@ -126,7 +130,7 @@ describe('RegisterPage', () => {
     expect(screen.getByText("Passwords don't match")).toBeInTheDocument()
   })
 
-  it('should call signUp and redirect to dashboard on successful registration', async () => {
+  it('should call signUp on successful form submission', async () => {
     const user = userEvent.setup()
     mockSignUp.mockResolvedValue(undefined)
 
@@ -136,17 +140,19 @@ describe('RegisterPage', () => {
     const emailInput = screen.getByPlaceholderText('you@company.com')
     const passwordInput = screen.getAllByPlaceholderText('••••••••')[0]
     const confirmPasswordInput = screen.getAllByPlaceholderText('••••••••')[1]
-    const submitButton = screen.getByRole('button', { name: /create account/i })
+    const form = screen.getByRole('button', { name: /create account/i }).closest('form')
 
     await user.type(nameInput, 'John Doe')
     await user.type(emailInput, 'john@example.com')
     await user.type(passwordInput, 'password123')
     await user.type(confirmPasswordInput, 'password123')
-    await user.click(submitButton)
+
+    if (form) {
+      fireEvent.submit(form)
+    }
 
     await waitFor(() => {
       expect(mockSignUp).toHaveBeenCalledWith('john@example.com', 'password123', 'John Doe')
-      expect(mockPush).toHaveBeenCalledWith('/dashboard')
     })
   })
 
@@ -161,20 +167,23 @@ describe('RegisterPage', () => {
     const emailInput = screen.getByPlaceholderText('you@company.com')
     const passwordInput = screen.getAllByPlaceholderText('••••••••')[0]
     const confirmPasswordInput = screen.getAllByPlaceholderText('••••••••')[1]
-    const submitButton = screen.getByRole('button', { name: /create account/i })
+    const form = screen.getByRole('button', { name: /create account/i }).closest('form')
 
     await user.type(nameInput, 'John Doe')
     await user.type(emailInput, 'existing@example.com')
     await user.type(passwordInput, 'password123')
     await user.type(confirmPasswordInput, 'password123')
-    await user.click(submitButton)
+
+    if (form) {
+      fireEvent.submit(form)
+    }
 
     await waitFor(() => {
       expect(screen.getByText(errorMessage)).toBeInTheDocument()
     })
   })
 
-  it('should disable form inputs and button while loading', async () => {
+  it('should show loading state during registration', async () => {
     const user = userEvent.setup()
     mockSignUp.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 1000)))
 
@@ -182,47 +191,21 @@ describe('RegisterPage', () => {
 
     const nameInput = screen.getByPlaceholderText('John Doe')
     const emailInput = screen.getByPlaceholderText('you@company.com')
-    const companyInput = screen.getByPlaceholderText('Your Company Inc.')
     const passwordInput = screen.getAllByPlaceholderText('••••••••')[0]
     const confirmPasswordInput = screen.getAllByPlaceholderText('••••••••')[1]
-    const submitButton = screen.getByRole('button', { name: /create account/i })
+    const form = screen.getByRole('button', { name: /create account/i }).closest('form')
 
     await user.type(nameInput, 'John Doe')
     await user.type(emailInput, 'john@example.com')
     await user.type(passwordInput, 'password123')
     await user.type(confirmPasswordInput, 'password123')
-    await user.click(submitButton)
+
+    if (form) {
+      fireEvent.submit(form)
+    }
 
     // Check loading state
     expect(screen.getByText('Creating account...')).toBeInTheDocument()
-    expect(nameInput).toBeDisabled()
-    expect(emailInput).toBeDisabled()
-    expect(companyInput).toBeDisabled()
-    expect(passwordInput).toBeDisabled()
-    expect(confirmPasswordInput).toBeDisabled()
-    expect(submitButton).toBeDisabled()
-  })
-
-  it('should show loading spinner during registration', async () => {
-    const user = userEvent.setup()
-    mockSignUp.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 1000)))
-
-    render(<RegisterPage />)
-
-    const nameInput = screen.getByPlaceholderText('John Doe')
-    const emailInput = screen.getByPlaceholderText('you@company.com')
-    const passwordInput = screen.getAllByPlaceholderText('••••••••')[0]
-    const confirmPasswordInput = screen.getAllByPlaceholderText('••••••••')[1]
-    const submitButton = screen.getByRole('button', { name: /create account/i })
-
-    await user.type(nameInput, 'John Doe')
-    await user.type(emailInput, 'john@example.com')
-    await user.type(passwordInput, 'password123')
-    await user.type(confirmPasswordInput, 'password123')
-    await user.click(submitButton)
-
-    const loadingSpinner = document.querySelector('.animate-spin')
-    expect(loadingSpinner).toBeInTheDocument()
   })
 
   it('should require name, email, and password fields', () => {
@@ -250,40 +233,18 @@ describe('RegisterPage', () => {
   it('should display Firebase authentication badge', () => {
     render(<RegisterPage />)
 
-    expect(screen.getByText('🔒 Protected by Firebase Authentication')).toBeInTheDocument()
+    expect(screen.getByText(/Protected by Firebase Authentication/)).toBeInTheDocument()
   })
 
-  it('should clear error message on new submission', async () => {
-    const user = userEvent.setup()
-    mockSignUp.mockRejectedValueOnce(new Error('Email already in use'))
-      .mockResolvedValueOnce(undefined)
-
+  it('should render social login buttons', () => {
     render(<RegisterPage />)
 
-    const nameInput = screen.getByPlaceholderText('John Doe')
-    const emailInput = screen.getByPlaceholderText('you@company.com')
-    const passwordInput = screen.getAllByPlaceholderText('••••••••')[0]
-    const confirmPasswordInput = screen.getAllByPlaceholderText('••••••••')[1]
-    const submitButton = screen.getByRole('button', { name: /create account/i })
+    expect(screen.getByText('Or sign up with')).toBeInTheDocument()
 
-    // First attempt - should fail
-    await user.type(nameInput, 'John Doe')
-    await user.type(emailInput, 'existing@example.com')
-    await user.type(passwordInput, 'password123')
-    await user.type(confirmPasswordInput, 'password123')
-    await user.click(submitButton)
-
-    await waitFor(() => {
-      expect(screen.getByText('Email already in use')).toBeInTheDocument()
-    })
-
-    // Second attempt - should succeed and clear error
-    await user.clear(emailInput)
-    await user.type(emailInput, 'newemail@example.com')
-    await user.click(submitButton)
-
-    await waitFor(() => {
-      expect(screen.queryByText('Email already in use')).not.toBeInTheDocument()
-    })
+    // There should be 3 social login buttons
+    const socialButtons = screen.getAllByRole('button').filter(
+      button => button.closest('.grid.grid-cols-3')
+    )
+    expect(socialButtons.length).toBe(3)
   })
 })

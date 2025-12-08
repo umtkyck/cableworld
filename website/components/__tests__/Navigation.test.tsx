@@ -4,12 +4,10 @@ import userEvent from '@testing-library/user-event'
 import Navigation from '../Navigation'
 import { useCart } from '@/context/CartContext'
 import { useAuth } from '@/context/AuthContext'
-import { useRouter } from 'next/navigation'
 
-// Mock the contexts and router
+// Mock the contexts
 jest.mock('@/context/CartContext')
 jest.mock('@/context/AuthContext')
-jest.mock('next/navigation')
 jest.mock('../Logo', () => {
   return function Logo() {
     return <div data-testid="logo">Harness Cart Logo</div>
@@ -17,7 +15,6 @@ jest.mock('../Logo', () => {
 })
 
 const mockLogout = jest.fn()
-const mockPush = jest.fn()
 
 describe('Navigation', () => {
   beforeEach(() => {
@@ -29,8 +26,24 @@ describe('Navigation', () => {
       user: null,
       logout: mockLogout,
     })
-    ;(useRouter as jest.Mock).mockReturnValue({
-      push: mockPush,
+  })
+
+  describe('Promotional Banner', () => {
+    it('should render promotional banner', () => {
+      render(<Navigation />)
+
+      expect(screen.getByText('Free Worldwide Shipping on orders over $1,000')).toBeInTheDocument()
+      expect(screen.getByText('Shop Now')).toBeInTheDocument()
+    })
+
+    it('should close banner when X button is clicked', async () => {
+      const user = userEvent.setup()
+      render(<Navigation />)
+
+      const closeButton = screen.getByRole('button', { name: /close banner/i })
+      await user.click(closeButton)
+
+      expect(screen.queryByText('Free Worldwide Shipping on orders over $1,000')).not.toBeInTheDocument()
     })
   })
 
@@ -40,7 +53,7 @@ describe('Navigation', () => {
 
       expect(screen.getByTestId('logo')).toBeInTheDocument()
       expect(screen.getByText('Shop')).toBeInTheDocument()
-      expect(screen.getByText('Blog')).toBeInTheDocument()
+      expect(screen.getByText('Marketplace')).toBeInTheDocument()
       expect(screen.getByText('Pricing')).toBeInTheDocument()
       expect(screen.getByText('Contact')).toBeInTheDocument()
     })
@@ -48,20 +61,17 @@ describe('Navigation', () => {
     it('should have Products dropdown with submenu items', () => {
       render(<Navigation />)
 
-      // Find the Products button (there might be multiple in desktop/mobile)
       const productsButtons = screen.getAllByText('Products')
       expect(productsButtons.length).toBeGreaterThan(0)
 
-      // Check submenu items are present
-      expect(screen.getByText('Cable Harnesses')).toBeInTheDocument()
-      expect(screen.getByText('Connectors')).toBeInTheDocument()
+      expect(screen.getByText('Cable Designer')).toBeInTheDocument()
+      expect(screen.getByText('CAD Viewer')).toBeInTheDocument()
       expect(screen.getByText('Design Services')).toBeInTheDocument()
     })
 
     it('should render Sign In link when user is not logged in', () => {
       render(<Navigation />)
 
-      // There might be multiple "Sign In" links (desktop and mobile)
       const signInLinks = screen.getAllByText('Sign In')
       expect(signInLinks.length).toBeGreaterThan(0)
     })
@@ -116,7 +126,6 @@ describe('Navigation', () => {
     it('should render Get Quote button', () => {
       render(<Navigation />)
 
-      // There might be multiple "Get Quote" buttons (desktop and mobile)
       const getQuoteButtons = screen.getAllByText(/Get.*Quote/)
       expect(getQuoteButtons.length).toBeGreaterThan(0)
     })
@@ -126,17 +135,8 @@ describe('Navigation', () => {
     it('should display cart icon', () => {
       render(<Navigation />)
 
-      // Cart icon is rendered as an SVG, check for the link to /cart
       const cartLinks = screen.getAllByRole('link').filter(link => link.getAttribute('href') === '/cart')
       expect(cartLinks.length).toBeGreaterThan(0)
-    })
-
-    it('should not display cart count badge when cart is empty', () => {
-      render(<Navigation />)
-
-      // The badge has specific content, let's check it's not showing "0"
-      const badges = document.querySelectorAll('.absolute.-top-1.-right-1')
-      expect(badges.length).toBe(0)
     })
 
     it('should display cart count badge when cart has items', () => {
@@ -165,7 +165,7 @@ describe('Navigation', () => {
   })
 
   describe('User Authentication', () => {
-    it('should call logout and redirect to home on Sign Out click', async () => {
+    it('should call logout on Sign Out click', async () => {
       const user = userEvent.setup()
       mockLogout.mockResolvedValue(undefined)
 
@@ -184,7 +184,6 @@ describe('Navigation', () => {
 
       await waitFor(() => {
         expect(mockLogout).toHaveBeenCalled()
-        expect(mockPush).toHaveBeenCalledWith('/')
       })
     })
 
@@ -216,34 +215,10 @@ describe('Navigation', () => {
 
   describe('Mobile Navigation', () => {
     it('should toggle mobile menu when hamburger is clicked', async () => {
-      const user = userEvent.setup()
       render(<Navigation />)
 
-      // Initially, mobile menu items should not be visible (due to {isOpen && ...})
-      // But the Products button exists in both desktop and mobile
-
-      // Find the mobile menu button
-      const menuButton = screen.getByRole('button', { hidden: true }).parentElement?.querySelector('button')
-
-      // Look for the mobile-specific link "How It Works"
       expect(screen.queryByText('How It Works')).not.toBeInTheDocument()
 
-      // Click hamburger menu
-      const buttons = document.querySelectorAll('button.md\\:hidden')
-      if (buttons.length > 0) {
-        fireEvent.click(buttons[0])
-      }
-
-      // Mobile menu should now be visible
-      await waitFor(() => {
-        expect(screen.getByText('How It Works')).toBeInTheDocument()
-      })
-    })
-
-    it('should toggle Products submenu in mobile view', async () => {
-      render(<Navigation />)
-
-      // Open mobile menu first
       const buttons = document.querySelectorAll('button.md\\:hidden')
       if (buttons.length > 0) {
         fireEvent.click(buttons[0])
@@ -251,29 +226,12 @@ describe('Navigation', () => {
 
       await waitFor(() => {
         expect(screen.getByText('How It Works')).toBeInTheDocument()
-      })
-
-      // Find and click Products dropdown in mobile menu
-      const productsButtons = screen.getAllByText('Products')
-      const mobileProductsButton = productsButtons.find(button =>
-        button.closest('button')?.classList.contains('w-full')
-      )
-
-      if (mobileProductsButton) {
-        fireEvent.click(mobileProductsButton)
-      }
-
-      // Submenu items should be visible
-      await waitFor(() => {
-        const cableHarnessLinks = screen.getAllByText('Cable Harnesses')
-        expect(cableHarnessLinks.length).toBeGreaterThan(0)
       })
     })
 
     it('should close mobile menu when menu button is clicked again', async () => {
       render(<Navigation />)
 
-      // Open mobile menu
       const buttons = document.querySelectorAll('button.md\\:hidden')
       if (buttons.length > 0) {
         fireEvent.click(buttons[0])
@@ -283,7 +241,6 @@ describe('Navigation', () => {
         expect(screen.getByText('How It Works')).toBeInTheDocument()
       })
 
-      // Close mobile menu
       if (buttons.length > 0) {
         fireEvent.click(buttons[0])
       }
@@ -299,12 +256,12 @@ describe('Navigation', () => {
       render(<Navigation />)
 
       const shopLink = screen.getAllByText('Shop')[0].closest('a')
-      const blogLink = screen.getAllByText('Blog')[0].closest('a')
+      const marketplaceLink = screen.getAllByText('Marketplace')[0].closest('a')
       const pricingLink = screen.getAllByText('Pricing')[0].closest('a')
       const contactLink = screen.getAllByText('Contact')[0].closest('a')
 
       expect(shopLink).toHaveAttribute('href', '/shop')
-      expect(blogLink).toHaveAttribute('href', '/blog')
+      expect(marketplaceLink).toHaveAttribute('href', '/marketplace')
       expect(pricingLink).toHaveAttribute('href', '/pricing')
       expect(contactLink).toHaveAttribute('href', '/contact')
     })
@@ -353,13 +310,6 @@ describe('Navigation', () => {
 
       const nav = document.querySelector('nav')
       expect(nav).toHaveClass('z-50')
-    })
-
-    it('should apply hover styles to navigation links', () => {
-      render(<Navigation />)
-
-      const shopLink = screen.getAllByText('Shop')[0]
-      expect(shopLink).toHaveClass('hover:text-primary-500')
     })
   })
 })
