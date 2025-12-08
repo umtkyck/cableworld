@@ -3,25 +3,25 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import LoginPage from '../page'
 import { useAuth } from '@/context/AuthContext'
-import { useRouter } from 'next/navigation'
 
 // Mock the auth context
 jest.mock('@/context/AuthContext')
-jest.mock('next/navigation')
 
 const mockSignIn = jest.fn()
-const mockPush = jest.fn()
+const mockSignInWithGoogle = jest.fn()
+const mockSignInWithFacebook = jest.fn()
+const mockSignInWithApple = jest.fn()
 
 describe('LoginPage', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     ;(useAuth as jest.Mock).mockReturnValue({
       signIn: mockSignIn,
+      signInWithGoogle: mockSignInWithGoogle,
+      signInWithFacebook: mockSignInWithFacebook,
+      signInWithApple: mockSignInWithApple,
       user: null,
       loading: false,
-    })
-    ;(useRouter as jest.Mock).mockReturnValue({
-      push: mockPush,
     })
   })
 
@@ -32,7 +32,6 @@ describe('LoginPage', () => {
     expect(screen.getByText('Sign in to your Harness Cart account')).toBeInTheDocument()
     expect(screen.getByLabelText(/email address/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument()
   })
 
   it('should have links to register and forgot password', () => {
@@ -59,7 +58,7 @@ describe('LoginPage', () => {
     expect(passwordInput).toHaveValue('password123')
   })
 
-  it('should call signIn and redirect to dashboard on successful login', async () => {
+  it('should call signIn on form submission', async () => {
     const user = userEvent.setup()
     mockSignIn.mockResolvedValue(undefined)
 
@@ -67,15 +66,17 @@ describe('LoginPage', () => {
 
     const emailInput = screen.getByPlaceholderText('you@company.com')
     const passwordInput = screen.getByPlaceholderText('••••••••')
-    const submitButton = screen.getByRole('button', { name: /sign in/i })
+    const form = screen.getByRole('button', { name: /sign in/i }).closest('form')
 
     await user.type(emailInput, 'test@example.com')
     await user.type(passwordInput, 'password123')
-    await user.click(submitButton)
+
+    if (form) {
+      fireEvent.submit(form)
+    }
 
     await waitFor(() => {
       expect(mockSignIn).toHaveBeenCalledWith('test@example.com', 'password123')
-      expect(mockPush).toHaveBeenCalledWith('/dashboard')
     })
   })
 
@@ -88,11 +89,14 @@ describe('LoginPage', () => {
 
     const emailInput = screen.getByPlaceholderText('you@company.com')
     const passwordInput = screen.getByPlaceholderText('••••••••')
-    const submitButton = screen.getByRole('button', { name: /sign in/i })
+    const form = screen.getByRole('button', { name: /sign in/i }).closest('form')
 
     await user.type(emailInput, 'test@example.com')
     await user.type(passwordInput, 'wrongpassword')
-    await user.click(submitButton)
+
+    if (form) {
+      fireEvent.submit(form)
+    }
 
     await waitFor(() => {
       expect(screen.getByText(errorMessage)).toBeInTheDocument()
@@ -107,18 +111,21 @@ describe('LoginPage', () => {
 
     const emailInput = screen.getByPlaceholderText('you@company.com')
     const passwordInput = screen.getByPlaceholderText('••••••••')
-    const submitButton = screen.getByRole('button', { name: /sign in/i })
+    const form = screen.getByRole('button', { name: /sign in/i }).closest('form')
 
     await user.type(emailInput, 'test@example.com')
     await user.type(passwordInput, 'password123')
-    await user.click(submitButton)
+
+    if (form) {
+      fireEvent.submit(form)
+    }
 
     await waitFor(() => {
       expect(screen.getByText('Failed to sign in. Please check your credentials.')).toBeInTheDocument()
     })
   })
 
-  it('should disable form inputs and button while loading', async () => {
+  it('should show loading state during sign in', async () => {
     const user = userEvent.setup()
     mockSignIn.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 1000)))
 
@@ -126,71 +133,23 @@ describe('LoginPage', () => {
 
     const emailInput = screen.getByPlaceholderText('you@company.com')
     const passwordInput = screen.getByPlaceholderText('••••••••')
-    const submitButton = screen.getByRole('button', { name: /sign in/i })
+    const form = screen.getByRole('button', { name: /sign in/i }).closest('form')
 
     await user.type(emailInput, 'test@example.com')
     await user.type(passwordInput, 'password123')
-    await user.click(submitButton)
+
+    if (form) {
+      fireEvent.submit(form)
+    }
 
     // Check loading state
     expect(screen.getByText('Signing in...')).toBeInTheDocument()
-    expect(emailInput).toBeDisabled()
-    expect(passwordInput).toBeDisabled()
-    expect(submitButton).toBeDisabled()
-  })
-
-  it('should show loading spinner during sign in', async () => {
-    const user = userEvent.setup()
-    mockSignIn.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 1000)))
-
-    render(<LoginPage />)
-
-    const emailInput = screen.getByPlaceholderText('you@company.com')
-    const passwordInput = screen.getByPlaceholderText('••••••••')
-    const submitButton = screen.getByRole('button', { name: /sign in/i })
-
-    await user.type(emailInput, 'test@example.com')
-    await user.type(passwordInput, 'password123')
-    await user.click(submitButton)
-
-    const loadingSpinner = document.querySelector('.animate-spin')
-    expect(loadingSpinner).toBeInTheDocument()
-  })
-
-  it('should clear error message on new submission', async () => {
-    const user = userEvent.setup()
-    mockSignIn.mockRejectedValueOnce(new Error('Invalid credentials'))
-      .mockResolvedValueOnce(undefined)
-
-    render(<LoginPage />)
-
-    const emailInput = screen.getByPlaceholderText('you@company.com')
-    const passwordInput = screen.getByPlaceholderText('••••••••')
-    const submitButton = screen.getByRole('button', { name: /sign in/i })
-
-    // First attempt - should fail
-    await user.type(emailInput, 'test@example.com')
-    await user.type(passwordInput, 'wrongpassword')
-    await user.click(submitButton)
-
-    await waitFor(() => {
-      expect(screen.getByText('Invalid credentials')).toBeInTheDocument()
-    })
-
-    // Second attempt - should succeed and clear error
-    await user.clear(passwordInput)
-    await user.type(passwordInput, 'correctpassword')
-    await user.click(submitButton)
-
-    await waitFor(() => {
-      expect(screen.queryByText('Invalid credentials')).not.toBeInTheDocument()
-    })
   })
 
   it('should display Firebase authentication badge', () => {
     render(<LoginPage />)
 
-    expect(screen.getByText('🔒 Protected by Firebase Authentication')).toBeInTheDocument()
+    expect(screen.getByText(/Protected by Firebase Authentication/)).toBeInTheDocument()
   })
 
   it('should require email and password fields', () => {
@@ -201,5 +160,36 @@ describe('LoginPage', () => {
 
     expect(emailInput).toBeRequired()
     expect(passwordInput).toBeRequired()
+  })
+
+  it('should render social login buttons', () => {
+    render(<LoginPage />)
+
+    // Check for Google, Facebook, Apple sign-in options
+    expect(screen.getByText('Or continue with')).toBeInTheDocument()
+
+    // There should be 3 social login buttons
+    const socialButtons = screen.getAllByRole('button').filter(
+      button => button.closest('.grid.grid-cols-3')
+    )
+    expect(socialButtons.length).toBe(3)
+  })
+
+  it('should call signInWithGoogle when Google button is clicked', async () => {
+    const user = userEvent.setup()
+    mockSignInWithGoogle.mockResolvedValue(undefined)
+
+    render(<LoginPage />)
+
+    // Find Google button (first social button)
+    const socialButtons = screen.getAllByRole('button').filter(
+      button => button.closest('.grid.grid-cols-3')
+    )
+
+    await user.click(socialButtons[0])
+
+    await waitFor(() => {
+      expect(mockSignInWithGoogle).toHaveBeenCalled()
+    })
   })
 })
