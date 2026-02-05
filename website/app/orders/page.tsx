@@ -204,7 +204,7 @@ export default function OrdersPage() {
         ) : (
           <div className="space-y-4">
             {filteredOrders.map((order) => {
-              const status = statusConfig[order.status]
+              const status = statusConfig[order.status] || statusConfig.pending
               const StatusIcon = status.icon
               const isExpanded = expandedOrder === order.id
 
