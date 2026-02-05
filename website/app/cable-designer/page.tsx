@@ -44,7 +44,7 @@ interface PinConnection {
 
 export default function CableDesignerPage() {
   const router = useRouter()
-  const { addItem } = useCart()
+  const { addToCart } = useCart()
 
   // Component selections
   const [connectorA, setConnectorA] = useState<Connector | null>(null)
@@ -252,11 +252,12 @@ export default function CableDesignerPage() {
     }
 
     const designName = `Custom Cable: ${connectorA.name} to ${connectorB.name}`
-    addItem({
-      id: `custom-cable-${Date.now()}`,
+    addToCart({
+      id: Date.now(),
       name: designName,
       price: calculateQuote(),
-      quantity: 1
+      quantity: 1,
+      image: '🔌'
     })
 
     setAddedToCart(true)
