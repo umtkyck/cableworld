@@ -22,8 +22,8 @@ export default function Navigation() {
     try {
       await logout()
       router.push('/')
-    } catch (error) {
-      console.error('Logout failed:', error)
+    } catch {
+      // Error is already handled in AuthContext
     }
   }
 

@@ -2,8 +2,10 @@
 
 import { Package, Clock, CheckCircle, Truck, DollarSign, FileText } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 export default function DashboardPage() {
+  const router = useRouter()
   const stats = [
     { label: 'Total Orders', value: '24', icon: Package, color: 'text-blue-500', bg: 'bg-blue-50' },
     { label: 'In Production', value: '3', icon: Clock, color: 'text-yellow-500', bg: 'bg-yellow-50' },
@@ -132,7 +134,10 @@ export default function DashboardPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <button className="text-primary-500 hover:text-primary-600 font-semibold text-sm">
+                      <button
+                        onClick={() => router.push(`/orders?id=${order.id}`)}
+                        className="text-primary-500 hover:text-primary-600 font-semibold text-sm"
+                      >
                         View Details
                       </button>
                     </td>
@@ -143,9 +148,9 @@ export default function DashboardPage() {
           </div>
 
           <div className="p-6 border-t text-center">
-            <button className="text-primary-500 hover:text-primary-600 font-semibold">
+            <Link href="/orders" className="text-primary-500 hover:text-primary-600 font-semibold">
               View All Orders →
-            </button>
+            </Link>
           </div>
         </div>
       </div>

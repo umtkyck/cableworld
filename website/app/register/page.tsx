@@ -38,10 +38,11 @@ export default function RegisterPage() {
     setLoading(true)
 
     try {
-      await signUp(formData.email, formData.password, formData.name)
+      await signUp(formData.email, formData.password, formData.name, formData.company)
       router.push('/dashboard')
-    } catch (err: any) {
-      setError(err.message || 'Failed to create account. Please try again.')
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to create account. Please try again.'
+      setError(errorMessage)
     } finally {
       setLoading(false)
     }
@@ -60,8 +61,9 @@ export default function RegisterPage() {
         await signInWithApple()
       }
       router.push('/dashboard')
-    } catch (err: any) {
-      setError(err.message || `Failed to sign up with ${provider}`)
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : `Failed to sign up with ${provider}`
+      setError(errorMessage)
     } finally {
       setLoading(false)
     }

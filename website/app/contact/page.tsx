@@ -14,12 +14,44 @@ export default function ContactPage() {
   })
   const [submitted, setSubmitted] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // In production, send to backend API
-    console.log('Form submitted:', formData)
-    setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 5000)
+    setLoading(true)
+    setError('')
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to send message')
+      }
+
+      setSubmitted(true)
+      setFormData({
+        name: '',
+        email: '',
+        company: '',
+        phone: '',
+        subject: '',
+        message: ''
+      })
+      setTimeout(() => setSubmitted(false), 5000)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to send message. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -112,6 +144,12 @@ export default function ContactPage() {
             {submitted && (
               <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-800">
                 ✓ Message sent successfully! We'll get back to you soon.
+              </div>
+            )}
+
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800">
+                {error}
               </div>
             )}
 
@@ -221,10 +259,20 @@ export default function ContactPage() {
 
               <button
                 type="submit"
-                className="btn-primary w-full sm:w-auto text-lg group"
+                disabled={loading}
+                className="btn-primary w-full sm:w-auto text-lg group disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Send Message
-                <Send className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                {loading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    Send Message
+                    <Send className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </>
+                )}
               </button>
             </form>
           </div>

@@ -22,7 +22,6 @@ export default function CADViewerPage() {
 
   const handleFileUpload = (file: File) => {
     setUploadedFiles(prev => [...prev, file])
-    console.log('File uploaded:', file.name)
   }
 
   return (
