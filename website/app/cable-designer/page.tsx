@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { Search, Plus, Trash2, Download, Save, Calculator, Zap, Cable as CableIcon, Circle } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { Search, Plus, Trash2, Download, Save, Calculator, Zap, Cable as CableIcon, Circle, Check } from 'lucide-react'
 import TestServicesAddOn from '@/components/TestServicesAddOn'
+import { useCart } from '@/context/CartContext'
 
 interface Connector {
   id: string
@@ -41,6 +43,9 @@ interface PinConnection {
 }
 
 export default function CableDesignerPage() {
+  const router = useRouter()
+  const { addToCart } = useCart()
+
   // Component selections
   const [connectorA, setConnectorA] = useState<Connector | null>(null)
   const [connectorB, setConnectorB] = useState<Connector | null>(null)
@@ -58,6 +63,10 @@ export default function CableDesignerPage() {
   // Search
   const [searchQuery, setSearchQuery] = useState('')
   const [searchSupplier, setSearchSupplier] = useState<'DigiKey' | 'Mouser' | 'McMaster'>('DigiKey')
+
+  // UI State
+  const [saveMessage, setSaveMessage] = useState<string | null>(null)
+  const [addedToCart, setAddedToCart] = useState(false)
 
   // Sample data - In production, these would come from APIs
   const connectors: Connector[] = [
@@ -132,6 +141,129 @@ export default function CableDesignerPage() {
     return total
   }
 
+  const handleSaveDesign = () => {
+    const design = {
+      id: `design-${Date.now()}`,
+      savedAt: new Date().toISOString(),
+      connectorA,
+      connectorB,
+      selectedCable,
+      selectedCrimp,
+      cableLength,
+      connections,
+      testServicesTotal,
+      totalPrice: calculateQuote()
+    }
+
+    // Save to localStorage
+    const savedDesigns = JSON.parse(localStorage.getItem('cableDesigns') || '[]')
+    savedDesigns.push(design)
+    localStorage.setItem('cableDesigns', JSON.stringify(savedDesigns))
+
+    setSaveMessage('Design saved successfully!')
+    setTimeout(() => setSaveMessage(null), 3000)
+  }
+
+  const handleExportBOM = () => {
+    const bomItems = []
+
+    if (connectorA) {
+      bomItems.push({
+        partNumber: connectorA.partNumber,
+        description: `${connectorA.name} (${connectorA.type})`,
+        manufacturer: connectorA.manufacturer,
+        supplier: connectorA.supplier,
+        quantity: 1,
+        unitPrice: connectorA.price,
+        total: connectorA.price
+      })
+    }
+
+    if (connectorB) {
+      bomItems.push({
+        partNumber: connectorB.partNumber,
+        description: `${connectorB.name} (${connectorB.type})`,
+        manufacturer: connectorB.manufacturer,
+        supplier: connectorB.supplier,
+        quantity: 1,
+        unitPrice: connectorB.price,
+        total: connectorB.price
+      })
+    }
+
+    if (selectedCable) {
+      bomItems.push({
+        partNumber: selectedCable.partNumber,
+        description: selectedCable.name,
+        manufacturer: 'Various',
+        supplier: selectedCable.supplier,
+        quantity: cableLength,
+        unitPrice: selectedCable.price,
+        total: selectedCable.price * cableLength
+      })
+    }
+
+    if (selectedCrimp && connections.length > 0) {
+      bomItems.push({
+        partNumber: selectedCrimp.partNumber,
+        description: selectedCrimp.name,
+        manufacturer: 'Various',
+        supplier: selectedCrimp.supplier,
+        quantity: connections.length * 2,
+        unitPrice: selectedCrimp.price,
+        total: selectedCrimp.price * connections.length * 2
+      })
+    }
+
+    // Create CSV
+    const headers = ['Part Number', 'Description', 'Manufacturer', 'Supplier', 'Qty', 'Unit Price', 'Total']
+    const rows = bomItems.map(item => [
+      item.partNumber,
+      item.description,
+      item.manufacturer,
+      item.supplier,
+      item.quantity,
+      `$${item.unitPrice.toFixed(2)}`,
+      `$${item.total.toFixed(2)}`
+    ])
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.join(','))
+    ].join('\n')
+
+    // Download file
+    const blob = new Blob([csvContent], { type: 'text/csv' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `cable-bom-${Date.now()}.csv`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
+
+  const handleAddToCart = () => {
+    if (!connectorA || !connectorB) {
+      setSaveMessage('Please select both connectors first')
+      setTimeout(() => setSaveMessage(null), 3000)
+      return
+    }
+
+    const designName = `Custom Cable: ${connectorA.name} to ${connectorB.name}`
+    addToCart({
+      id: Date.now(),
+      name: designName,
+      price: calculateQuote(),
+      quantity: 1,
+      image: '🔌'
+    })
+
+    setAddedToCart(true)
+    setTimeout(() => setAddedToCart(false), 3000)
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 py-8">
       <div className="container-custom">
@@ -144,12 +276,18 @@ export default function CableDesignerPage() {
                 Design your custom cable harness and get instant pricing
               </p>
             </div>
-            <div className="flex gap-3">
-              <button className="btn-secondary flex items-center gap-2">
+            <div className="flex gap-3 items-center">
+              {saveMessage && (
+                <span className="text-sm text-green-600 flex items-center gap-1">
+                  <Check className="w-4 h-4" />
+                  {saveMessage}
+                </span>
+              )}
+              <button onClick={handleSaveDesign} className="btn-secondary flex items-center gap-2">
                 <Save className="w-4 h-4" />
                 Save Design
               </button>
-              <button className="btn-secondary flex items-center gap-2">
+              <button onClick={handleExportBOM} className="btn-secondary flex items-center gap-2">
                 <Download className="w-4 h-4" />
                 Export BOM
               </button>
@@ -501,8 +639,18 @@ export default function CableDesignerPage() {
                 </p>
               </div>
 
-              <button className="w-full btn-primary py-3 mb-3">
-                Add to Cart
+              <button
+                onClick={handleAddToCart}
+                className="w-full btn-primary py-3 mb-3 flex items-center justify-center gap-2"
+              >
+                {addedToCart ? (
+                  <>
+                    <Check className="w-5 h-5" />
+                    Added to Cart!
+                  </>
+                ) : (
+                  'Add to Cart'
+                )}
               </button>
 
               <button className="w-full btn-secondary py-3">

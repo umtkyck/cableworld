@@ -23,8 +23,9 @@ export default function LoginPage() {
     try {
       await signIn(email, password)
       router.push('/dashboard')
-    } catch (err: any) {
-      setError(err.message || 'Failed to sign in. Please check your credentials.')
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to sign in. Please check your credentials.'
+      setError(errorMessage)
     } finally {
       setLoading(false)
     }
@@ -43,8 +44,9 @@ export default function LoginPage() {
         await signInWithApple()
       }
       router.push('/dashboard')
-    } catch (err: any) {
-      setError(err.message || `Failed to sign in with ${provider}`)
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : `Failed to sign in with ${provider}`
+      setError(errorMessage)
     } finally {
       setLoading(false)
     }

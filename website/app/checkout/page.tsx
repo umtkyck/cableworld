@@ -14,11 +14,22 @@ function CheckoutContent() {
 
   // Get quote details from URL params
   const quoteId = searchParams.get('quote_id') || 'CW-2024-00789';
-  const amount = parseFloat(searchParams.get('amount') || '2847');
+  const rawAmount = parseFloat(searchParams.get('amount') || '0');
+
+  // Validate amount - must be between $1 and $1,000,000
+  const isValidAmount = rawAmount >= 1 && rawAmount <= 1000000;
+  const amount = isValidAmount ? rawAmount : 0;
   const customerEmail = searchParams.get('email') || '';
   const customerName = searchParams.get('name') || '';
 
   useEffect(() => {
+    // Validate amount before creating payment intent
+    if (!isValidAmount) {
+      setError('Invalid payment amount. Please return to your quote and try again.');
+      setLoading(false);
+      return;
+    }
+
     // Create PaymentIntent as soon as the page loads
     fetch('/api/create-payment-intent', {
       method: 'POST',
@@ -44,7 +55,7 @@ function CheckoutContent() {
         setError('Failed to initialize payment');
         setLoading(false);
       });
-  }, [amount, quoteId, customerEmail, customerName]);
+  }, [amount, quoteId, customerEmail, customerName, isValidAmount]);
 
   const appearance = {
     theme: 'stripe' as const,

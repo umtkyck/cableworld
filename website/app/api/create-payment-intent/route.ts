@@ -37,10 +37,10 @@ export async function POST(req: NextRequest) {
       clientSecret: paymentIntent.client_secret,
       paymentIntentId: paymentIntent.id,
     });
-  } catch (err: any) {
-    console.error('Error creating payment intent:', err);
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'Internal server error'
     return NextResponse.json(
-      { error: err.message || 'Internal server error' },
+      { error: errorMessage },
       { status: 500 }
     );
   }
