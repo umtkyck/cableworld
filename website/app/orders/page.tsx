@@ -14,7 +14,8 @@ import {
   MapPin,
   Calendar,
   FileText,
-  ArrowLeft
+  ArrowLeft,
+  type LucideIcon
 } from 'lucide-react'
 
 // Mock orders data - would come from backend in production
@@ -67,7 +68,7 @@ const mockOrders = [
   }
 ]
 
-const statusConfig: Record<string, { label: string; icon: React.ElementType; color: string; bgColor: string }> = {
+const statusConfig: Record<string, { label: string; icon: LucideIcon; color: string; bgColor: string }> = {
   pending: {
     label: 'Pending',
     icon: Clock,
