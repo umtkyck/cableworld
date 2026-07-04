@@ -74,7 +74,7 @@ export default function SupportPage() {
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">{channel.title}</h3>
                   <p className="text-slate-600 dark:text-slate-400 text-sm mb-3">{channel.description}</p>
-                  <div className="text-sm font-semibold text-primary-500">{channel.detail}</div>
+                  <div className="text-sm font-semibold text-slate-900 dark:text-white">{channel.detail}</div>
                 </div>
               )
             })}

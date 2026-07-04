@@ -69,8 +69,8 @@ export default function CookiesPage() {
           <div>
             <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">Questions?</h2>
             <p>
-              See our <Link href="/privacy" className="text-primary-500 hover:text-primary-600 font-semibold">Privacy Policy</Link>{' '}
-              or <Link href="/contact" className="text-primary-500 hover:text-primary-600 font-semibold">contact us</Link>.
+              See our <Link href="/privacy" className="font-medium text-slate-900 dark:text-white underline underline-offset-4 hover:no-underline">Privacy Policy</Link>{' '}
+              or <Link href="/contact" className="font-medium text-slate-900 dark:text-white underline underline-offset-4 hover:no-underline">contact us</Link>.
             </p>
           </div>
         </div>

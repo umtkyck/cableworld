@@ -69,7 +69,7 @@ export default function DocumentationPage() {
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">{guide.title}</h3>
                   <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">{guide.description}</p>
-                  <span className="text-primary-500 font-semibold text-sm inline-flex items-center">
+                  <span className="text-slate-900 dark:text-white font-semibold text-sm inline-flex items-center">
                     Learn more
                     <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                   </span>

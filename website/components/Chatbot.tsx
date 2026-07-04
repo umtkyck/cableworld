@@ -134,15 +134,12 @@ export default function Chatbot() {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 bg-gradient-to-r from-orange-500 to-emerald-500 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-50 group"
+        className="fixed bottom-6 right-6 bg-slate-900 dark:bg-white text-white dark:text-slate-900 p-4 rounded-full shadow-medium hover:opacity-90 transition-opacity duration-200 z-50 group"
         aria-label="Open chat"
       >
         <MessageCircle className="w-6 h-6" />
-        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center animate-pulse">
-          1
-        </span>
-        <span className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-slate-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-          Chat with us!
+        <span className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-slate-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+          Chat with us
         </span>
       </button>
     )
@@ -150,11 +147,11 @@ export default function Chatbot() {
 
   return (
     <div className={`fixed bottom-6 right-6 z-50 transition-all duration-300 ${isMinimized ? 'w-72' : 'w-96'}`}>
-      <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200">
+      <div className="bg-white rounded-2xl shadow-large overflow-hidden border border-slate-200">
         {/* Header */}
-        <div className="bg-gradient-to-r from-orange-500 to-emerald-500 p-4 flex items-center justify-between">
+        <div className="bg-slate-900 p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+            <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">
               <Bot className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -196,8 +193,8 @@ export default function Chatbot() {
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                       message.sender === 'user'
-                        ? 'bg-orange-500'
-                        : 'bg-emerald-500'
+                        ? 'bg-slate-700'
+                        : 'bg-slate-900'
                     }`}
                   >
                     {message.sender === 'user' ? (
@@ -209,7 +206,7 @@ export default function Chatbot() {
                   <div
                     className={`max-w-[75%] p-3 rounded-2xl ${
                       message.sender === 'user'
-                        ? 'bg-orange-500 text-white rounded-br-md'
+                        ? 'bg-slate-900 text-white rounded-br-md'
                         : 'bg-white text-slate-700 rounded-bl-md shadow-sm'
                     }`}
                   >
@@ -232,7 +229,7 @@ export default function Chatbot() {
 
               {isTyping && (
                 <div className="flex items-start gap-2">
-                  <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center">
                     <Bot className="w-4 h-4 text-white" />
                   </div>
                   <div className="bg-white p-3 rounded-2xl rounded-bl-md shadow-sm">
@@ -275,12 +272,12 @@ export default function Chatbot() {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder="Type your message..."
-                  className="flex-1 px-4 py-2 border border-slate-300 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
+                  className="flex-1 px-4 py-2 border border-slate-300 rounded-full focus:outline-none focus:ring-1 focus:ring-slate-900 focus:border-slate-900 text-sm"
                 />
                 <button
                   type="submit"
                   disabled={!inputValue.trim()}
-                  className="p-2 bg-gradient-to-r from-orange-500 to-emerald-500 text-white rounded-full hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="p-2 bg-slate-900 text-white rounded-full hover:bg-slate-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
                   aria-label="Send message"
                 >
                   <Send className="w-5 h-5" />

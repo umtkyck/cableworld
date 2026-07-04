@@ -83,7 +83,7 @@ export default function CareersPage() {
             careers@harnesscart.com
           </a>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-6">
-            Prefer to chat first? <Link href="/contact" className="text-primary-500 hover:text-primary-600 font-semibold">Contact us</Link>.
+            Prefer to chat first? <Link href="/contact" className="font-medium text-slate-900 dark:text-white underline underline-offset-4 hover:no-underline">Contact us</Link>.
           </p>
         </div>
       </section>

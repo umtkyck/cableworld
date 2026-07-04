@@ -68,8 +68,8 @@ export default function TermsPage() {
             <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">6. Contact</h2>
             <p>
               Questions about these terms? Email{' '}
-              <a href="mailto:legal@harnesscart.com" className="text-primary-500 hover:text-primary-600 font-semibold">legal@harnesscart.com</a>{' '}
-              or use our <Link href="/contact" className="text-primary-500 hover:text-primary-600 font-semibold">contact form</Link>.
+              <a href="mailto:legal@harnesscart.com" className="font-medium text-slate-900 dark:text-white underline underline-offset-4 hover:no-underline">legal@harnesscart.com</a>{' '}
+              or use our <Link href="/contact" className="font-medium text-slate-900 dark:text-white underline underline-offset-4 hover:no-underline">contact form</Link>.
             </p>
           </div>
         </div>

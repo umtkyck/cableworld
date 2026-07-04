@@ -20,104 +20,74 @@ export default async function TwitterImage() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #1e293b 100%)',
-          position: 'relative',
+          background: '#0f172a',
         }}
       >
-        {/* Background Pattern */}
+        {/* Logo mark */}
         <div
           style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundImage: 'radial-gradient(circle at 20% 30%, rgba(249,115,22,0.15) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(16,185,129,0.15) 0%, transparent 40%)',
+            width: 120,
+            height: 120,
+            borderRadius: 28,
+            background: '#ffffff',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: 40,
           }}
-        />
+        >
+          <svg
+            width="72"
+            height="72"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 15 C 8 15, 8 9, 12 9 C 16 9, 16 15, 20 15"
+              stroke="#0f172a"
+              strokeWidth="2"
+              strokeLinecap="round"
+              fill="none"
+            />
+            <circle cx="4" cy="15" r="2" fill="#0f172a" />
+            <circle cx="20" cy="15" r="2" fill="#0f172a" />
+          </svg>
+        </div>
 
-        {/* Content */}
+        {/* Brand Name */}
         <div
           style={{
             display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1,
+            fontSize: 68,
+            fontWeight: 700,
+            letterSpacing: '-0.02em',
+            color: '#ffffff',
           }}
         >
-          {/* Logo Icon */}
-          <div
-            style={{
-              width: 160,
-              height: 160,
-              borderRadius: 32,
-              background: 'linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #10b981 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: 30,
-              boxShadow: '0 20px 60px rgba(249,115,22,0.3)',
-            }}
-          >
-            <svg
-              width="110"
-              height="110"
-              viewBox="0 0 100 100"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M 18 25 C 18 23 20 22 22 23 L 26 25 L 30 55 C 30 58 32 60 35 60 L 72 60 C 75 60 77 58 78 55 L 84 32 C 85 29 83 27 80 27 L 32 27"
-                stroke="white"
-                strokeWidth="5"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <circle cx="40" cy="72" r="6" fill="white" />
-              <circle cx="66" cy="72" r="6" fill="white" />
-              <path d="M 38 40 Q 55 32, 72 40" stroke="white" strokeWidth="3.5" fill="none" strokeLinecap="round" />
-              <circle cx="38" cy="40" r="4" fill="white" />
-              <circle cx="72" cy="40" r="4" fill="white" />
-            </svg>
-          </div>
+          Harness Cart
+        </div>
 
-          {/* Brand Name */}
-          <div
-            style={{
-              display: 'flex',
-              fontSize: 72,
-              fontWeight: 700,
-              letterSpacing: '-0.02em',
-            }}
-          >
-            <span style={{ color: '#f97316' }}>Harness</span>
-            <span style={{ color: '#10b981' }}>Cart</span>
-          </div>
+        {/* Tagline */}
+        <div
+          style={{
+            fontSize: 26,
+            color: 'rgba(255,255,255,0.7)',
+            marginTop: 20,
+          }}
+        >
+          Cable harnesses, manufactured on demand
+        </div>
 
-          {/* Tagline */}
-          <div
-            style={{
-              fontSize: 28,
-              color: 'rgba(255,255,255,0.9)',
-              marginTop: 16,
-              fontWeight: 500,
-            }}
-          >
-            Cable Solutions • Instant Quotes • Global Network
-          </div>
-
-          {/* Sub-tagline */}
-          <div
-            style={{
-              fontSize: 22,
-              color: 'rgba(255,255,255,0.6)',
-              marginTop: 12,
-            }}
-          >
-            Get Quotes in Under 60 Seconds
-          </div>
+        {/* Sub-tagline */}
+        <div
+          style={{
+            fontSize: 20,
+            color: 'rgba(255,255,255,0.45)',
+            marginTop: 12,
+          }}
+        >
+          Instant quotes in under 60 seconds
         </div>
       </div>
     ),

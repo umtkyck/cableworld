@@ -40,7 +40,7 @@ export default function ApiReferencePage() {
       <section className="section-padding bg-gradient-to-br from-slate-800 to-slate-950 text-white">
         <div className="container-custom text-center">
           <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <Code className="w-8 h-8 text-orange-400" />
+            <Code className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">API Reference</h1>
           <p className="text-xl sm:text-2xl text-slate-300 max-w-3xl mx-auto">
@@ -53,17 +53,17 @@ export default function ApiReferencePage() {
         <div className="container-custom max-w-4xl">
           <div className="grid sm:grid-cols-3 gap-6 mb-16">
             <div className="card text-center">
-              <Key className="w-8 h-8 text-accent-green mx-auto mb-3" />
+              <Key className="w-8 h-8 text-slate-900 dark:text-white mx-auto mb-3" />
               <h3 className="font-bold text-slate-900 dark:text-slate-100 mb-1">API Keys</h3>
               <p className="text-sm text-slate-600 dark:text-slate-400">Generate keys from your dashboard settings</p>
             </div>
             <div className="card text-center">
-              <Zap className="w-8 h-8 text-accent-blue mx-auto mb-3" />
+              <Zap className="w-8 h-8 text-slate-900 dark:text-white mx-auto mb-3" />
               <h3 className="font-bold text-slate-900 dark:text-slate-100 mb-1">REST + JSON</h3>
               <p className="text-sm text-slate-600 dark:text-slate-400">Standard HTTPS endpoints with JSON payloads</p>
             </div>
             <div className="card text-center">
-              <Package className="w-8 h-8 text-orange-500 mx-auto mb-3" />
+              <Package className="w-8 h-8 text-slate-900 dark:text-white mx-auto mb-3" />
               <h3 className="font-bold text-slate-900 dark:text-slate-100 mb-1">Webhooks</h3>
               <p className="text-sm text-slate-600 dark:text-slate-400">Real-time order status notifications</p>
             </div>
@@ -88,7 +88,7 @@ export default function ApiReferencePage() {
             ))}
           </div>
 
-          <div className="bg-gradient-to-r from-orange-500/10 to-emerald-500/10 rounded-2xl p-8 text-center border border-orange-500/20">
+          <div className="bg-slate-50 dark:bg-slate-800 rounded-2xl p-8 text-center border border-slate-200 dark:border-slate-700">
             <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-3">
               API access is currently in private beta
             </h3>
