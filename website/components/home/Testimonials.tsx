@@ -29,20 +29,20 @@ export default function Testimonials() {
   ]
 
   return (
-    <section className="section-padding bg-slate-50">
+    <section className="section-padding bg-slate-50 dark:bg-slate-800/50">
       <div className="container-custom">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-4">
             Trusted by Industry Leaders
           </h2>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
             See what engineers and product teams are saying about Harness Cart.
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-white rounded-xl p-8 shadow-soft hover:shadow-medium transition-shadow animate-scale-in"
+            <div key={index} className="bg-white dark:bg-slate-800 rounded-xl p-8 shadow-soft hover:shadow-medium transition-shadow animate-scale-in"
                  style={{animationDelay: `${index * 100}ms`}}>
               {/* Quote Icon */}
               <div className="w-12 h-12 bg-accent-green/10 rounded-lg flex items-center justify-center mb-4">
@@ -57,7 +57,7 @@ export default function Testimonials() {
               </div>
 
               {/* Quote */}
-              <p className="text-slate-700 mb-6 leading-relaxed">
+              <p className="text-slate-700 dark:text-slate-300 mb-6 leading-relaxed">
                 "{testimonial.quote}"
               </p>
 
@@ -67,9 +67,9 @@ export default function Testimonials() {
                   {testimonial.avatar}
                 </div>
                 <div>
-                  <div className="font-bold text-slate-900">{testimonial.name}</div>
-                  <div className="text-sm text-slate-600">{testimonial.role}</div>
-                  <div className="text-sm text-slate-500">{testimonial.company}</div>
+                  <div className="font-bold text-slate-900 dark:text-slate-100">{testimonial.name}</div>
+                  <div className="text-sm text-slate-600 dark:text-slate-400">{testimonial.role}</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-500">{testimonial.company}</div>
                 </div>
               </div>
             </div>
@@ -77,8 +77,8 @@ export default function Testimonials() {
         </div>
 
         {/* Company Logos */}
-        <div className="mt-16 pt-16 border-t border-slate-200">
-          <p className="text-center text-slate-600 mb-8">Trusted by innovative companies worldwide</p>
+        <div className="mt-16 pt-16 border-t border-slate-200 dark:border-slate-700">
+          <p className="text-center text-slate-600 dark:text-slate-400 mb-8">Trusted by innovative companies worldwide</p>
           <div className="flex flex-wrap justify-center items-center gap-12 opacity-50">
             {['TechCorp', 'InnovateLab', 'FutureTech', 'RoboSystems', 'AutomationPro'].map((company, index) => (
               <div key={index} className="text-2xl font-bold text-slate-400">

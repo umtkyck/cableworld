@@ -1,5 +1,7 @@
 import { ImageResponse } from 'next/og'
 
+export const runtime = 'edge'
+
 export const alt = 'Harness Cart - Instant Cable Harness Manufacturing'
 export const size = {
   width: 1200,

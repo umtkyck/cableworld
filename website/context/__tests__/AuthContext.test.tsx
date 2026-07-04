@@ -8,11 +8,18 @@ import {
   onAuthStateChanged,
   updateProfile,
 } from 'firebase/auth'
+import { setDoc } from 'firebase/firestore'
 
 // Mock Firebase functions
 jest.mock('firebase/auth')
+jest.mock('firebase/firestore', () => ({
+  doc: jest.fn(),
+  setDoc: jest.fn(),
+  serverTimestamp: jest.fn(),
+}))
 jest.mock('@/lib/firebase', () => ({
   auth: {},
+  db: {},
 }))
 
 const mockCreateUser = createUserWithEmailAndPassword as jest.Mock
@@ -20,22 +27,33 @@ const mockSignIn = signInWithEmailAndPassword as jest.Mock
 const mockSignOut = signOut as jest.Mock
 const mockOnAuthStateChanged = onAuthStateChanged as jest.Mock
 const mockUpdateProfile = updateProfile as jest.Mock
+const mockSetDoc = setDoc as jest.Mock
 
 // Test component to access context
 function TestComponent() {
   const { user, loading, signUp, signIn, logout } = useAuth()
+  const [error, setError] = React.useState('')
+
+  const runAndCaptureError = (action: () => Promise<void>) => async () => {
+    try {
+      await action()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unknown error')
+    }
+  }
 
   return (
     <div>
       <div data-testid="user-status">{user ? user.email : 'No user'}</div>
       <div data-testid="loading-status">{loading ? 'Loading' : 'Ready'}</div>
-      <button onClick={() => signUp('test@test.com', 'password123', 'Test User')}>
+      <div data-testid="error-status">{error}</div>
+      <button onClick={runAndCaptureError(() => signUp('test@test.com', 'password123', 'Test User'))}>
         Sign Up
       </button>
-      <button onClick={() => signIn('test@test.com', 'password123')}>
+      <button onClick={runAndCaptureError(() => signIn('test@test.com', 'password123'))}>
         Sign In
       </button>
-      <button onClick={logout}>Logout</button>
+      <button onClick={runAndCaptureError(logout)}>Logout</button>
     </div>
   )
 }
@@ -108,6 +126,7 @@ describe('AuthContext', () => {
         user: mockUser,
       })
       mockUpdateProfile.mockResolvedValue(undefined)
+      mockSetDoc.mockResolvedValue(undefined)
 
       const { getByText } = render(
         <AuthProvider>
@@ -127,26 +146,25 @@ describe('AuthContext', () => {
         expect(mockUpdateProfile).toHaveBeenCalledWith(mockUser, {
           displayName: 'Test User',
         })
+        expect(mockSetDoc).toHaveBeenCalled()
       })
     })
 
     it('should handle sign up errors', async () => {
       mockCreateUser.mockRejectedValue(new Error('Email already in use'))
 
-      const { getByText } = render(
+      const { getByText, getByTestId } = render(
         <AuthProvider>
           <TestComponent />
         </AuthProvider>
       )
 
-      const signUpButton = getByText('Sign Up')
+      getByText('Sign Up').click()
 
-      await expect(async () => {
-        signUpButton.click()
-        await waitFor(() => {
-          expect(mockCreateUser).toHaveBeenCalled()
-        })
-      }).rejects.toThrow()
+      await waitFor(() => {
+        expect(mockCreateUser).toHaveBeenCalled()
+        expect(getByTestId('error-status')).toHaveTextContent('Email already in use')
+      })
     })
   })
 
@@ -182,20 +200,18 @@ describe('AuthContext', () => {
     it('should handle sign in errors', async () => {
       mockSignIn.mockRejectedValue(new Error('Invalid credentials'))
 
-      const { getByText } = render(
+      const { getByText, getByTestId } = render(
         <AuthProvider>
           <TestComponent />
         </AuthProvider>
       )
 
-      const signInButton = getByText('Sign In')
+      getByText('Sign In').click()
 
-      await expect(async () => {
-        signInButton.click()
-        await waitFor(() => {
-          expect(mockSignIn).toHaveBeenCalled()
-        })
-      }).rejects.toThrow()
+      await waitFor(() => {
+        expect(mockSignIn).toHaveBeenCalled()
+        expect(getByTestId('error-status')).toHaveTextContent('Invalid credentials')
+      })
     })
   })
 
@@ -220,20 +236,18 @@ describe('AuthContext', () => {
     it('should handle logout errors', async () => {
       mockSignOut.mockRejectedValue(new Error('Logout failed'))
 
-      const { getByText } = render(
+      const { getByText, getByTestId } = render(
         <AuthProvider>
           <TestComponent />
         </AuthProvider>
       )
 
-      const logoutButton = getByText('Logout')
+      getByText('Logout').click()
 
-      await expect(async () => {
-        logoutButton.click()
-        await waitFor(() => {
-          expect(mockSignOut).toHaveBeenCalled()
-        })
-      }).rejects.toThrow()
+      await waitFor(() => {
+        expect(mockSignOut).toHaveBeenCalled()
+        expect(getByTestId('error-status')).toHaveTextContent('Logout failed')
+      })
     })
   })
 

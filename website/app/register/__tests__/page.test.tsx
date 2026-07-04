@@ -152,7 +152,7 @@ describe('RegisterPage', () => {
     }
 
     await waitFor(() => {
-      expect(mockSignUp).toHaveBeenCalledWith('john@example.com', 'password123', 'John Doe')
+      expect(mockSignUp).toHaveBeenCalledWith('john@example.com', 'password123', 'John Doe', '')
     })
   })
 

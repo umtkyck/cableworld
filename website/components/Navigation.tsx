@@ -32,8 +32,8 @@ export default function Navigation() {
     try {
       await logout()
       router.push('/')
-    } catch {
-      // Error is already handled in AuthContext
+    } catch (error) {
+      console.error('Logout failed:', error)
     }
   }
 
@@ -165,6 +165,7 @@ export default function Navigation() {
                   onClick={handleLogout}
                   className="p-2.5 rounded-xl text-slate-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-300"
                   title="Sign Out"
+                  aria-label="Sign Out"
                 >
                   <LogOut className="w-5 h-5" />
                 </button>

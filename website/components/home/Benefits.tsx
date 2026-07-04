@@ -46,18 +46,18 @@ export default function Benefits() {
             </div>
 
             {/* Floating Card */}
-            <div className="absolute -bottom-6 -right-6 bg-white rounded-xl shadow-large p-6 max-w-xs">
+            <div className="absolute -bottom-6 -right-6 bg-white dark:bg-slate-800 rounded-xl shadow-large p-6 max-w-xs">
               <div className="text-4xl font-bold text-accent-green mb-2">10,000+</div>
-              <p className="text-slate-600">Engineers trust Harness Cart for their critical projects</p>
+              <p className="text-slate-600 dark:text-slate-400">Engineers trust Harness Cart for their critical projects</p>
             </div>
           </div>
 
           {/* Right - Benefits */}
           <div className="animate-slide-up animation-delay-200">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-6">
               Why Leading Companies Choose Harness Cart
             </h2>
-            <p className="text-xl text-slate-600 mb-8">
+            <p className="text-xl text-slate-600 dark:text-slate-400 mb-8">
               Join thousands of engineers who have accelerated their product development with our platform.
             </p>
 
@@ -70,8 +70,8 @@ export default function Benefits() {
                       <Icon className="w-6 h-6 text-accent-green group-hover:text-white transition-colors" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-slate-900 mb-1">{benefit.title}</h3>
-                      <p className="text-slate-600 mb-2">{benefit.description}</p>
+                      <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-1">{benefit.title}</h3>
+                      <p className="text-slate-600 dark:text-slate-400 mb-2">{benefit.description}</p>
                       <div className="text-sm font-semibold text-accent-green">{benefit.stat}</div>
                     </div>
                   </div>

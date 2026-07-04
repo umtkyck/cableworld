@@ -29,18 +29,18 @@ export default function Stats() {
   ]
 
   return (
-    <section className="section-padding bg-slate-50">
+    <section className="section-padding bg-slate-50 dark:bg-slate-800/50">
       <div className="container-custom">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((stat, index) => {
             const Icon = stat.icon
             return (
               <div key={index} className="text-center animate-scale-in" style={{animationDelay: `${index * 100}ms`}}>
-                <div className={`inline-flex items-center justify-center w-16 h-16 ${stat.color} bg-white rounded-full shadow-soft mb-4`}>
+                <div className={`inline-flex items-center justify-center w-16 h-16 ${stat.color} bg-white dark:bg-slate-800 rounded-full shadow-soft mb-4`}>
                   <Icon className="w-8 h-8" />
                 </div>
-                <div className="text-3xl lg:text-4xl font-bold text-slate-900 mb-2">{stat.value}</div>
-                <div className="text-slate-600">{stat.label}</div>
+                <div className="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-2">{stat.value}</div>
+                <div className="text-slate-600 dark:text-slate-400">{stat.label}</div>
               </div>
             )
           })}

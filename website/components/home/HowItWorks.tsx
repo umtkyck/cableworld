@@ -29,13 +29,13 @@ export default function HowItWorks() {
   ]
 
   return (
-    <section className="section-padding bg-slate-50">
+    <section className="section-padding bg-slate-50 dark:bg-slate-800/50">
       <div className="container-custom">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-4">
             From Design to Delivery in 4 Simple Steps
           </h2>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
             Our streamlined process makes getting custom cable harnesses faster and easier than ever.
           </p>
         </div>
@@ -50,7 +50,7 @@ export default function HowItWorks() {
                   <div className="hidden lg:block absolute top-20 left-full w-full h-0.5 bg-gradient-to-r from-accent-green to-accent-blue -translate-x-1/2 z-0" />
                 )}
 
-                <div className="relative bg-white rounded-xl p-6 text-center shadow-soft hover:shadow-medium transition-shadow">
+                <div className="relative bg-white dark:bg-slate-800 rounded-xl p-6 text-center shadow-soft hover:shadow-medium transition-shadow">
                   {/* Step Number */}
                   <div className="absolute -top-4 -right-4 w-12 h-12 bg-gradient-to-br from-accent-green to-accent-blue rounded-full flex items-center justify-center text-white font-bold shadow-lg">
                     {step.step}
@@ -60,8 +60,8 @@ export default function HowItWorks() {
                     <Icon className="w-8 h-8 text-accent-green" />
                   </div>
 
-                  <h3 className="text-lg font-bold text-slate-900 mb-2">{step.title}</h3>
-                  <p className="text-slate-600 text-sm">{step.description}</p>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">{step.title}</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-sm">{step.description}</p>
                 </div>
               </div>
             )

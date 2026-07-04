@@ -88,7 +88,7 @@ describe('Navigation', () => {
       render(<Navigation />)
 
       expect(screen.getByText('Test User')).toBeInTheDocument()
-      expect(screen.getByText('Sign Out')).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /sign out/i })).toBeInTheDocument()
     })
 
     it('should display user email when displayName is not available', () => {
@@ -179,7 +179,7 @@ describe('Navigation', () => {
 
       render(<Navigation />)
 
-      const signOutButton = screen.getByText('Sign Out')
+      const signOutButton = screen.getByRole('button', { name: /sign out/i })
       await user.click(signOutButton)
 
       await waitFor(() => {
@@ -201,7 +201,7 @@ describe('Navigation', () => {
 
       render(<Navigation />)
 
-      const signOutButton = screen.getByText('Sign Out')
+      const signOutButton = screen.getByRole('button', { name: /sign out/i })
       await user.click(signOutButton)
 
       await waitFor(() => {

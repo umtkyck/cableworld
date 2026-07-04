@@ -27,7 +27,7 @@ export default function CTA() {
                 Get Instant Quote
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link href="/demo" className="btn bg-white text-primary-500 hover:shadow-xl text-lg">
+              <Link href="/contact" className="btn bg-white text-primary-500 hover:shadow-xl text-lg">
                 Schedule a Demo
               </Link>
             </div>

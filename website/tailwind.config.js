@@ -27,6 +27,7 @@ module.exports = {
           teal: '#14b8a6', // Teal
           blue: '#3b82f6', // Trust blue
           gold: '#d4a853', // Premium gold
+          yellow: '#fbbf24', // Star ratings & highlights
         },
         slate: {
           50: '#f8fafc',

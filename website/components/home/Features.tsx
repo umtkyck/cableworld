@@ -24,19 +24,19 @@ export default function Features() {
       icon: BarChart3,
       title: 'DFM Analysis',
       description: 'AI-powered design for manufacturing checks catch issues before production.',
-      color: 'bg-purple-100 text-purple-600'
+      color: 'bg-purple-100 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400'
     },
     {
       icon: Code,
       title: 'API Integration',
       description: 'Real-time component pricing from Digikey, Mouser, Newark, and more.',
-      color: 'bg-blue-100 text-blue-600'
+      color: 'bg-blue-100 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400'
     },
     {
       icon: Wrench,
       title: 'Design Services',
       description: 'Need help? Our engineers provide custom harness design consultation.',
-      color: 'bg-orange-100 text-orange-600'
+      color: 'bg-orange-100 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400'
     }
   ]
 
@@ -44,10 +44,10 @@ export default function Features() {
     <section className="section-padding">
       <div className="container-custom">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-4">
             Everything You Need to Build Better Products
           </h2>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
             From instant quotes to global manufacturing, we handle the complexity so you can focus on innovation.
           </p>
         </div>
@@ -61,8 +61,8 @@ export default function Features() {
                 <div className={`w-14 h-14 ${feature.color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                   <Icon className="w-7 h-7" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">{feature.title}</h3>
-                <p className="text-slate-600">{feature.description}</p>
+                <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-3">{feature.title}</h3>
+                <p className="text-slate-600 dark:text-slate-400">{feature.description}</p>
               </div>
             )
           })}
