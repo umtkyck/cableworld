@@ -137,10 +137,10 @@ export default function Footer() {
           <div>
             <h3 className="font-bold text-lg mb-6 text-white">Products</h3>
             <ul className="space-y-3">
-              <li><Link href="/cable-harnesses" className="text-slate-400 hover:text-orange-400 transition-colors hover-underline inline-block">Cable Harnesses</Link></li>
-              <li><Link href="/connectors" className="text-slate-400 hover:text-orange-400 transition-colors hover-underline inline-block">Connectors</Link></li>
-              <li><Link href="/wire-assemblies" className="text-slate-400 hover:text-orange-400 transition-colors hover-underline inline-block">Wire Assemblies</Link></li>
-              <li><Link href="/custom-cables" className="text-slate-400 hover:text-orange-400 transition-colors hover-underline inline-block">Custom Cables</Link></li>
+              <li><Link href="/quote" className="text-slate-400 hover:text-orange-400 transition-colors hover-underline inline-block">Cable Harnesses</Link></li>
+              <li><Link href="/shop" className="text-slate-400 hover:text-orange-400 transition-colors hover-underline inline-block">Connectors</Link></li>
+              <li><Link href="/shop" className="text-slate-400 hover:text-orange-400 transition-colors hover-underline inline-block">Wire Assemblies</Link></li>
+              <li><Link href="/shop" className="text-slate-400 hover:text-orange-400 transition-colors hover-underline inline-block">Custom Cables</Link></li>
               <li><Link href="/cable-designer" className="text-slate-400 hover:text-orange-400 transition-colors hover-underline inline-block">Cable Designer</Link></li>
             </ul>
           </div>
@@ -162,7 +162,7 @@ export default function Footer() {
             <h3 className="font-bold text-lg mb-6 text-white">Resources</h3>
             <ul className="space-y-3">
               <li><Link href="/documentation" className="text-slate-400 hover:text-orange-400 transition-colors hover-underline inline-block">Documentation</Link></li>
-              <li><Link href="/api" className="text-slate-400 hover:text-orange-400 transition-colors hover-underline inline-block">API Reference</Link></li>
+              <li><Link href="/api-reference" className="text-slate-400 hover:text-orange-400 transition-colors hover-underline inline-block">API Reference</Link></li>
               <li><Link href="/blog" className="text-slate-400 hover:text-orange-400 transition-colors hover-underline inline-block">Blog</Link></li>
               <li><Link href="/case-studies" className="text-slate-400 hover:text-orange-400 transition-colors hover-underline inline-block">Case Studies</Link></li>
               <li><Link href="/support" className="text-slate-400 hover:text-orange-400 transition-colors hover-underline inline-block">Support</Link></li>
