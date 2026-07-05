@@ -15,10 +15,13 @@ import {
 } from 'firebase/auth'
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
 import { auth, db } from '@/lib/firebase'
+import { isAdminEmail } from '@/lib/admin'
 
 interface AuthContextType {
   user: User | null
   loading: boolean
+  /** True when the signed-in user has god-mode (admin) access. */
+  isAdmin: boolean
   signUp: (email: string, password: string, displayName: string, company?: string) => Promise<void>
   signIn: (email: string, password: string) => Promise<void>
   signInWithGoogle: () => Promise<void>
@@ -148,6 +151,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     <AuthContext.Provider value={{
       user,
       loading,
+      isAdmin: isAdminEmail(user?.email),
       signUp,
       signIn,
       signInWithGoogle,

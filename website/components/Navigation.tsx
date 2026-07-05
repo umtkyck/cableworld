@@ -17,7 +17,7 @@ export default function Navigation() {
   const [showBanner, setShowBanner] = useState(true)
   const [scrolled, setScrolled] = useState(false)
   const { cartCount } = useCart()
-  const { user, logout } = useAuth()
+  const { user, isAdmin, logout } = useAuth()
   const { isDark, toggleTheme } = useTheme()
   const router = useRouter()
 
@@ -114,6 +114,11 @@ export default function Navigation() {
             {user && (
               <Link href="/dashboard" className={navLinkClass}>
                 Dashboard
+              </Link>
+            )}
+            {isAdmin && (
+              <Link href="/admin" className={navLinkClass}>
+                Admin
               </Link>
             )}
             <button
