@@ -5,16 +5,26 @@ import { Elements } from '@stripe/react-stripe-js';
 import { getStripe } from '@/lib/stripe';
 import CheckoutForm from '@/components/checkout/CheckoutForm';
 import ShippingStep, { ShippingSelection } from '@/components/checkout/ShippingStep';
+import BankTransferDetails from '@/components/checkout/BankTransferDetails';
+import { CreditCard, Landmark } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
+
+type PaymentMethod = 'card' | 'bank';
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
   const { cart, cartCount, cartTotal, isLoaded: cartLoaded } = useCart();
   const [clientSecret, setClientSecret] = useState('');
   const [shipping, setShipping] = useState<ShippingSelection | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('card');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [cardError, setCardError] = useState<string | null>(null);
+  // Stable reference the customer must include with a bank transfer.
+  const [orderRef] = useState(
+    () => `HC-${Date.now().toString(36).toUpperCase()}${Math.floor(Math.random() * 36 ** 2).toString(36).toUpperCase().padStart(2, '0')}`
+  );
 
   // Two entry points: a quote link with ?amount=..., or the shopping cart.
   const quoteId = searchParams.get('quote_id') || 'CW-2024-00789';
@@ -51,11 +61,14 @@ function CheckoutContent() {
 
     setLoading(false);
 
-    // The PaymentIntent is only created once a shipping method is chosen, so
-    // the charged amount always includes the carrier rate.
-    if (!shipping) {
+    // The PaymentIntent is only created once a shipping method is chosen and
+    // card payment is selected, so the charged amount always includes the
+    // carrier rate. Bank transfers don't need a PaymentIntent.
+    if (!shipping || paymentMethod !== 'card' || clientSecret) {
       return;
     }
+
+    setCardError(null);
 
     fetch('/api/create-payment-intent', {
       method: 'POST',
@@ -76,15 +89,17 @@ function CheckoutContent() {
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {
-          setError(data.error);
+          // Card payment failing shouldn't dead-end checkout — the customer
+          // can still pay by bank transfer.
+          setCardError(data.error);
         } else {
           setClientSecret(data.clientSecret);
         }
       })
       .catch(() => {
-        setError('Failed to initialize payment');
+        setCardError('Failed to initialize card payment');
       });
-  }, [amount, quoteId, customerEmail, customerName, isValidAmount, isCartCheckout, cartLoaded, shipping]);
+  }, [amount, quoteId, customerEmail, customerName, isValidAmount, isCartCheckout, cartLoaded, shipping, paymentMethod, clientSecret]);
 
   const appearance = {
     theme: 'stripe' as const,
@@ -136,7 +151,7 @@ function CheckoutContent() {
             Complete Your Order
           </h1>
           <p className="text-gray-600">
-            Secure checkout powered by Stripe
+            Secure card payments by Stripe · Bank transfers (ACH / Wire) accepted
           </p>
         </div>
 
@@ -242,20 +257,67 @@ function CheckoutContent() {
                     Payment Information
                   </h2>
 
-                  {!clientSecret && (
-                    <div className="flex items-center gap-3 text-gray-600 text-sm py-8 justify-center">
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-500"></div>
-                      Preparing secure payment...
-                    </div>
+                  {/* Payment method selector */}
+                  <div className="grid grid-cols-2 gap-3 mb-6" role="radiogroup" aria-label="Payment method">
+                    <button
+                      type="button"
+                      role="radio"
+                      aria-checked={paymentMethod === 'card'}
+                      onClick={() => setPaymentMethod('card')}
+                      className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg border text-sm font-medium transition-colors ${
+                        paymentMethod === 'card'
+                          ? 'border-primary-500 bg-primary-50 text-primary-700'
+                          : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                      }`}
+                    >
+                      <CreditCard className="w-4 h-4" />
+                      Credit Card
+                    </button>
+                    <button
+                      type="button"
+                      role="radio"
+                      aria-checked={paymentMethod === 'bank'}
+                      onClick={() => setPaymentMethod('bank')}
+                      className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg border text-sm font-medium transition-colors ${
+                        paymentMethod === 'bank'
+                          ? 'border-primary-500 bg-primary-50 text-primary-700'
+                          : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                      }`}
+                    >
+                      <Landmark className="w-4 h-4" />
+                      Bank Transfer (ACH / Wire)
+                    </button>
+                  </div>
+
+                  {paymentMethod === 'card' && (
+                    <>
+                      {cardError && (
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700 mb-4" role="alert">
+                          <p className="font-semibold mb-1">Card payment unavailable</p>
+                          <p>{cardError} You can also pay by bank transfer.</p>
+                        </div>
+                      )}
+
+                      {!cardError && !clientSecret && (
+                        <div className="flex items-center gap-3 text-gray-600 text-sm py-8 justify-center">
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-500"></div>
+                          Preparing secure payment...
+                        </div>
+                      )}
+
+                      {clientSecret && (
+                        <Elements
+                          options={{ clientSecret, appearance }}
+                          stripe={getStripe()}
+                        >
+                          <CheckoutForm amount={amount} quoteId={quoteId} />
+                        </Elements>
+                      )}
+                    </>
                   )}
 
-                  {clientSecret && (
-                    <Elements
-                      options={{ clientSecret, appearance }}
-                      stripe={getStripe()}
-                    >
-                      <CheckoutForm amount={amount} quoteId={quoteId} />
-                    </Elements>
+                  {paymentMethod === 'bank' && (
+                    <BankTransferDetails amount={amount} reference={orderRef} />
                   )}
                 </>
               )}
