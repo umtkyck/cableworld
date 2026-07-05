@@ -13,9 +13,9 @@ import {
   FacebookAuthProvider,
   OAuthProvider
 } from 'firebase/auth'
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
-import { auth, db } from '@/lib/firebase'
+import { auth } from '@/lib/firebase'
 import { isAdminEmail } from '@/lib/admin'
+import { syncUserProfile } from '@/lib/users'
 
 interface AuthContextType {
   user: User | null
@@ -84,13 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       })
 
       // Save user profile to Firestore (including company)
-      await setDoc(doc(db, 'users', userCredential.user.uid), {
-        email: email,
-        displayName: displayName,
-        company: company || '',
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
-      })
+      await syncUserProfile(userCredential.user, { company })
 
       setUser(userCredential.user)
     } catch (error: unknown) {
@@ -111,6 +105,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const provider = new GoogleAuthProvider()
       const userCredential = await signInWithPopup(auth, provider)
+      await syncUserProfile(userCredential.user)
       setUser(userCredential.user)
     } catch (error: unknown) {
       throw friendlyAuthError(error, 'Failed to sign in with Google.')
@@ -121,6 +116,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const provider = new FacebookAuthProvider()
       const userCredential = await signInWithPopup(auth, provider)
+      await syncUserProfile(userCredential.user)
       setUser(userCredential.user)
     } catch (error: unknown) {
       throw friendlyAuthError(error, 'Failed to sign in with Facebook.')
@@ -131,6 +127,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const provider = new OAuthProvider('apple.com')
       const userCredential = await signInWithPopup(auth, provider)
+      await syncUserProfile(userCredential.user)
       setUser(userCredential.user)
     } catch (error: unknown) {
       throw friendlyAuthError(error, 'Failed to sign in with Apple.')

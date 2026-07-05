@@ -8,18 +8,15 @@ import {
   onAuthStateChanged,
   updateProfile,
 } from 'firebase/auth'
-import { setDoc } from 'firebase/firestore'
+import { syncUserProfile } from '@/lib/users'
 
 // Mock Firebase functions
 jest.mock('firebase/auth')
-jest.mock('firebase/firestore', () => ({
-  doc: jest.fn(),
-  setDoc: jest.fn(),
-  serverTimestamp: jest.fn(),
+jest.mock('@/lib/users', () => ({
+  syncUserProfile: jest.fn(),
 }))
 jest.mock('@/lib/firebase', () => ({
   auth: {},
-  db: {},
 }))
 
 const mockCreateUser = createUserWithEmailAndPassword as jest.Mock
@@ -27,7 +24,7 @@ const mockSignIn = signInWithEmailAndPassword as jest.Mock
 const mockSignOut = signOut as jest.Mock
 const mockOnAuthStateChanged = onAuthStateChanged as jest.Mock
 const mockUpdateProfile = updateProfile as jest.Mock
-const mockSetDoc = setDoc as jest.Mock
+const mockSyncUserProfile = syncUserProfile as jest.Mock
 
 // Test component to access context
 function TestComponent() {
@@ -126,7 +123,7 @@ describe('AuthContext', () => {
         user: mockUser,
       })
       mockUpdateProfile.mockResolvedValue(undefined)
-      mockSetDoc.mockResolvedValue(undefined)
+      mockSyncUserProfile.mockResolvedValue(undefined)
 
       const { getByText } = render(
         <AuthProvider>
@@ -146,7 +143,7 @@ describe('AuthContext', () => {
         expect(mockUpdateProfile).toHaveBeenCalledWith(mockUser, {
           displayName: 'Test User',
         })
-        expect(mockSetDoc).toHaveBeenCalled()
+        expect(mockSyncUserProfile).toHaveBeenCalledWith(mockUser, { company: undefined })
       })
     })
 

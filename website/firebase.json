@@ -1,0 +1,24 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "auth": {
+    "providers": {
+      "emailPassword": true,
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "Harness Cart",
+        "supportEmail": "umtkyck@gmail.com",
+        "authorizedDomains": [
+          "localhost",
+          "harnesscart.com",
+          "www.harnesscart.com",
+          "harnesscart.vercel.app"
+        ]
+      }
+    }
+  }
+}
