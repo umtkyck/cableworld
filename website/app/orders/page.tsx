@@ -15,8 +15,10 @@ import {
   Calendar,
   FileText,
   ArrowLeft,
+  ExternalLink,
   type LucideIcon
 } from 'lucide-react'
+import { getTrackingInfo } from '@/lib/shipping/tracking'
 
 // Mock orders data - would come from backend in production
 const mockOrders = [
@@ -29,7 +31,7 @@ const mockOrders = [
       { name: 'DB9 Connectors', quantity: 100, price: 2.50 }
     ],
     total: 2500.00,
-    tracking: 'TRK-123456789',
+    tracking: '1Z999AA10123456784',
     deliveryDate: '2024-01-22'
   },
   {
@@ -40,7 +42,7 @@ const mockOrders = [
       { name: 'Industrial Power Cable', quantity: 25, price: 85.00 }
     ],
     total: 2125.00,
-    tracking: 'TRK-987654321',
+    tracking: '771234567890',
     estimatedDelivery: '2024-01-28'
   },
   {
@@ -278,8 +280,15 @@ export default function OrdersPage() {
                           <div className="flex items-start gap-3">
                             <MapPin className="w-5 h-5 text-slate-400 mt-0.5" />
                             <div>
-                              <p className="text-sm font-medium text-slate-900">Tracking Number</p>
-                              <p className="text-sm text-primary-600">{order.tracking}</p>
+                              <p className="text-sm font-medium text-slate-900">
+                                Tracking Number
+                                {getTrackingInfo(order.tracking) && (
+                                  <span className="ml-2 text-xs font-normal text-slate-500">
+                                    via {getTrackingInfo(order.tracking)!.carrier}
+                                  </span>
+                                )}
+                              </p>
+                              <p className="text-sm text-primary-600 font-mono">{order.tracking}</p>
                             </div>
                           </div>
                         )}
@@ -309,10 +318,16 @@ export default function OrdersPage() {
 
                       {/* Actions */}
                       <div className="mt-6 flex flex-wrap gap-3">
-                        {order.tracking && (
-                          <button className="btn-primary text-sm">
-                            Track Shipment
-                          </button>
+                        {order.tracking && getTrackingInfo(order.tracking) && (
+                          <a
+                            href={getTrackingInfo(order.tracking)!.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-primary text-sm inline-flex items-center gap-1.5"
+                          >
+                            Track on {getTrackingInfo(order.tracking)!.carrier}
+                            <ExternalLink className="w-3.5 h-3.5" />
+                          </a>
                         )}
                         <button className="px-4 py-2 border border-slate-300 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-100 transition">
                           View Details

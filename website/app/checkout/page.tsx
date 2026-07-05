@@ -4,13 +4,15 @@ import React, { useEffect, useState, Suspense } from 'react';
 import { Elements } from '@stripe/react-stripe-js';
 import { getStripe } from '@/lib/stripe';
 import CheckoutForm from '@/components/checkout/CheckoutForm';
+import ShippingStep, { ShippingSelection } from '@/components/checkout/ShippingStep';
 import { useSearchParams } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
-  const { cart, cartTotal, isLoaded: cartLoaded } = useCart();
+  const { cart, cartCount, cartTotal, isLoaded: cartLoaded } = useCart();
   const [clientSecret, setClientSecret] = useState('');
+  const [shipping, setShipping] = useState<ShippingSelection | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -22,8 +24,11 @@ function CheckoutContent() {
   const isCartCheckout = !hasQuoteAmount;
   const cartAmount = Math.round(cartTotal * 100) / 100;
   const isValidCartAmount = cartAmount >= 1 && cartAmount <= 1000000;
-  const amount = hasQuoteAmount ? rawAmount : (isValidCartAmount ? cartAmount : 0);
+  const subtotal = hasQuoteAmount ? rawAmount : (isValidCartAmount ? cartAmount : 0);
   const isValidAmount = hasQuoteAmount || isValidCartAmount;
+
+  const shippingCost = shipping ? shipping.rate.amount : 0;
+  const amount = Math.round((subtotal + shippingCost) * 100) / 100;
 
   const customerEmail = searchParams.get('email') || '';
   const customerName = searchParams.get('name') || '';
@@ -44,7 +49,14 @@ function CheckoutContent() {
       return;
     }
 
-    // Create PaymentIntent as soon as the page loads
+    setLoading(false);
+
+    // The PaymentIntent is only created once a shipping method is chosen, so
+    // the charged amount always includes the carrier rate.
+    if (!shipping) {
+      return;
+    }
+
     fetch('/api/create-payment-intent', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -53,23 +65,26 @@ function CheckoutContent() {
         quoteId,
         customerEmail,
         customerName,
+        shipping: {
+          carrierName: shipping.rate.carrierName,
+          service: shipping.rate.service,
+          amount: shipping.rate.amount,
+          address: shipping.address,
+        },
       }),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {
           setError(data.error);
-          setLoading(false);
         } else {
           setClientSecret(data.clientSecret);
-          setLoading(false);
         }
       })
-      .catch((err) => {
+      .catch(() => {
         setError('Failed to initialize payment');
-        setLoading(false);
       });
-  }, [amount, quoteId, customerEmail, customerName, isValidAmount, isCartCheckout, cartLoaded]);
+  }, [amount, quoteId, customerEmail, customerName, isValidAmount, isCartCheckout, cartLoaded, shipping]);
 
   const appearance = {
     theme: 'stripe' as const,
@@ -153,43 +168,96 @@ function CheckoutContent() {
                 )}
               </div>
 
-              <div className="border-t pt-4 mb-6">
-                <div className="flex justify-between items-center">
+              <div className="border-t pt-4 mb-6 space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Subtotal</span>
+                  <span className="font-medium text-gray-900">${subtotal.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">
+                    Shipping
+                    {shipping ? ` (${shipping.rate.service})` : ''}
+                  </span>
+                  <span className="font-medium text-gray-900">
+                    {shipping
+                      ? shipping.rate.amount === 0
+                        ? 'FREE'
+                        : `$${shipping.rate.amount.toFixed(2)}`
+                      : 'Select method'}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center pt-2 border-t">
                   <span className="text-lg font-semibold text-gray-900">
                     Total
                   </span>
                   <span className="text-2xl font-bold text-primary-500">
-                    ${amount.toLocaleString()}
+                    ${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </span>
                 </div>
               </div>
+
+              {shipping && (
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4 text-sm text-gray-600">
+                  <p className="font-semibold text-gray-900 mb-1">Ships to</p>
+                  <p>{shipping.address.name}</p>
+                  <p>{shipping.address.street1}{shipping.address.street2 ? `, ${shipping.address.street2}` : ''}</p>
+                  <p>{shipping.address.city}, {shipping.address.state} {shipping.address.postalCode}, {shipping.address.country}</p>
+                  <button
+                    onClick={() => { setShipping(null); setClientSecret(''); }}
+                    className="mt-2 text-primary-500 hover:text-primary-600 font-medium"
+                  >
+                    Change
+                  </button>
+                </div>
+              )}
 
               <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                 <div className="flex items-start gap-3">
                   <span className="text-green-600 text-xl">✓</span>
                   <div className="text-sm text-green-800">
                     <p className="font-semibold mb-1">Production starts immediately</p>
-                    <p className="text-green-700">Expected delivery: 7-10 business days</p>
+                    <p className="text-green-700">
+                      {shipping?.rate.estimatedDays
+                        ? `Ships via ${shipping.rate.carrierName} · ${shipping.rate.estimatedDays} business day${shipping.rate.estimatedDays > 1 ? 's' : ''} transit`
+                        : 'Expected delivery: 7-10 business days'}
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Payment Form */}
+          {/* Shipping + Payment */}
           <div className="md:col-span-2">
             <div className="bg-white rounded-lg shadow-lg p-8">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">
-                Payment Information
-              </h2>
+              {!shipping ? (
+                <ShippingStep
+                  itemCount={isCartCheckout ? Math.max(cartCount, 1) : 1}
+                  orderTotal={subtotal}
+                  onComplete={setShipping}
+                />
+              ) : (
+                <>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                    Payment Information
+                  </h2>
 
-              {clientSecret && (
-                <Elements
-                  options={{ clientSecret, appearance }}
-                  stripe={getStripe()}
-                >
-                  <CheckoutForm amount={amount} quoteId={quoteId} />
-                </Elements>
+                  {!clientSecret && (
+                    <div className="flex items-center gap-3 text-gray-600 text-sm py-8 justify-center">
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-500"></div>
+                      Preparing secure payment...
+                    </div>
+                  )}
+
+                  {clientSecret && (
+                    <Elements
+                      options={{ clientSecret, appearance }}
+                      stripe={getStripe()}
+                    >
+                      <CheckoutForm amount={amount} quoteId={quoteId} />
+                    </Elements>
+                  )}
+                </>
               )}
 
               {/* Trust Badges */}

@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { amount, quoteId, customerEmail, customerName } = await req.json();
+    const { amount, quoteId, customerEmail, customerName, shipping } = await req.json();
 
     // Validate amount
     if (!amount || amount <= 0) {
@@ -35,7 +35,27 @@ export async function POST(req: NextRequest) {
         quoteId: quoteId || 'unknown',
         customerEmail: customerEmail || 'unknown',
         customerName: customerName || 'unknown',
+        shippingCarrier: shipping?.carrierName || 'unknown',
+        shippingService: shipping?.service || 'unknown',
+        shippingCost: shipping?.amount != null ? String(shipping.amount) : 'unknown',
       },
+      // Attach the shipping address so it shows on the Stripe dashboard and
+      // receipts, and is available for label creation during fulfillment.
+      ...(shipping?.address
+        ? {
+            shipping: {
+              name: shipping.address.name || customerName || 'Customer',
+              address: {
+                line1: shipping.address.street1,
+                line2: shipping.address.street2 || undefined,
+                city: shipping.address.city,
+                state: shipping.address.state,
+                postal_code: shipping.address.postalCode,
+                country: shipping.address.country,
+              },
+            },
+          }
+        : {}),
       description: `Harness Cart Quote #${quoteId}`,
       receipt_email: customerEmail,
     });
