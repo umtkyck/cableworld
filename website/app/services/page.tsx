@@ -231,11 +231,11 @@ export default function ServicesPage() {
                 Contact Us
               </Link>
               <a
-                href="tel:+1-555-123-4567"
+                href="tel:+12246299664"
                 className="inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white rounded-lg font-semibold hover:bg-white/10 transition"
               >
                 <Phone className="w-5 h-5 mr-2" />
-                Call +1 (555) 123-4567
+                Call +1 (224) 629-9664
               </a>
             </div>
           </div>

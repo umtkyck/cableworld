@@ -101,11 +101,11 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="tel:+1-800-HARNESS" className={footerLinkClass}>
-                  1-800-HARNESS
+                <a href="tel:+12246299664" className={footerLinkClass}>
+                  +1 (224) 629-9664
                 </a>
               </li>
-              <li className="text-sm text-slate-500 dark:text-slate-400">San Francisco, CA</li>
+              <li className="text-sm text-slate-500 dark:text-slate-400">1109 W Bauer Rd, Naperville, IL 60563</li>
             </ul>
             <div className="flex gap-4 mt-5">
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"

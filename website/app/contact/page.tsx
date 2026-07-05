@@ -71,19 +71,19 @@ export default function ContactPage() {
     {
       icon: Phone,
       title: 'Call Us',
-      content: '+1 (555) 123-4567',
-      link: 'tel:+15551234567'
+      content: '+1 (224) 629-9664',
+      link: 'tel:+12246299664'
     },
     {
       icon: MapPin,
       title: 'Visit Us',
-      content: '123 Tech Boulevard, San Francisco, CA 94105',
-      link: 'https://maps.google.com'
+      content: '1109 W Bauer Rd, Naperville, IL 60563, US',
+      link: 'https://maps.google.com/?q=1109+W+Bauer+Rd,+Naperville,+IL+60563'
     },
     {
       icon: Clock,
       title: 'Business Hours',
-      content: 'Mon-Fri: 9AM - 6PM PST',
+      content: 'Mon-Fri: 9AM - 6PM CST',
       link: null
     }
   ]

@@ -23,8 +23,8 @@ export default function SupportPage() {
     {
       icon: Phone,
       title: 'Phone',
-      description: 'Talk to a real engineer during business hours (9am–6pm PT).',
-      detail: '1-800-HARNESS'
+      description: 'Talk to a real engineer during business hours (9am–6pm CT).',
+      detail: '+1 (224) 629-9664'
     }
   ]
 
