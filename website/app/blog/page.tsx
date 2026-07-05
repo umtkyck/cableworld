@@ -46,9 +46,9 @@ export default function BlogPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-slate-950">
       {/* Hero */}
-      <section className="section-padding bg-gradient-to-br from-primary-500 to-primary-600 text-white">
+      <section className="section-padding bg-slate-900 text-white">
         <div className="container-custom text-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
             Harness Cart Blog
@@ -64,9 +64,9 @@ export default function BlogPage() {
         <div className="container-custom max-w-6xl">
           <div className="grid md:grid-cols-2 gap-8">
             {posts.map((post) => (
-              <article key={post.slug} className="bg-white rounded-xl shadow-soft hover:shadow-large transition-shadow overflow-hidden group">
+              <article key={post.slug} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-soft hover:shadow-large transition-shadow overflow-hidden group">
                 {/* Image */}
-                <div className="aspect-video bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center text-8xl">
+                <div className="aspect-video bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-8xl">
                   {post.image}
                 </div>
 
@@ -82,16 +82,16 @@ export default function BlogPage() {
                     </span>
                   </div>
 
-                  <h2 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-primary-500 transition">
+                  <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition">
                     {post.title}
                   </h2>
 
-                  <p className="text-slate-600 mb-4">
+                  <p className="text-slate-600 dark:text-slate-400 mb-4">
                     {post.excerpt}
                   </p>
 
-                  <div className="flex items-center justify-between pt-4 border-t">
-                    <div className="flex items-center gap-4 text-sm text-slate-600">
+                  <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800">
+                    <div className="flex items-center gap-4 text-sm text-slate-600 dark:text-slate-400">
                       <span className="flex items-center gap-1">
                         <User className="w-4 h-4" />
                         {post.author}
@@ -104,7 +104,7 @@ export default function BlogPage() {
 
                     <Link
                       href={`/blog/${post.slug}`}
-                      className="text-primary-500 hover:text-primary-600 font-semibold flex items-center gap-2"
+                      className="text-slate-900 dark:text-white font-semibold flex items-center gap-2 underline underline-offset-4 hover:no-underline"
                     >
                       Read More
                       <ArrowRight className="w-4 h-4" />
@@ -118,19 +118,20 @@ export default function BlogPage() {
       </section>
 
       {/* Newsletter CTA */}
-      <section className="section-padding bg-slate-50">
+      <section className="section-padding bg-slate-50 dark:bg-slate-900">
         <div className="container-custom max-w-4xl text-center">
-          <h2 className="text-3xl font-bold text-slate-900 mb-4">
+          <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">
             Stay Updated
           </h2>
-          <p className="text-lg text-slate-600 mb-8">
+          <p className="text-lg text-slate-600 dark:text-slate-400 mb-8">
             Subscribe to our newsletter for the latest insights and updates
           </p>
           <form className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
             <input
               type="email"
               placeholder="Enter your email"
-              className="flex-1 px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              aria-label="Email address"
+              className="flex-1 px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-slate-500 focus:border-transparent"
             />
             <button type="submit" className="btn-primary">
               Subscribe

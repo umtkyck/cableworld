@@ -4,6 +4,18 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { ShoppingCart, Search, Filter } from 'lucide-react'
 
+interface ShopProduct {
+  id: number
+  category: string
+  slug?: string
+  name: string
+  description: string
+  price: string
+  minOrder: number
+  image: string
+  specs: string[]
+}
+
 export default function ShopPage() {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
@@ -19,7 +31,7 @@ export default function ShopPage() {
     { id: 'industrial', name: 'Industrial' }
   ]
 
-  const products = [
+  const products: ShopProduct[] = [
     {
       id: 1,
       category: 'usb',
@@ -249,14 +261,26 @@ export default function ShopPage() {
             {filteredProducts.map(product => (
               <div key={product.id} className="bg-white rounded-xl shadow-soft hover:shadow-large transition-shadow overflow-hidden group">
                 {/* Product Image */}
-                <div className="aspect-square bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center text-8xl group-hover:scale-105 transition-transform">
-                  {product.image}
-                </div>
+                {product.slug ? (
+                  <Link href={`/shop/${product.slug}`} className="aspect-square bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center text-8xl group-hover:scale-105 transition-transform">
+                    {product.image}
+                  </Link>
+                ) : (
+                  <div className="aspect-square bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center text-8xl group-hover:scale-105 transition-transform">
+                    {product.image}
+                  </div>
+                )}
 
                 {/* Product Info */}
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-slate-900 mb-2">
-                    {product.name}
+                    {product.slug ? (
+                      <Link href={`/shop/${product.slug}`} className="hover:underline underline-offset-4">
+                        {product.name}
+                      </Link>
+                    ) : (
+                      product.name
+                    )}
                   </h3>
                   <p className="text-slate-600 mb-4 text-sm">
                     {product.description}

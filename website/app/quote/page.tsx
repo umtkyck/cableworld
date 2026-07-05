@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
+import Link from 'next/link'
 import { useDropzone } from 'react-dropzone'
 import { Upload, FileText, CheckCircle, AlertCircle, X } from 'lucide-react'
 
@@ -176,10 +177,11 @@ export default function QuotePage() {
             </div>
             <h2 className="text-3xl font-bold text-slate-900 mb-4">Files Uploaded Successfully!</h2>
             <p className="text-xl text-slate-600 mb-8">
-              We're processing your design and matching components...
+              We're processing your design and matching components. Our team will send
+              your detailed quote by email — usually within the hour.
             </p>
             <div className="flex justify-center space-x-4">
-              <button className="btn-primary">Continue to Review</button>
+              <Link href="/contact" className="btn-primary">Talk to an Engineer</Link>
               <button className="btn-outline" onClick={() => setUploadComplete(false)}>
                 Upload More Files
               </button>
@@ -197,9 +199,9 @@ export default function QuotePage() {
                 Our team is here to assist you. If you have questions about file formats or need
                 design assistance, we're just a click away.
               </p>
-              <button className="text-blue-600 hover:text-blue-700 font-semibold text-sm">
+              <Link href="/support" className="text-blue-600 hover:text-blue-700 font-semibold text-sm">
                 Contact Support →
-              </button>
+              </Link>
             </div>
           </div>
         </div>

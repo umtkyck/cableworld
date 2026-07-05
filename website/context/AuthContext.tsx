@@ -29,6 +29,35 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
+// Translate Firebase error codes into messages users can act on.
+function friendlyAuthError(error: unknown, fallback: string): Error {
+  const raw = error instanceof Error ? error.message : ''
+  const code = raw.match(/auth\/[a-z-.]+/)?.[0]
+
+  // Not a Firebase auth error — keep the original message if there is one.
+  if (!code) {
+    return new Error(raw || fallback)
+  }
+
+  const messages: Record<string, string> = {
+    'auth/invalid-credential': 'Incorrect email or password. Please try again.',
+    'auth/wrong-password': 'Incorrect email or password. Please try again.',
+    'auth/user-not-found': 'No account found with this email. Please sign up first.',
+    'auth/invalid-email': 'Please enter a valid email address.',
+    'auth/email-already-in-use': 'An account with this email already exists. Try signing in instead.',
+    'auth/weak-password': 'Password is too weak. Please use at least 6 characters.',
+    'auth/too-many-requests': 'Too many attempts. Please wait a few minutes and try again.',
+    'auth/network-request-failed': 'Network error. Please check your connection and try again.',
+    'auth/popup-closed-by-user': 'Sign-in window was closed before completing. Please try again.',
+    'auth/popup-blocked': 'Your browser blocked the sign-in window. Please allow popups and try again.',
+    'auth/operation-not-allowed': 'This sign-in method is not available right now.',
+    'auth/api-key-not-valid.-please-pass-a-valid-api-key.': 'Sign-in is temporarily unavailable. Please try again later or contact support.',
+    'auth/invalid-api-key': 'Sign-in is temporarily unavailable. Please try again later or contact support.',
+  }
+
+  return new Error(messages[code] ?? fallback)
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
@@ -62,8 +91,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       setUser(userCredential.user)
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to create account'
-      throw new Error(errorMessage)
+      throw friendlyAuthError(error, 'Failed to create account. Please try again.')
     }
   }
 
@@ -72,8 +100,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
       setUser(userCredential.user)
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to sign in'
-      throw new Error(errorMessage)
+      throw friendlyAuthError(error, 'Failed to sign in. Please check your credentials.')
     }
   }
 
@@ -83,8 +110,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const userCredential = await signInWithPopup(auth, provider)
       setUser(userCredential.user)
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to sign in with Google'
-      throw new Error(errorMessage)
+      throw friendlyAuthError(error, 'Failed to sign in with Google.')
     }
   }
 
@@ -94,8 +120,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const userCredential = await signInWithPopup(auth, provider)
       setUser(userCredential.user)
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to sign in with Facebook'
-      throw new Error(errorMessage)
+      throw friendlyAuthError(error, 'Failed to sign in with Facebook.')
     }
   }
 
@@ -105,8 +130,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const userCredential = await signInWithPopup(auth, provider)
       setUser(userCredential.user)
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to sign in with Apple'
-      throw new Error(errorMessage)
+      throw friendlyAuthError(error, 'Failed to sign in with Apple.')
     }
   }
 

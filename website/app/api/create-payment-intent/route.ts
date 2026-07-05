@@ -7,6 +7,13 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
 
 export async function POST(req: NextRequest) {
   try {
+    if (!process.env.STRIPE_SECRET_KEY) {
+      return NextResponse.json(
+        { error: 'Online payment is not available right now. Please contact us to complete your order.' },
+        { status: 503 }
+      );
+    }
+
     const { amount, quoteId, customerEmail, customerName } = await req.json();
 
     // Validate amount

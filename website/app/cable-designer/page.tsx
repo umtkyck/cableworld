@@ -653,7 +653,10 @@ export default function CableDesignerPage() {
                 )}
               </button>
 
-              <button className="w-full btn-secondary py-3">
+              <button
+                onClick={() => router.push('/quote')}
+                className="w-full btn-secondary py-3"
+              >
                 Request Custom Quote
               </button>
 

@@ -5,27 +5,41 @@ import { Elements } from '@stripe/react-stripe-js';
 import { getStripe } from '@/lib/stripe';
 import CheckoutForm from '@/components/checkout/CheckoutForm';
 import { useSearchParams } from 'next/navigation';
+import { useCart } from '@/context/CartContext';
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
+  const { cart, cartTotal, isLoaded: cartLoaded } = useCart();
   const [clientSecret, setClientSecret] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Get quote details from URL params
+  // Two entry points: a quote link with ?amount=..., or the shopping cart.
   const quoteId = searchParams.get('quote_id') || 'CW-2024-00789';
   const rawAmount = parseFloat(searchParams.get('amount') || '0');
+  const hasQuoteAmount = rawAmount >= 1 && rawAmount <= 1000000;
 
-  // Validate amount - must be between $1 and $1,000,000
-  const isValidAmount = rawAmount >= 1 && rawAmount <= 1000000;
-  const amount = isValidAmount ? rawAmount : 0;
+  const isCartCheckout = !hasQuoteAmount;
+  const cartAmount = Math.round(cartTotal * 100) / 100;
+  const isValidCartAmount = cartAmount >= 1 && cartAmount <= 1000000;
+  const amount = hasQuoteAmount ? rawAmount : (isValidCartAmount ? cartAmount : 0);
+  const isValidAmount = hasQuoteAmount || isValidCartAmount;
+
   const customerEmail = searchParams.get('email') || '';
   const customerName = searchParams.get('name') || '';
 
   useEffect(() => {
-    // Validate amount before creating payment intent
+    // Wait for the cart to load from localStorage before deciding.
+    if (isCartCheckout && !cartLoaded) {
+      return;
+    }
+
     if (!isValidAmount) {
-      setError('Invalid payment amount. Please return to your quote and try again.');
+      setError(
+        isCartCheckout
+          ? 'Your cart is empty. Add products to your cart or request a quote first.'
+          : 'Invalid payment amount. Please return to your quote and try again.'
+      );
       setLoading(false);
       return;
     }
@@ -55,7 +69,7 @@ function CheckoutContent() {
         setError('Failed to initialize payment');
         setLoading(false);
       });
-  }, [amount, quoteId, customerEmail, customerName, isValidAmount]);
+  }, [amount, quoteId, customerEmail, customerName, isValidAmount, isCartCheckout, cartLoaded]);
 
   const appearance = {
     theme: 'stripe' as const,
@@ -88,10 +102,10 @@ function CheckoutContent() {
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Payment Error</h2>
           <p className="text-gray-600 mb-4">{error}</p>
           <a
-            href="/quote"
+            href={isCartCheckout ? '/shop' : '/quote'}
             className="inline-block bg-primary-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-600"
           >
-            Return to Quote
+            {isCartCheckout ? 'Browse Products' : 'Return to Quote'}
           </a>
         </div>
       </div>
@@ -120,26 +134,23 @@ function CheckoutContent() {
               </h2>
 
               <div className="space-y-3 mb-6">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Quote ID</span>
-                  <span className="font-medium text-gray-900">{quoteId}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Components</span>
-                  <span className="font-medium text-gray-900">$1,420.00</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Labor & Assembly</span>
-                  <span className="font-medium text-gray-900">$980.00</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Testing & QA</span>
-                  <span className="font-medium text-gray-900">$250.00</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Shipping</span>
-                  <span className="font-medium text-gray-900">$197.00</span>
-                </div>
+                {isCartCheckout ? (
+                  cart.map((item) => (
+                    <div key={item.id} className="flex justify-between text-sm gap-2">
+                      <span className="text-gray-600">
+                        {item.name} × {item.quantity}
+                      </span>
+                      <span className="font-medium text-gray-900 whitespace-nowrap">
+                        ${(item.price * item.quantity).toFixed(2)}
+                      </span>
+                    </div>
+                  ))
+                ) : (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Quote ID</span>
+                    <span className="font-medium text-gray-900">{quoteId}</span>
+                  </div>
+                )}
               </div>
 
               <div className="border-t pt-4 mb-6">

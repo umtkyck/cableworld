@@ -22,25 +22,34 @@ interface CartContextType {
   clearCart: () => void
   cartCount: number
   cartTotal: number
+  isLoaded: boolean
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([])
+  const [isLoaded, setIsLoaded] = useState(false)
 
   // Load cart from localStorage on mount
   useEffect(() => {
     const savedCart = localStorage.getItem('harnesscart_cart')
     if (savedCart) {
-      setCart(JSON.parse(savedCart))
+      try {
+        setCart(JSON.parse(savedCart))
+      } catch {
+        localStorage.removeItem('harnesscart_cart')
+      }
     }
+    setIsLoaded(true)
   }, [])
 
-  // Save cart to localStorage whenever it changes
+  // Save cart to localStorage whenever it changes, but only after the
+  // initial load — otherwise the initial empty state wipes the saved cart.
   useEffect(() => {
+    if (!isLoaded) return
     localStorage.setItem('harnesscart_cart', JSON.stringify(cart))
-  }, [cart])
+  }, [cart, isLoaded])
 
   const addToCart = (item: CartItem) => {
     setCart(prevCart => {
@@ -94,7 +103,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         updateQuantity,
         clearCart,
         cartCount,
-        cartTotal
+        cartTotal,
+        isLoaded
       }}
     >
       {children}

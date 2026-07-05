@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ShoppingCart, Check, Star, ArrowLeft, Shield, Truck, Award } from 'lucide-react'
+import { useCart } from '@/context/CartContext'
 
 // Product data (in real app, fetch from API)
 const productDatabase = {
@@ -97,11 +98,13 @@ const productDatabase = {
 export default function ProductDetailPage() {
   const params = useParams()
   const router = useRouter()
+  const { addToCart } = useCart()
   const slug = params.slug as string
 
   const [quantity, setQuantity] = useState(50)
   const [selectedLength, setSelectedLength] = useState('1m')
   const [selectedColor, setSelectedColor] = useState('Black')
+  const [addedToCart, setAddedToCart] = useState(false)
 
   const product = productDatabase[slug as keyof typeof productDatabase]
 
@@ -119,6 +122,19 @@ export default function ProductDetailPage() {
   }
 
   const totalPrice = (product.price * quantity).toFixed(2)
+
+  const handleAddToCart = () => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity,
+      image: product.image,
+      customization: { length: selectedLength, color: selectedColor }
+    })
+    setAddedToCart(true)
+    setTimeout(() => setAddedToCart(false), 2000)
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -227,9 +243,18 @@ export default function ProductDetailPage() {
 
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <button className="btn-primary flex-1 justify-center">
-                    <ShoppingCart className="w-5 h-5 mr-2" />
-                    Add to Cart
+                  <button onClick={handleAddToCart} className="btn-primary flex-1 justify-center">
+                    {addedToCart ? (
+                      <>
+                        <Check className="w-5 h-5 mr-2" />
+                        Added to Cart
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingCart className="w-5 h-5 mr-2" />
+                        Add to Cart
+                      </>
+                    )}
                   </button>
                   <Link
                     href={`/quote?product=${encodeURIComponent(product.name)}&quantity=${quantity}`}
