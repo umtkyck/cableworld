@@ -78,9 +78,9 @@ export default function CareersPage() {
             We don't have any open roles right now, but we're always excited to meet
             talented people. Send us your resume and tell us how you'd like to contribute.
           </p>
-          <a href="mailto:careers@harnesscart.com" className="btn-primary inline-flex text-lg">
+          <a href="mailto:umtkyck@gmail.com" className="btn-primary inline-flex text-lg">
             <Mail className="w-5 h-5 mr-2" />
-            careers@harnesscart.com
+            umtkyck@gmail.com
           </a>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-6">
             Prefer to chat first? <Link href="/contact" className="font-medium text-slate-900 dark:text-white underline underline-offset-4 hover:no-underline">Contact us</Link>.

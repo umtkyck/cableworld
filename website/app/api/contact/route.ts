@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
 
     // Example with a generic email service (implement based on your provider):
     // await sendEmail({
-    //   to: 'support@harnesscart.com',
+    //   to: 'umtkyck@gmail.com',
     //   from: 'noreply@harnesscart.com',
     //   replyTo: data.email,
     //   subject: `[Contact Form] ${data.subject}`,

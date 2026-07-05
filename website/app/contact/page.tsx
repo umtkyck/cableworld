@@ -65,8 +65,8 @@ export default function ContactPage() {
     {
       icon: Mail,
       title: 'Email Us',
-      content: 'support@harnesscart.com',
-      link: 'mailto:support@harnesscart.com'
+      content: 'umtkyck@gmail.com',
+      link: 'mailto:umtkyck@gmail.com'
     },
     {
       icon: Phone,

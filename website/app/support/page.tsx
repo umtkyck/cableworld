@@ -18,7 +18,7 @@ export default function SupportPage() {
       icon: Mail,
       title: 'Email',
       description: 'For order issues, technical questions, or anything else.',
-      detail: 'support@harnesscart.com'
+      detail: 'umtkyck@gmail.com'
     },
     {
       icon: Phone,

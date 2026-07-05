@@ -96,8 +96,8 @@ export default function Footer() {
             <h3 className="text-sm font-semibold mb-4 text-slate-900 dark:text-white">Contact</h3>
             <ul className="space-y-2.5">
               <li>
-                <a href="mailto:hello@harnesscart.com" className={footerLinkClass}>
-                  hello@harnesscart.com
+                <a href="mailto:umtkyck@gmail.com" className={footerLinkClass}>
+                  umtkyck@gmail.com
                 </a>
               </li>
               <li>

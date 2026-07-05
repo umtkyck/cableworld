@@ -235,6 +235,6 @@ Copyright © 2024 CableWorld. All rights reserved.
 ## Support
 
 - **Issues**: https://github.com/umtkyck/cableworld/issues
-- **Email**: support@cableworld.com
+- **Email**: umtkyck@gmail.com
 - **Docs**: See [STRIPE_INTEGRATION.md](../docs/STRIPE_INTEGRATION.md) for payment integration
 - **Deploy**: See [DEPLOY_NOW.md](../DEPLOY_NOW.md) to deploy in 5 minutes

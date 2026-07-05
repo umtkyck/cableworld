@@ -23,12 +23,12 @@ const botResponses: Record<string, string> = {
   'how long does shipping take': 'We offer worldwide shipping! Standard shipping takes 5-7 business days, while express shipping delivers in 2-3 business days. Orders over $1,000 qualify for FREE worldwide shipping.',
   'do you offer bulk discounts': 'Yes! We offer tiered pricing for bulk orders: 10-49 units get 10% off, 50-99 units get 15% off, and 100+ units get 20% off. Contact our sales team for custom enterprise pricing on large orders.',
   'pricing': 'Our pricing is competitive and transparent. Basic cable harnesses start at $25, while complex assemblies are priced based on specifications. Visit our Pricing page for detailed information or get a custom quote.',
-  'contact': 'You can reach us at support@harnesscart.com or use the Contact page on our website. Our team is available Monday-Friday, 9 AM - 6 PM EST.',
+  'contact': 'You can reach us at umtkyck@gmail.com or use the Contact page on our website. Our team is available Monday-Friday, 9 AM - 6 PM EST.',
   'hello': 'Hello! 👋 Welcome to Harness Cart. How can I help you today? Feel free to ask about our products, pricing, or the ordering process.',
   'hi': 'Hi there! 👋 Welcome to Harness Cart. How can I assist you today?',
   'thanks': "You're welcome! Is there anything else I can help you with?",
   'thank you': "You're welcome! Feel free to ask if you have any other questions.",
-  'default': "I'm here to help! You can ask me about getting quotes, file formats, shipping, pricing, or bulk discounts. For complex inquiries, please contact our support team at support@harnesscart.com."
+  'default': "I'm here to help! You can ask me about getting quotes, file formats, shipping, pricing, or bulk discounts. For complex inquiries, please contact our support team at umtkyck@gmail.com."
 }
 
 function getBotResponse(userMessage: string): string {

@@ -91,8 +91,8 @@ export default function BankTransferDetails({ amount, reference }: BankTransferD
           <p className="font-semibold mb-1">After sending your transfer</p>
           <p>
             Email your remittance confirmation to{' '}
-            <a href={`mailto:billing@harnesscart.com?subject=Payment%20remittance%20${encodeURIComponent(reference)}`} className="underline font-medium">
-              billing@harnesscart.com
+            <a href={`mailto:umtkyck@gmail.com?subject=Payment%20remittance%20${encodeURIComponent(reference)}`} className="underline font-medium">
+              umtkyck@gmail.com
             </a>{' '}
             with the reference <span className="font-mono">{reference}</span> so we can
             match your payment and start production immediately.

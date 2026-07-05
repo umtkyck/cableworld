@@ -51,7 +51,7 @@ export default function AccessibilityPage() {
             <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">Feedback</h2>
             <p>
               If you encounter an accessibility barrier, please tell us. Email{' '}
-              <a href="mailto:accessibility@harnesscart.com" className="font-medium text-slate-900 dark:text-white underline underline-offset-4 hover:no-underline">accessibility@harnesscart.com</a>{' '}
+              <a href="mailto:umtkyck@gmail.com" className="font-medium text-slate-900 dark:text-white underline underline-offset-4 hover:no-underline">umtkyck@gmail.com</a>{' '}
               or use our <Link href="/contact" className="font-medium text-slate-900 dark:text-white underline underline-offset-4 hover:no-underline">contact form</Link>{' '}
               and we will work with you to resolve it.
             </p>
