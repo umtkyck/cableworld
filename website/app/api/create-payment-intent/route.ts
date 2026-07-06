@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { amount, quoteId, customerEmail, customerName, shipping } = await req.json();
+    const { amount, quoteId, orderRef, customerEmail, customerName, shipping, items, userId } = await req.json();
 
     // Validate amount
     if (!amount || amount <= 0) {
@@ -32,9 +32,12 @@ export async function POST(req: NextRequest) {
         enabled: true,
       },
       metadata: {
+        orderRef: orderRef || quoteId || 'unknown',
         quoteId: quoteId || 'unknown',
         customerEmail: customerEmail || 'unknown',
         customerName: customerName || 'unknown',
+        userId: userId || '',
+        itemsJson: JSON.stringify(items || []),
         shippingCarrier: shipping?.carrierName || 'unknown',
         shippingService: shipping?.service || 'unknown',
         shippingCost: shipping?.amount != null ? String(shipping.amount) : 'unknown',

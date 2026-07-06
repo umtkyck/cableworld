@@ -44,8 +44,8 @@ export default function Navigation() {
       {showBanner && (
         <div className="bg-slate-900 dark:bg-slate-900 text-white py-2 px-4 relative">
           <div className="container-custom flex items-center justify-center gap-3 text-xs sm:text-sm">
-            <span className="hidden sm:inline">Free Worldwide Shipping on orders over $1,000</span>
-            <span className="sm:hidden">Free Shipping over $1,000</span>
+            <span className="hidden sm:inline">Free North America shipping on orders over $1,000</span>
+            <span className="sm:hidden">Free shipping over $1,000 (US/CA/MX)</span>
             <Link href="/shop" className="underline underline-offset-4 hover:no-underline font-medium">
               Shop Now
             </Link>

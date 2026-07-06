@@ -32,7 +32,7 @@ describe('Navigation', () => {
     it('should render promotional banner', () => {
       render(<Navigation />)
 
-      expect(screen.getByText('Free Worldwide Shipping on orders over $1,000')).toBeInTheDocument()
+      expect(screen.getByText('Free North America shipping on orders over $1,000')).toBeInTheDocument()
       expect(screen.getByText('Shop Now')).toBeInTheDocument()
     })
 
@@ -43,7 +43,7 @@ describe('Navigation', () => {
       const closeButton = screen.getByRole('button', { name: /close banner/i })
       await user.click(closeButton)
 
-      expect(screen.queryByText('Free Worldwide Shipping on orders over $1,000')).not.toBeInTheDocument()
+      expect(screen.queryByText('Free North America shipping on orders over $1,000')).not.toBeInTheDocument()
     })
   })
 

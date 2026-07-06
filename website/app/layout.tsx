@@ -9,7 +9,7 @@ import Chatbot from '@/components/Chatbot'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://harnesscart.vercel.app'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://www.harnesscart.com'),
   title: {
     default: 'Harness Cart - Instant Cable Harness Manufacturing',
     template: '%s | Harness Cart'
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://harnesscart.vercel.app',
+    url: process.env.NEXT_PUBLIC_APP_URL || 'https://www.harnesscart.com',
     title: 'Harness Cart - Instant Cable Harness Manufacturing',
     description: 'Get instant quotes for custom cable and wire harnesses. Upload your design and receive quotes in under 60 seconds from our global manufacturer network.',
     siteName: 'Harness Cart',

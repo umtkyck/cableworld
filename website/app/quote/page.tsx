@@ -32,11 +32,19 @@ export default function QuotePage() {
   }
 
   const handleUpload = async () => {
+    if (files.length === 0) return
     setUploading(true)
-    // Simulate upload
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    setUploading(false)
-    setUploadComplete(true)
+    try {
+      const formData = new FormData()
+      files.forEach((file) => formData.append('files', file))
+      const res = await fetch('/api/quotes', { method: 'POST', body: formData })
+      if (!res.ok) throw new Error('Upload failed')
+      setUploadComplete(true)
+    } catch {
+      alert('Upload failed. Please try again or email umtkyck@gmail.com with your files.')
+    } finally {
+      setUploading(false)
+    }
   }
 
   return (

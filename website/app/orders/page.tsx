@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
+import { useAuthFetch } from '@/lib/hooks/useAuthFetch'
+import type { OrderRecord } from '@/lib/orders/types'
 import {
   Package,
   Truck,
@@ -20,57 +22,13 @@ import {
 } from 'lucide-react'
 import { getTrackingInfo } from '@/lib/shipping/tracking'
 
-// Mock orders data - would come from backend in production
-const mockOrders = [
-  {
-    id: 'ORD-2024-00123',
-    date: '2024-01-15',
-    status: 'delivered',
-    items: [
-      { name: 'Custom Cable Harness - Type A', quantity: 50, price: 45.00 },
-      { name: 'DB9 Connectors', quantity: 100, price: 2.50 }
-    ],
-    total: 2500.00,
-    tracking: '1Z999AA10123456784',
-    deliveryDate: '2024-01-22'
-  },
-  {
-    id: 'ORD-2024-00124',
-    date: '2024-01-20',
-    status: 'shipped',
-    items: [
-      { name: 'Industrial Power Cable', quantity: 25, price: 85.00 }
-    ],
-    total: 2125.00,
-    tracking: '771234567890',
-    estimatedDelivery: '2024-01-28'
-  },
-  {
-    id: 'ORD-2024-00125',
-    date: '2024-01-25',
-    status: 'processing',
-    items: [
-      { name: 'Ethernet Cable Assembly', quantity: 200, price: 12.00 },
-      { name: 'RJ45 Connectors', quantity: 400, price: 0.75 }
-    ],
-    total: 2700.00,
-    tracking: null,
-    estimatedDelivery: '2024-02-05'
-  },
-  {
-    id: 'ORD-2024-00126',
-    date: '2024-01-28',
-    status: 'pending',
-    items: [
-      { name: 'Custom Prototype Cable', quantity: 5, price: 150.00 }
-    ],
-    total: 750.00,
-    tracking: null,
-    estimatedDelivery: null
-  }
-]
-
 const statusConfig: Record<string, { label: string; icon: LucideIcon; color: string; bgColor: string }> = {
+  awaiting_payment: {
+    label: 'Awaiting Payment',
+    icon: Clock,
+    color: 'text-orange-600',
+    bgColor: 'bg-orange-100'
+  },
   pending: {
     label: 'Pending',
     icon: Clock,
@@ -105,18 +63,31 @@ const statusConfig: Record<string, { label: string; icon: LucideIcon; color: str
 
 export default function OrdersPage() {
   const { user, loading } = useAuth()
+  const authFetch = useAuthFetch()
+  const [orders, setOrders] = useState<OrderRecord[]>([])
+  const [ordersLoading, setOrdersLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('all')
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null)
 
-  const filteredOrders = mockOrders.filter(order => {
+  useEffect(() => {
+    if (!user) return
+    authFetch('/api/orders')
+      .then((res) => res.json())
+      .then((data) => setOrders(data.orders || []))
+      .catch(() => setOrders([]))
+      .finally(() => setOrdersLoading(false))
+  }, [user, authFetch])
+
+  const filteredOrders = orders.filter(order => {
     const matchesSearch = order.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      order.orderRef.toLowerCase().includes(searchQuery.toLowerCase()) ||
       order.items.some(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
     const matchesStatus = statusFilter === 'all' || order.status === statusFilter
     return matchesSearch && matchesStatus
   })
 
-  if (loading) {
+  if (loading || ordersLoading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
@@ -180,6 +151,7 @@ export default function OrdersPage() {
               className="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             >
               <option value="all">All Statuses</option>
+              <option value="awaiting_payment">Awaiting Payment</option>
               <option value="pending">Pending</option>
               <option value="processing">Processing</option>
               <option value="shipped">Shipped</option>
@@ -227,7 +199,7 @@ export default function OrdersPage() {
                           <StatusIcon className={`w-6 h-6 ${status.color}`} />
                         </div>
                         <div>
-                          <h3 className="font-semibold text-slate-900">{order.id}</h3>
+                          <h3 className="font-semibold text-slate-900">{order.orderRef}</h3>
                           <p className="text-sm text-slate-600">
                             {order.items.length} item{order.items.length > 1 ? 's' : ''} • ${order.total.toFixed(2)}
                           </p>
@@ -240,7 +212,7 @@ export default function OrdersPage() {
                             {status.label}
                           </span>
                           <p className="text-sm text-slate-500 mt-1">
-                            Ordered {new Date(order.date).toLocaleDateString()}
+                            Ordered {new Date(order.createdAt).toLocaleDateString()}
                           </p>
                         </div>
                         <ChevronRight

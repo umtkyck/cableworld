@@ -1,4 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { FieldValue } from 'firebase-admin/firestore'
+import { getAdminDb, isAdminConfigured } from '@/lib/firebase-admin'
+import { sendNotificationEmail, escapeHtml } from '@/lib/email'
+
+export const runtime = 'nodejs'
 
 interface ContactFormData {
   name: string
@@ -13,58 +18,39 @@ export async function POST(request: NextRequest) {
   try {
     const data: ContactFormData = await request.json()
 
-    // Validate required fields
     if (!data.name || !data.email || !data.subject || !data.message) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(data.email)) {
-      return NextResponse.json(
-        { error: 'Invalid email format' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Invalid email format' }, { status: 400 })
     }
 
-    // In production, you would:
-    // 1. Send email via service like SendGrid, Resend, or AWS SES
-    // 2. Store in database for tracking
-    // 3. Send notification to support team
+    if (isAdminConfigured()) {
+      await getAdminDb().collection('contacts').add({
+        ...data,
+        createdAt: FieldValue.serverTimestamp(),
+      })
+    }
 
-    // Example with a generic email service (implement based on your provider):
-    // await sendEmail({
-    //   to: 'umtkyck@gmail.com',
-    //   from: 'noreply@harnesscart.com',
-    //   replyTo: data.email,
-    //   subject: `[Contact Form] ${data.subject}`,
-    //   html: `
-    //     <h2>New Contact Form Submission</h2>
-    //     <p><strong>Name:</strong> ${data.name}</p>
-    //     <p><strong>Email:</strong> ${data.email}</p>
-    //     <p><strong>Company:</strong> ${data.company || 'N/A'}</p>
-    //     <p><strong>Phone:</strong> ${data.phone || 'N/A'}</p>
-    //     <p><strong>Subject:</strong> ${data.subject}</p>
-    //     <p><strong>Message:</strong></p>
-    //     <p>${data.message}</p>
-    //   `
-    // })
-
-    // For now, we'll simulate successful submission
-    // In production, replace this with actual email sending logic
-
-    return NextResponse.json({
-      success: true,
-      message: 'Message sent successfully'
+    await sendNotificationEmail({
+      subject: `[Contact] ${data.subject}`,
+      html: `
+        <h2>New contact form submission</h2>
+        <p><strong>Name:</strong> ${escapeHtml(data.name)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(data.email)}</p>
+        <p><strong>Company:</strong> ${escapeHtml(data.company || 'N/A')}</p>
+        <p><strong>Phone:</strong> ${escapeHtml(data.phone || 'N/A')}</p>
+        <p><strong>Subject:</strong> ${escapeHtml(data.subject)}</p>
+        <p><strong>Message:</strong></p>
+        <p>${escapeHtml(data.message).replace(/\n/g, '<br/>')}</p>
+      `,
+      replyTo: data.email,
     })
 
-  } catch (error) {
-    return NextResponse.json(
-      { error: 'Failed to send message. Please try again.' },
-      { status: 500 }
-    )
+    return NextResponse.json({ success: true, message: 'Message sent successfully' })
+  } catch {
+    return NextResponse.json({ error: 'Failed to send message. Please try again.' }, { status: 500 })
   }
 }

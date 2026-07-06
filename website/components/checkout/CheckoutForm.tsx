@@ -11,9 +11,10 @@ import { useRouter } from 'next/navigation';
 interface CheckoutFormProps {
   amount: number;
   quoteId: string;
+  orderRef: string;
 }
 
-export default function CheckoutForm({ amount, quoteId }: CheckoutFormProps) {
+export default function CheckoutForm({ amount, quoteId, orderRef }: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
   const router = useRouter();
@@ -35,7 +36,7 @@ export default function CheckoutForm({ amount, quoteId }: CheckoutFormProps) {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${window.location.origin}/payment/success?quote_id=${quoteId}&amount=${amount}`,
+        return_url: `${window.location.origin}/payment/success?quote_id=${quoteId}&amount=${amount}&order_ref=${orderRef}`,
       },
     });
 

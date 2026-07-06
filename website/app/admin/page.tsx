@@ -1,7 +1,11 @@
 'use client'
 
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import RequireAuth from '@/components/auth/RequireAuth'
 import { useAuth } from '@/context/AuthContext'
+import { useAuthFetch } from '@/lib/hooks/useAuthFetch'
+import type { OrderRecord } from '@/lib/orders/types'
 import {
   Shield,
   Package,
@@ -9,80 +13,73 @@ import {
   Users,
   DollarSign,
   ExternalLink,
-  ChevronRight,
-  Lock
 } from 'lucide-react'
-
-// Operational data would come from a backend in production; these mirror the
-// mock orders shown elsewhere on the site.
-const recentOrders = [
-  { id: 'ORD-2024-00126', customer: 'Acme Robotics', total: 750.0, status: 'Pending', statusColor: 'text-yellow-600 bg-yellow-50' },
-  { id: 'ORD-2024-00125', customer: 'Midwest Controls', total: 2700.0, status: 'Processing', statusColor: 'text-blue-600 bg-blue-50' },
-  { id: 'ORD-2024-00124', customer: 'Vertex Automation', total: 2125.0, status: 'Shipped', statusColor: 'text-purple-600 bg-purple-50' },
-  { id: 'ORD-2024-00123', customer: 'Acme Robotics', total: 2500.0, status: 'Delivered', statusColor: 'text-green-600 bg-green-50' }
-]
 
 const externalTools = [
   { name: 'Stripe Dashboard', description: 'Payments, refunds, payouts', href: 'https://dashboard.stripe.com' },
-  { name: 'Firebase Console', description: 'Users, authentication providers', href: 'https://console.firebase.google.com' },
+  { name: 'Firebase Console', description: 'Users, authentication providers', href: 'https://console.firebase.google.com/project/harnesscart' },
   { name: 'Vercel', description: 'Deployments, environment variables', href: 'https://vercel.com/dashboard' },
-  { name: 'Mercury', description: 'Bank transfers (ACH / wire) reconciliation', href: 'https://mercury.com' }
+  { name: 'Mercury', description: 'Bank transfers (ACH / wire) reconciliation', href: 'https://mercury.com' },
 ]
 
-export default function AdminPage() {
-  const { user, loading, isAdmin } = useAuth()
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
-      </div>
-    )
+function statusColor(status: OrderRecord['status']) {
+  switch (status) {
+    case 'awaiting_payment':
+      return 'text-orange-600 bg-orange-50'
+    case 'pending':
+      return 'text-yellow-600 bg-yellow-50'
+    case 'processing':
+      return 'text-blue-600 bg-blue-50'
+    case 'shipped':
+      return 'text-purple-600 bg-purple-50'
+    case 'delivered':
+      return 'text-green-600 bg-green-50'
+    case 'cancelled':
+      return 'text-red-600 bg-red-50'
+    default: {
+      const _exhaustive: never = status
+      return _exhaustive
+    }
   }
+}
 
-  if (!user || !isAdmin) {
-    return (
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center py-12 px-4">
-        <div className="max-w-md w-full text-center">
-          <Lock className="w-16 h-16 text-slate-300 mx-auto mb-6" />
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Admin Access Required</h1>
-          <p className="text-slate-600 dark:text-slate-400 mb-8">
-            {user
-              ? 'Your account does not have administrator access.'
-              : 'Please sign in with an administrator account to view this page.'}
-          </p>
-          <Link href={user ? '/dashboard' : '/login'} className="btn-primary inline-flex">
-            {user ? 'Back to Dashboard' : 'Sign In'}
-            <ChevronRight className="w-5 h-5 ml-2" />
-          </Link>
-        </div>
-      </div>
-    )
-  }
+function AdminContent() {
+  const { user } = useAuth()
+  const authFetch = useAuthFetch()
+  const [orders, setOrders] = useState<OrderRecord[]>([])
+  const [stats, setStats] = useState({ openOrders: 0, quotesThisWeek: 0, registeredUsers: 0, revenue30d: 0 })
+
+  useEffect(() => {
+    authFetch('/api/admin/orders')
+      .then((res) => res.json())
+      .then((data) => setOrders(data.orders || []))
+      .catch(() => setOrders([]))
+
+    authFetch('/api/admin/stats')
+      .then((res) => res.json())
+      .then((data) => setStats(data))
+      .catch(() => undefined)
+  }, [authFetch])
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 py-8">
       <div className="container-custom">
-        {/* Header */}
         <div className="mb-8 flex items-center gap-3">
           <div className="w-12 h-12 rounded-full bg-slate-900 dark:bg-white flex items-center justify-center">
             <Shield className="w-6 h-6 text-white dark:text-slate-900" />
           </div>
           <div>
             <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Admin Console</h1>
-            <p className="text-slate-600 dark:text-slate-400">
-              God mode · signed in as {user.email}
-            </p>
+            <p className="text-slate-600 dark:text-slate-400">God mode · signed in as {user?.email}</p>
           </div>
         </div>
 
-        {/* Overview stats */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {[
-            { label: 'Open Orders', value: '2', icon: Package },
-            { label: 'Quotes This Week', value: '11', icon: FileText },
-            { label: 'Registered Users', value: '38', icon: Users },
-            { label: 'Revenue (30d)', value: '$8,075', icon: DollarSign }
+            { label: 'Open Orders', value: String(stats.openOrders), icon: Package },
+            { label: 'Quotes This Week', value: String(stats.quotesThisWeek), icon: FileText },
+            { label: 'Registered Users', value: String(stats.registeredUsers), icon: Users },
+            { label: 'Revenue (30d)', value: `$${stats.revenue30d.toLocaleString(undefined, { maximumFractionDigits: 0 })}`, icon: DollarSign },
           ].map((stat) => {
             const Icon = stat.icon
             return (
@@ -96,40 +93,40 @@ export default function AdminPage() {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Recent orders */}
           <div className="lg:col-span-2 bg-white dark:bg-slate-800 rounded-xl shadow-soft overflow-hidden">
             <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
               <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Recent Orders — All Customers</h2>
             </div>
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-left text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
-                  <th className="px-6 py-3 font-medium">Order</th>
-                  <th className="px-6 py-3 font-medium">Customer</th>
-                  <th className="px-6 py-3 font-medium text-right">Total</th>
-                  <th className="px-6 py-3 font-medium text-right">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentOrders.map((order) => (
-                  <tr key={order.id} className="border-b border-slate-100 dark:border-slate-700/50 last:border-0">
-                    <td className="px-6 py-3 font-mono text-slate-900 dark:text-white">{order.id}</td>
-                    <td className="px-6 py-3 text-slate-600 dark:text-slate-300">{order.customer}</td>
-                    <td className="px-6 py-3 text-right font-medium text-slate-900 dark:text-white">
-                      ${order.total.toFixed(2)}
-                    </td>
-                    <td className="px-6 py-3 text-right">
-                      <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${order.statusColor}`}>
-                        {order.status}
-                      </span>
-                    </td>
+            {orders.length === 0 ? (
+              <div className="p-8 text-center text-slate-500">No orders in Firestore yet.</div>
+            ) : (
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
+                    <th className="px-6 py-3 font-medium">Order</th>
+                    <th className="px-6 py-3 font-medium">Customer</th>
+                    <th className="px-6 py-3 font-medium text-right">Total</th>
+                    <th className="px-6 py-3 font-medium text-right">Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {orders.slice(0, 20).map((order) => (
+                    <tr key={order.id} className="border-b border-slate-100 dark:border-slate-700/50 last:border-0">
+                      <td className="px-6 py-3 font-mono text-slate-900 dark:text-white">{order.orderRef}</td>
+                      <td className="px-6 py-3 text-slate-600 dark:text-slate-300">{order.customerEmail}</td>
+                      <td className="px-6 py-3 text-right font-medium text-slate-900 dark:text-white">${order.total.toFixed(2)}</td>
+                      <td className="px-6 py-3 text-right">
+                        <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColor(order.status)}`}>
+                          {order.status.replace('_', ' ')}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
 
-          {/* External tools */}
           <div className="bg-white dark:bg-slate-800 rounded-xl shadow-soft p-6">
             <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Operations</h2>
             <div className="space-y-3">
@@ -149,9 +146,24 @@ export default function AdminPage() {
                 </a>
               ))}
             </div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-6">
+              Enable Facebook & Apple sign-in in{' '}
+              <Link href="https://console.firebase.google.com/project/harnesscart/authentication/providers" className="underline">
+                Firebase Console
+              </Link>
+              .
+            </p>
           </div>
         </div>
       </div>
     </div>
+  )
+}
+
+export default function AdminPage() {
+  return (
+    <RequireAuth adminOnly>
+      <AdminContent />
+    </RequireAuth>
   )
 }

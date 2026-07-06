@@ -1,11 +1,15 @@
 'use client'
 
 import { useState } from 'react'
-import { Copy, Check, Landmark, Mail } from 'lucide-react'
+import Link from 'next/link'
+import { Copy, Check, Landmark, Mail, CheckCircle } from 'lucide-react'
 
 interface BankTransferDetailsProps {
   amount: number
   reference: string
+  onPlaceOrder?: () => Promise<void>
+  placing?: boolean
+  placed?: boolean
 }
 
 const BANK_DETAILS = [
@@ -47,7 +51,13 @@ function CopyButton({ text }: { text: string }) {
   )
 }
 
-export default function BankTransferDetails({ amount, reference }: BankTransferDetailsProps) {
+export default function BankTransferDetails({
+  amount,
+  reference,
+  onPlaceOrder,
+  placing = false,
+  placed = false,
+}: BankTransferDetailsProps) {
   return (
     <div>
       <div className="flex items-center gap-2 mb-4">
@@ -99,6 +109,34 @@ export default function BankTransferDetails({ amount, reference }: BankTransferD
           </p>
         </div>
       </div>
+
+      {onPlaceOrder && (
+        <div className="mt-6">
+          {placed ? (
+            <div className="flex items-center gap-2 text-green-700 bg-green-50 border border-green-200 rounded-lg px-4 py-3 text-sm">
+              <CheckCircle className="w-5 h-5" />
+              Order placed. Send your transfer using the reference above, then email your confirmation.
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => void onPlaceOrder()}
+              disabled={placing}
+              className="w-full bg-primary-500 text-white py-4 px-6 rounded-lg font-semibold hover:bg-primary-600 disabled:opacity-50 transition-colors"
+            >
+              {placing ? 'Placing order…' : 'Place order — pay by bank transfer'}
+            </button>
+          )}
+          {placed && (
+            <Link
+              href="/orders"
+              className="mt-3 block text-center text-sm font-semibold text-primary-600 hover:text-primary-700"
+            >
+              View your orders →
+            </Link>
+          )}
+        </div>
+      )}
     </div>
   )
 }

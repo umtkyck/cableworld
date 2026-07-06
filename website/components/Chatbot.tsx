@@ -20,7 +20,7 @@ const quickReplies = [
 const botResponses: Record<string, string> = {
   'how do i get a quote': 'Getting a quote is easy! Simply click "Get Quote" in the navigation bar, upload your design files (we accept STEP, STL, OBJ, DXF, and PDF formats), and fill out the specifications. Our team will respond within 24 hours with a detailed quote.',
   'what file formats do you accept': 'We accept a wide variety of CAD and design files including: STEP (.step, .stp), STL (.stl), OBJ (.obj), DXF (.dxf), DWG (.dwg), and PDF files. You can also use our online Cable Designer tool to create your harness design from scratch.',
-  'how long does shipping take': 'We offer worldwide shipping! Standard shipping takes 5-7 business days, while express shipping delivers in 2-3 business days. Orders over $1,000 qualify for FREE worldwide shipping.',
+  'how long does shipping take': 'We ship across the US, Canada, and Mexico. Standard shipping takes 5–7 business days; express options are 2–3 business days. Orders over $1,000 qualify for free shipping on the lowest-cost ground option.',
   'do you offer bulk discounts': 'Yes! We offer tiered pricing for bulk orders: 10-49 units get 10% off, 50-99 units get 15% off, and 100+ units get 20% off. Contact our sales team for custom enterprise pricing on large orders.',
   'pricing': 'Our pricing is competitive and transparent. Basic cable harnesses start at $25, while complex assemblies are priced based on specifications. Visit our Pricing page for detailed information or get a custom quote.',
   'contact': 'You can reach us at umtkyck@gmail.com or use the Contact page on our website. Our team is available Monday-Friday, 9 AM - 6 PM EST.',

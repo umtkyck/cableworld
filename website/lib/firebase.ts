@@ -10,11 +10,11 @@ const env = (value: string | undefined, fallback: string) => value?.trim() || fa
 // IMPORTANT: Replace these with your actual Firebase project credentials
 const firebaseConfig = {
   apiKey: env(process.env.NEXT_PUBLIC_FIREBASE_API_KEY, "demo-api-key"),
-  authDomain: env(process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN, "cableworld-demo.firebaseapp.com"),
-  projectId: env(process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID, "cableworld-demo"),
-  storageBucket: env(process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET, "cableworld-demo.appspot.com"),
-  messagingSenderId: env(process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID, "123456789"),
-  appId: env(process.env.NEXT_PUBLIC_FIREBASE_APP_ID, "1:123456789:web:abcdef")
+  authDomain: env(process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN, "harnesscart.firebaseapp.com"),
+  projectId: env(process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID, "harnesscart"),
+  storageBucket: env(process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET, "harnesscart.firebasestorage.app"),
+  messagingSenderId: env(process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID, "88251229440"),
+  appId: env(process.env.NEXT_PUBLIC_FIREBASE_APP_ID, "1:88251229440:web:74c401daaf5b2d18f87fe5")
 }
 
 // Initialize Firebase

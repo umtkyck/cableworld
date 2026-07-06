@@ -9,12 +9,16 @@ import BankTransferDetails from '@/components/checkout/BankTransferDetails';
 import { CreditCard, Landmark } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
+import { useAuthFetch } from '@/lib/hooks/useAuthFetch';
 
 type PaymentMethod = 'card' | 'bank';
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
   const { cart, cartCount, cartTotal, isLoaded: cartLoaded } = useCart();
+  const authFetch = useAuthFetch();
+  const [bankPlacing, setBankPlacing] = useState(false);
+  const [bankPlaced, setBankPlaced] = useState(false);
   const [clientSecret, setClientSecret] = useState('');
   const [shipping, setShipping] = useState<ShippingSelection | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('card');
@@ -76,8 +80,12 @@ function CheckoutContent() {
       body: JSON.stringify({
         amount,
         quoteId,
-        customerEmail,
-        customerName,
+        orderRef,
+        customerEmail: customerEmail || shipping.address.name,
+        customerName: shipping.address.name || customerName,
+        items: isCartCheckout
+          ? cart.map((item) => ({ name: item.name, quantity: item.quantity, price: item.price }))
+          : [{ name: `Quote ${quoteId}`, quantity: 1, price: subtotal }],
         shipping: {
           carrierName: shipping.rate.carrierName,
           service: shipping.rate.service,
@@ -99,7 +107,42 @@ function CheckoutContent() {
       .catch(() => {
         setCardError('Failed to initialize card payment');
       });
-  }, [amount, quoteId, customerEmail, customerName, isValidAmount, isCartCheckout, cartLoaded, shipping, paymentMethod, clientSecret]);
+  }, [amount, quoteId, orderRef, customerEmail, customerName, isValidAmount, isCartCheckout, cartLoaded, shipping, paymentMethod, clientSecret, cart, subtotal]);
+
+  const placeBankOrder = async () => {
+    if (!shipping) return
+    setBankPlacing(true)
+    try {
+      const res = await authFetch('/api/orders/bank-transfer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderRef,
+          quoteId,
+          customerEmail: customerEmail || shipping.address.name,
+          customerName: shipping.address.name || customerName,
+          subtotal,
+          shippingCost,
+          total: amount,
+          items: isCartCheckout
+            ? cart.map((item) => ({ name: item.name, quantity: item.quantity, price: item.price }))
+            : [{ name: `Quote ${quoteId}`, quantity: 1, price: subtotal }],
+          shipping: {
+            carrierName: shipping.rate.carrierName,
+            service: shipping.rate.service,
+            amount: shipping.rate.amount,
+            address: shipping.address,
+          },
+        }),
+      })
+      if (!res.ok) throw new Error('Failed to place order')
+      setBankPlaced(true)
+    } catch {
+      setCardError('Could not place bank transfer order. Please try again or contact support.')
+    } finally {
+      setBankPlacing(false)
+    }
+  }
 
   const appearance = {
     theme: 'stripe' as const,
@@ -310,14 +353,20 @@ function CheckoutContent() {
                           options={{ clientSecret, appearance }}
                           stripe={getStripe()}
                         >
-                          <CheckoutForm amount={amount} quoteId={quoteId} />
+                          <CheckoutForm amount={amount} quoteId={quoteId} orderRef={orderRef} />
                         </Elements>
                       )}
                     </>
                   )}
 
                   {paymentMethod === 'bank' && (
-                    <BankTransferDetails amount={amount} reference={orderRef} />
+                    <BankTransferDetails
+                      amount={amount}
+                      reference={orderRef}
+                      onPlaceOrder={placeBankOrder}
+                      placing={bankPlacing}
+                      placed={bankPlaced}
+                    />
                   )}
                 </>
               )}

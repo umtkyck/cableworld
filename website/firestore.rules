@@ -10,11 +10,33 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
 
-    // User profiles created on sign-up / first social login.
     match /users/{userId} {
       allow read: if isOwner(userId);
       allow create: if isOwner(userId);
       allow update: if isOwner(userId);
+    }
+
+    match /orders/{orderId} {
+      allow read: if isSignedIn()
+        && (resource.data.userId == request.auth.uid
+          || resource.data.customerEmail == request.auth.token.email);
+      allow write: if false;
+    }
+
+    match /quotes/{quoteId} {
+      allow read: if isSignedIn()
+        && (resource.data.userId == request.auth.uid
+          || resource.data.customerEmail == request.auth.token.email);
+      allow create: if false;
+      allow update, delete: if false;
+    }
+
+    match /contacts/{contactId} {
+      allow read, write: if false;
+    }
+
+    match /newsletter/{email} {
+      allow read, write: if false;
     }
   }
 }
