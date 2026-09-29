@@ -10,15 +10,19 @@ export default function PrivacyPage() {
     <div className="min-h-screen bg-white dark:bg-slate-900">
       <section className="section-padding bg-slate-50 dark:bg-slate-800/50">
         <div className="container-custom max-w-3xl">
-          <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-3">Privacy Policy</h1>
+          <h1 className="mb-3 text-4xl font-bold text-slate-900 dark:text-slate-100 sm:text-5xl">
+            Privacy Policy
+          </h1>
           <p className="text-slate-500 dark:text-slate-400">Last updated: February 2026</p>
         </div>
       </section>
 
       <section className="py-16">
-        <div className="container-custom max-w-3xl space-y-10 text-slate-700 dark:text-slate-300 leading-relaxed">
+        <div className="container-custom max-w-3xl space-y-10 leading-relaxed text-slate-700 dark:text-slate-300">
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">1. Information We Collect</h2>
+            <h2 className="mb-3 text-2xl font-bold text-slate-900 dark:text-slate-100">
+              1. Information We Collect
+            </h2>
             <p>
               We collect information you provide directly: account details (name, email, company),
               design files you upload for quoting, order and payment information, and messages you
@@ -28,17 +32,21 @@ export default function PrivacyPage() {
           </div>
 
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">2. How We Use Your Information</h2>
+            <h2 className="mb-3 text-2xl font-bold text-slate-900 dark:text-slate-100">
+              2. How We Use Your Information
+            </h2>
             <p>
               Your data is used to generate quotes, manufacture and ship your orders, process
-              payments, provide support, and improve our services. Design files are shared only
-              with the manufacturing partner fulfilling your order, under strict confidentiality
+              payments, provide support, and improve our services. Design files are shared only with
+              the manufacturing partner fulfilling your order, under strict confidentiality
               agreements. We never sell your personal data.
             </p>
           </div>
 
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">3. Intellectual Property Protection</h2>
+            <h2 className="mb-3 text-2xl font-bold text-slate-900 dark:text-slate-100">
+              3. Intellectual Property Protection
+            </h2>
             <p>
               You retain full ownership of all designs you upload. Files are encrypted in transit
               and at rest, access is limited to personnel and partners directly involved in your
@@ -47,7 +55,9 @@ export default function PrivacyPage() {
           </div>
 
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">4. Data Sharing</h2>
+            <h2 className="mb-3 text-2xl font-bold text-slate-900 dark:text-slate-100">
+              4. Data Sharing
+            </h2>
             <p>
               We share data only with: manufacturing partners fulfilling your orders, payment
               processors (Stripe), cloud infrastructure providers, and authorities when legally
@@ -56,7 +66,9 @@ export default function PrivacyPage() {
           </div>
 
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">5. Your Rights</h2>
+            <h2 className="mb-3 text-2xl font-bold text-slate-900 dark:text-slate-100">
+              5. Your Rights
+            </h2>
             <p>
               You may access, correct, export, or delete your personal data at any time from your
               account settings or by contacting us. EU and California residents have additional
@@ -65,11 +77,25 @@ export default function PrivacyPage() {
           </div>
 
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">6. Contact</h2>
+            <h2 className="mb-3 text-2xl font-bold text-slate-900 dark:text-slate-100">
+              6. Contact
+            </h2>
             <p>
               Questions about this policy? Email{' '}
-              <a href="mailto:privacy@harnesscart.com" className="text-primary-500 hover:text-primary-600 font-semibold">privacy@harnesscart.com</a>{' '}
-              or use our <Link href="/contact" className="text-primary-500 hover:text-primary-600 font-semibold">contact form</Link>.
+              <a
+                href="mailto:privacy@harnesscart.com"
+                className="font-semibold text-primary-500 hover:text-primary-600"
+              >
+                privacy@harnesscart.com
+              </a>{' '}
+              or use our{' '}
+              <Link
+                href="/contact"
+                className="font-semibold text-primary-500 hover:text-primary-600"
+              >
+                contact form
+              </Link>
+              .
             </p>
           </div>
         </div>

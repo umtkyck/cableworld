@@ -11,7 +11,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   FacebookAuthProvider,
-  OAuthProvider
+  OAuthProvider,
 } from 'firebase/auth'
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
 import { auth, db } from '@/lib/firebase'
@@ -48,7 +48,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       // Update profile with display name
       await updateProfile(userCredential.user, {
-        displayName: displayName
+        displayName: displayName,
       })
 
       // Save user profile to Firestore (including company)
@@ -57,7 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         displayName: displayName,
         company: company || '',
         createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
+        updatedAt: serverTimestamp(),
       })
 
       setUser(userCredential.user)
@@ -94,7 +94,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const userCredential = await signInWithPopup(auth, provider)
       setUser(userCredential.user)
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to sign in with Facebook'
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to sign in with Facebook'
       throw new Error(errorMessage)
     }
   }
@@ -121,16 +122,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{
-      user,
-      loading,
-      signUp,
-      signIn,
-      signInWithGoogle,
-      signInWithFacebook,
-      signInWithApple,
-      logout
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        signUp,
+        signIn,
+        signInWithGoogle,
+        signInWithFacebook,
+        signInWithApple,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )

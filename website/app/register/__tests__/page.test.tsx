@@ -185,7 +185,7 @@ describe('RegisterPage', () => {
 
   it('should show loading state during registration', async () => {
     const user = userEvent.setup()
-    mockSignUp.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 1000)))
+    mockSignUp.mockImplementation(() => new Promise((resolve) => setTimeout(resolve, 1000)))
 
     render(<RegisterPage />)
 
@@ -242,9 +242,9 @@ describe('RegisterPage', () => {
     expect(screen.getByText('Or sign up with')).toBeInTheDocument()
 
     // There should be 3 social login buttons
-    const socialButtons = screen.getAllByRole('button').filter(
-      button => button.closest('.grid.grid-cols-3')
-    )
+    const socialButtons = screen
+      .getAllByRole('button')
+      .filter((button) => button.closest('.grid.grid-cols-3'))
     expect(socialButtons.length).toBe(3)
   })
 })

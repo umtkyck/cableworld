@@ -1,8 +1,8 @@
 'use client'
 
-import { useRef, useMemo, useEffect } from 'react'
+import { useRef, useMemo } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { MeshTransmissionMaterial, MeshDistortMaterial, Float } from '@react-three/drei'
+import { Float } from '@react-three/drei'
 import * as THREE from 'three'
 
 // Custom shader material with dither effect
@@ -11,7 +11,7 @@ interface DitherMaterialProps {
   resolution: THREE.Vector2
 }
 
-const DitherMaterial = ({ time, resolution }: DitherMaterialProps) => {
+const DitherMaterial = ({ resolution }: DitherMaterialProps) => {
   const materialRef = useRef<THREE.ShaderMaterial>(null)
 
   const uniforms = useMemo(
@@ -50,7 +50,10 @@ const DitherMaterial = ({ time, resolution }: DitherMaterialProps) => {
 const DitherSphere = () => {
   const meshRef = useRef<THREE.Mesh>(null)
   const { size } = useThree()
-  const resolution = useMemo(() => new THREE.Vector2(size.width, size.height), [size.width, size.height])
+  const resolution = useMemo(
+    () => new THREE.Vector2(size.width, size.height),
+    [size.width, size.height]
+  )
 
   useFrame((state) => {
     if (meshRef.current) {

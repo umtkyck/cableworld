@@ -34,7 +34,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const toggleTheme = () => {
-    setIsDark(prev => {
+    setIsDark((prev) => {
       const newValue = !prev
       if (newValue) {
         document.documentElement.classList.add('dark')
@@ -47,11 +47,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     })
   }
 
-  return (
-    <ThemeContext.Provider value={{ isDark, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  )
+  return <ThemeContext.Provider value={{ isDark, toggleTheme }}>{children}</ThemeContext.Provider>
 }
 
 export function useTheme() {

@@ -16,7 +16,7 @@ export default function ShopPage() {
     { id: 'ethernet', name: 'Ethernet & Network' },
     { id: 'audio', name: 'Audio Cables' },
     { id: 'automotive', name: 'Automotive' },
-    { id: 'industrial', name: 'Industrial' }
+    { id: 'industrial', name: 'Industrial' },
   ]
 
   const products = [
@@ -29,7 +29,7 @@ export default function ShopPage() {
       price: '$12.99',
       minOrder: 50,
       image: '🔌',
-      specs: ['USB 3.2 Gen 2', '10Gbps', '100W PD', 'Custom lengths']
+      specs: ['USB 3.2 Gen 2', '10Gbps', '100W PD', 'Custom lengths'],
     },
     {
       id: 2,
@@ -40,7 +40,7 @@ export default function ShopPage() {
       price: '$15.99',
       minOrder: 50,
       image: '⚡',
-      specs: ['MFi Certified', 'Fast charging', 'Durable braiding', 'Custom colors']
+      specs: ['MFi Certified', 'Fast charging', 'Durable braiding', 'Custom colors'],
     },
     {
       id: 3,
@@ -51,7 +51,7 @@ export default function ShopPage() {
       price: '$18.99',
       minOrder: 25,
       image: '📺',
-      specs: ['HDMI 2.1', '48Gbps', 'eARC', 'Custom lengths']
+      specs: ['HDMI 2.1', '48Gbps', 'eARC', 'Custom lengths'],
     },
     {
       id: 4,
@@ -61,7 +61,7 @@ export default function ShopPage() {
       price: '$16.99',
       minOrder: 25,
       image: '🖥️',
-      specs: ['DP 1.4', '8K ready', 'HDR', 'Custom connectors']
+      specs: ['DP 1.4', '8K ready', 'HDR', 'Custom connectors'],
     },
     {
       id: 5,
@@ -71,7 +71,7 @@ export default function ShopPage() {
       price: '$4.99',
       minOrder: 100,
       image: '🔋',
-      specs: ['15A rated', 'UL listed', 'Various lengths', 'Bulk pricing']
+      specs: ['15A rated', 'UL listed', 'Various lengths', 'Bulk pricing'],
     },
     {
       id: 6,
@@ -81,7 +81,7 @@ export default function ShopPage() {
       price: '$8.99',
       minOrder: 50,
       image: '⚡',
-      specs: ['5.5x2.1mm', '12V/24V', 'Custom gauges', 'Various connectors']
+      specs: ['5.5x2.1mm', '12V/24V', 'Custom gauges', 'Various connectors'],
     },
     {
       id: 7,
@@ -91,7 +91,7 @@ export default function ShopPage() {
       price: '$6.99',
       minOrder: 100,
       image: '🌐',
-      specs: ['Cat6A', '10Gbps', 'Shielded', 'Custom colors']
+      specs: ['Cat6A', '10Gbps', 'Shielded', 'Custom colors'],
     },
     {
       id: 8,
@@ -101,7 +101,7 @@ export default function ShopPage() {
       price: '$24.99',
       minOrder: 20,
       image: '💫',
-      specs: ['LC/SC connectors', 'Single/Multi-mode', 'Low loss', 'Custom lengths']
+      specs: ['LC/SC connectors', 'Single/Multi-mode', 'Low loss', 'Custom lengths'],
     },
     {
       id: 9,
@@ -111,7 +111,7 @@ export default function ShopPage() {
       price: '$11.99',
       minOrder: 50,
       image: '🎤',
-      specs: ['3-pin XLR', 'Balanced', 'Low noise', 'Various lengths']
+      specs: ['3-pin XLR', 'Balanced', 'Low noise', 'Various lengths'],
     },
     {
       id: 10,
@@ -121,7 +121,7 @@ export default function ShopPage() {
       price: '$5.99',
       minOrder: 100,
       image: '🎧',
-      specs: ['Gold plated', 'Stereo', 'Flexible', 'Bulk available']
+      specs: ['Gold plated', 'Stereo', 'Flexible', 'Bulk available'],
     },
     {
       id: 11,
@@ -131,7 +131,7 @@ export default function ShopPage() {
       price: 'Quote',
       minOrder: 10,
       image: '🚗',
-      specs: ['Waterproof', 'Temperature rated', 'Custom design', 'ISO certified']
+      specs: ['Waterproof', 'Temperature rated', 'Custom design', 'ISO certified'],
     },
     {
       id: 12,
@@ -141,7 +141,7 @@ export default function ShopPage() {
       price: '$22.99',
       minOrder: 25,
       image: '🔧',
-      specs: ['16-pin connector', 'CAN compatible', 'Shielded', 'Custom protocols']
+      specs: ['16-pin connector', 'CAN compatible', 'Shielded', 'Custom protocols'],
     },
     {
       id: 13,
@@ -151,7 +151,7 @@ export default function ShopPage() {
       price: 'Quote',
       minOrder: 100,
       image: '⚙️',
-      specs: ['Shielded', 'Oil resistant', 'Flex rated', 'Custom cores']
+      specs: ['Shielded', 'Oil resistant', 'Flex rated', 'Custom cores'],
     },
     {
       id: 14,
@@ -161,7 +161,7 @@ export default function ShopPage() {
       price: '$13.99',
       minOrder: 50,
       image: '📡',
-      specs: ['M12 connectors', 'IP67 rated', 'PVC/PUR jacket', 'Custom lengths']
+      specs: ['M12 connectors', 'IP67 rated', 'PVC/PUR jacket', 'Custom lengths'],
     },
     {
       id: 15,
@@ -171,14 +171,15 @@ export default function ShopPage() {
       price: 'Quote',
       minOrder: 25,
       image: '⚡',
-      specs: ['High current', 'Flexible', 'Temperature rated', 'Custom voltage']
-    }
+      specs: ['High current', 'Flexible', 'Temperature rated', 'Custom voltage'],
+    },
   ]
 
-  const filteredProducts = products.filter(product => {
+  const filteredProducts = products.filter((product) => {
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         product.description.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesSearch =
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.description.toLowerCase().includes(searchQuery.toLowerCase())
     return matchesCategory && matchesSearch
   })
 
@@ -187,43 +188,42 @@ export default function ShopPage() {
       {/* Hero Section */}
       <section className="section-padding bg-gradient-to-br from-primary-500 to-primary-600 text-white">
         <div className="container-custom text-center">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-            Custom Cable Shop
-          </h1>
-          <p className="text-xl sm:text-2xl text-slate-200 max-w-3xl mx-auto">
-            Browse our most popular custom cable products. All cables can be customized to your exact specifications.
+          <h1 className="mb-6 text-4xl font-bold sm:text-5xl lg:text-6xl">Custom Cable Shop</h1>
+          <p className="mx-auto max-w-3xl text-xl text-slate-200 sm:text-2xl">
+            Browse our most popular custom cable products. All cables can be customized to your
+            exact specifications.
           </p>
         </div>
       </section>
 
       {/* Filters & Search */}
-      <section className="section-padding bg-slate-50 border-b">
+      <section className="section-padding border-b bg-slate-50">
         <div className="container-custom">
           {/* Search Bar */}
-          <div className="max-w-2xl mx-auto mb-8">
+          <div className="mx-auto mb-8 max-w-2xl">
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+              <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 transform text-slate-400" />
               <input
                 type="text"
                 placeholder="Search cables..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full rounded-lg border border-slate-300 py-4 pl-12 pr-4 focus:border-transparent focus:ring-2 focus:ring-primary-500"
               />
             </div>
           </div>
 
           {/* Category Filters */}
-          <div className="flex items-center gap-3 mb-4">
-            <Filter className="w-5 h-5 text-slate-600" />
+          <div className="mb-4 flex items-center gap-3">
+            <Filter className="h-5 w-5 text-slate-600" />
             <span className="font-semibold text-slate-900">Categories:</span>
           </div>
           <div className="flex flex-wrap gap-3">
-            {categories.map(category => (
+            {categories.map((category) => (
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-2 rounded-lg font-medium transition ${
+                className={`rounded-lg px-4 py-2 font-medium transition ${
                   selectedCategory === category.id
                     ? 'bg-primary-500 text-white'
                     : 'bg-white text-slate-700 hover:bg-slate-100'
@@ -245,41 +245,39 @@ export default function ShopPage() {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {filteredProducts.map(product => (
-              <div key={product.id} className="bg-white rounded-xl shadow-soft hover:shadow-large transition-shadow overflow-hidden group">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+            {filteredProducts.map((product) => (
+              <div
+                key={product.id}
+                className="group overflow-hidden rounded-xl bg-white shadow-soft transition-shadow hover:shadow-large"
+              >
                 {/* Product Image */}
-                <div className="aspect-square bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center text-8xl group-hover:scale-105 transition-transform">
+                <div className="flex aspect-square items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 text-8xl transition-transform group-hover:scale-105">
                   {product.image}
                 </div>
 
                 {/* Product Info */}
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">
-                    {product.name}
-                  </h3>
-                  <p className="text-slate-600 mb-4 text-sm">
-                    {product.description}
-                  </p>
+                  <h3 className="mb-2 text-xl font-bold text-slate-900">{product.name}</h3>
+                  <p className="mb-4 text-sm text-slate-600">{product.description}</p>
 
                   {/* Specs */}
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <div className="mb-4 flex flex-wrap gap-2">
                     {product.specs.slice(0, 2).map((spec, index) => (
-                      <span key={index} className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">
+                      <span
+                        key={index}
+                        className="rounded bg-slate-100 px-2 py-1 text-xs text-slate-700"
+                      >
                         {spec}
                       </span>
                     ))}
                   </div>
 
                   {/* Price & MOQ */}
-                  <div className="flex items-end justify-between mb-4">
+                  <div className="mb-4 flex items-end justify-between">
                     <div>
-                      <div className="text-2xl font-bold text-primary-500">
-                        {product.price}
-                      </div>
-                      <div className="text-xs text-slate-500">
-                        MOQ: {product.minOrder} units
-                      </div>
+                      <div className="text-2xl font-bold text-primary-500">{product.price}</div>
+                      <div className="text-xs text-slate-500">MOQ: {product.minOrder} units</div>
                     </div>
                   </div>
 
@@ -288,7 +286,7 @@ export default function ShopPage() {
                     href={`/quote?product=${encodeURIComponent(product.name)}`}
                     className="btn-primary w-full justify-center"
                   >
-                    <ShoppingCart className="w-4 h-4 mr-2" />
+                    <ShoppingCart className="mr-2 h-4 w-4" />
                     Request Quote
                   </Link>
                 </div>
@@ -297,8 +295,8 @@ export default function ShopPage() {
           </div>
 
           {filteredProducts.length === 0 && (
-            <div className="text-center py-16">
-              <p className="text-xl text-slate-600 mb-4">No products found</p>
+            <div className="py-16 text-center">
+              <p className="mb-4 text-xl text-slate-600">No products found</p>
               <button
                 onClick={() => {
                   setSelectedCategory('all')
@@ -316,18 +314,22 @@ export default function ShopPage() {
       {/* Custom Cable CTA */}
       <section className="section-padding bg-slate-50">
         <div className="container-custom text-center">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+          <div className="mx-auto max-w-3xl">
+            <h2 className="mb-4 text-3xl font-bold text-slate-900 sm:text-4xl">
               Don't See What You Need?
             </h2>
-            <p className="text-lg text-slate-600 mb-8">
-              We can manufacture any custom cable to your exact specifications. Upload your design or tell us what you need.
+            <p className="mb-8 text-lg text-slate-600">
+              We can manufacture any custom cable to your exact specifications. Upload your design
+              or tell us what you need.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <Link href="/quote" className="btn-primary text-lg">
                 Get Custom Quote
               </Link>
-              <Link href="/contact" className="btn border-2 border-primary-500 text-primary-500 hover:bg-primary-50 text-lg">
+              <Link
+                href="/contact"
+                className="btn border-2 border-primary-500 text-lg text-primary-500 hover:bg-primary-50"
+              >
                 Talk to an Engineer
               </Link>
             </div>

@@ -27,8 +27,8 @@ const posts = {
 
       <h2>Conclusion</h2>
       <p>By carefully considering these factors, you can select a cable harness that meets your project's technical and budgetary requirements.</p>
-    `
-  }
+    `,
+  },
 }
 
 export default function BlogPostPage({ params }: { params: { slug: string } }) {
@@ -41,31 +41,32 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   return (
     <div className="min-h-screen bg-white">
       <div className="container-custom section-padding max-w-4xl">
-        <Link href="/blog" className="flex items-center gap-2 text-slate-600 hover:text-primary-500 mb-8">
-          <ArrowLeft className="w-5 h-5" />
+        <Link
+          href="/blog"
+          className="mb-8 flex items-center gap-2 text-slate-600 hover:text-primary-500"
+        >
+          <ArrowLeft className="h-5 w-5" />
           Back to Blog
         </Link>
 
         <article>
           <div className="mb-8">
-            <span className="text-sm font-semibold text-accent-green uppercase mb-4 block">
+            <span className="mb-4 block text-sm font-semibold uppercase text-accent-green">
               {post.category}
             </span>
-            <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-6">
-              {post.title}
-            </h1>
+            <h1 className="mb-6 text-4xl font-bold text-slate-900 sm:text-5xl">{post.title}</h1>
 
             <div className="flex items-center gap-6 text-slate-600">
               <span className="flex items-center gap-2">
-                <User className="w-5 h-5" />
+                <User className="h-5 w-5" />
                 {post.author}
               </span>
               <span className="flex items-center gap-2">
-                <Calendar className="w-5 h-5" />
+                <Calendar className="h-5 w-5" />
                 {new Date(post.date).toLocaleDateString()}
               </span>
               <span className="flex items-center gap-2">
-                <Clock className="w-5 h-5" />
+                <Clock className="h-5 w-5" />
                 {post.readTime}
               </span>
             </div>
@@ -76,9 +77,9 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
-          <div className="mt-12 pt-8 border-t">
+          <div className="mt-12 border-t pt-8">
             <Link href="/blog" className="btn-primary">
-              <ArrowLeft className="w-5 h-5 mr-2" />
+              <ArrowLeft className="mr-2 h-5 w-5" />
               Back to All Posts
             </Link>
           </div>

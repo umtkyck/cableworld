@@ -4,7 +4,8 @@ import { CartProvider, useCart, CartItem } from '../CartContext'
 
 // Test component to access context
 function TestComponent() {
-  const { cart, addToCart, removeFromCart, updateQuantity, clearCart, cartCount, cartTotal } = useCart()
+  const { cart, addToCart, removeFromCart, updateQuantity, clearCart, cartCount, cartTotal } =
+    useCart()
 
   const sampleItem: CartItem = {
     id: 1,

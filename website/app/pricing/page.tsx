@@ -14,10 +14,10 @@ export default function PricingPage() {
         'Email support',
         'IPC-620 compliant',
         'Basic DFM analysis',
-        'Secure payment processing'
+        'Secure payment processing',
       ],
       cta: 'Get Started',
-      popular: false
+      popular: false,
     },
     {
       name: 'Business',
@@ -32,10 +32,10 @@ export default function PricingPage() {
         'Volume discounts (up to 15%)',
         'Phone & chat support',
         'Custom NET payment terms',
-        'Quarterly business reviews'
+        'Quarterly business reviews',
       ],
       cta: 'Start Free Trial',
-      popular: true
+      popular: true,
     },
     {
       name: 'Enterprise',
@@ -51,11 +51,11 @@ export default function PricingPage() {
         'Dedicated engineering support',
         'Volume discounts (up to 30%)',
         'SLA guarantees',
-        'Executive reporting'
+        'Executive reporting',
       ],
       cta: 'Contact Sales',
-      popular: false
-    }
+      popular: false,
+    },
   ]
 
   const pricing = {
@@ -64,8 +64,8 @@ export default function PricingPage() {
       { quantity: '11-50 units', price: '$35-120', leadTime: '7-10 days' },
       { quantity: '51-100 units', price: '$25-90', leadTime: '5-7 days' },
       { quantity: '101-500 units', price: '$18-65', leadTime: '7-14 days' },
-      { quantity: '500+ units', price: 'Custom Quote', leadTime: '14-21 days' }
-    ]
+      { quantity: '500+ units', price: 'Custom Quote', leadTime: '14-21 days' },
+    ],
   }
 
   return (
@@ -73,10 +73,10 @@ export default function PricingPage() {
       {/* Hero Section */}
       <section className="section-padding bg-gradient-to-br from-primary-500 to-primary-600 text-white">
         <div className="container-custom text-center">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
+          <h1 className="mb-6 text-4xl font-bold sm:text-5xl lg:text-6xl">
             Simple, Transparent Pricing
           </h1>
-          <p className="text-xl sm:text-2xl text-slate-200 max-w-3xl mx-auto">
+          <p className="mx-auto max-w-3xl text-xl text-slate-200 sm:text-2xl">
             Pay only for what you need. No hidden fees, no surprises.
           </p>
         </div>
@@ -85,32 +85,32 @@ export default function PricingPage() {
       {/* Pricing Plans */}
       <section className="section-padding bg-slate-50">
         <div className="container-custom">
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid gap-8 lg:grid-cols-3">
             {plans.map((plan, index) => (
               <div
                 key={index}
-                className={`bg-white rounded-2xl p-8 ${
-                  plan.popular
-                    ? 'ring-2 ring-accent-green shadow-large relative'
-                    : 'shadow-soft'
+                className={`rounded-2xl bg-white p-8 ${
+                  plan.popular ? 'relative shadow-large ring-2 ring-accent-green' : 'shadow-soft'
                 }`}
               >
                 {plan.popular && (
-                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <span className="bg-accent-green text-white px-4 py-1 rounded-full text-sm font-semibold">
+                  <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 transform">
+                    <span className="rounded-full bg-accent-green px-4 py-1 text-sm font-semibold text-white">
                       Most Popular
                     </span>
                   </div>
                 )}
 
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">{plan.name}</h3>
-                <div className="text-4xl font-bold text-primary-500 mb-4">{plan.price}</div>
-                <p className="text-slate-600 mb-8">{plan.description}</p>
+                <h3 className="mb-2 text-2xl font-bold text-slate-900">{plan.name}</h3>
+                <div className="mb-4 text-4xl font-bold text-primary-500">{plan.price}</div>
+                <p className="mb-8 text-slate-600">{plan.description}</p>
 
                 <Link
                   href={plan.name === 'Enterprise' ? '/contact' : '/quote'}
-                  className={`btn w-full justify-center mb-8 ${
-                    plan.popular ? 'btn-primary' : 'border-2 border-primary-500 text-primary-500 hover:bg-primary-50'
+                  className={`btn mb-8 w-full justify-center ${
+                    plan.popular
+                      ? 'btn-primary'
+                      : 'border-2 border-primary-500 text-primary-500 hover:bg-primary-50'
                   }`}
                 >
                   {plan.cta}
@@ -119,7 +119,7 @@ export default function PricingPage() {
                 <ul className="space-y-4">
                   {plan.features.map((feature, fIndex) => (
                     <li key={fIndex} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-accent-green flex-shrink-0 mt-0.5" />
+                      <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-accent-green" />
                       <span className="text-slate-600">{feature}</span>
                     </li>
                   ))}
@@ -133,8 +133,8 @@ export default function PricingPage() {
       {/* Base Pricing Table */}
       <section className="section-padding">
         <div className="container-custom max-w-4xl">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-3xl font-bold text-slate-900 sm:text-4xl">
               Estimated Base Pricing
             </h2>
             <p className="text-lg text-slate-600">
@@ -142,7 +142,7 @@ export default function PricingPage() {
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-large overflow-hidden">
+          <div className="overflow-hidden rounded-2xl bg-white shadow-large">
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-primary-500 text-white">
@@ -166,9 +166,9 @@ export default function PricingPage() {
           </div>
 
           <div className="mt-8 text-center">
-            <Link href="/quote" className="btn-primary inline-flex text-lg group">
+            <Link href="/quote" className="btn-primary group inline-flex text-lg">
               Get Your Exact Quote
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
         </div>
@@ -177,44 +177,44 @@ export default function PricingPage() {
       {/* FAQ Section */}
       <section className="section-padding bg-slate-50">
         <div className="container-custom max-w-4xl">
-          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-12 text-center">
+          <h2 className="mb-12 text-center text-3xl font-bold text-slate-900 sm:text-4xl">
             Pricing FAQs
           </h2>
 
           <div className="space-y-6">
-            <div className="bg-white rounded-xl p-6 shadow-soft">
-              <h3 className="text-xl font-bold text-slate-900 mb-2">
+            <div className="rounded-xl bg-white p-6 shadow-soft">
+              <h3 className="mb-2 text-xl font-bold text-slate-900">
                 What's included in the price?
               </h3>
               <p className="text-slate-600">
-                All quotes include materials, labor, assembly, testing, and standard packaging. Shipping is calculated separately based on destination and urgency.
+                All quotes include materials, labor, assembly, testing, and standard packaging.
+                Shipping is calculated separately based on destination and urgency.
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-6 shadow-soft">
-              <h3 className="text-xl font-bold text-slate-900 mb-2">
-                Are there any hidden fees?
-              </h3>
+            <div className="rounded-xl bg-white p-6 shadow-soft">
+              <h3 className="mb-2 text-xl font-bold text-slate-900">Are there any hidden fees?</h3>
               <p className="text-slate-600">
-                No. We believe in transparent pricing. The quote you receive is what you pay. The only additional cost would be expedited shipping if requested.
+                No. We believe in transparent pricing. The quote you receive is what you pay. The
+                only additional cost would be expedited shipping if requested.
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-6 shadow-soft">
-              <h3 className="text-xl font-bold text-slate-900 mb-2">
+            <div className="rounded-xl bg-white p-6 shadow-soft">
+              <h3 className="mb-2 text-xl font-bold text-slate-900">
                 Can I get a discount for large orders?
               </h3>
               <p className="text-slate-600">
-                Yes! Volume discounts are automatically applied to orders over 50 units. Business and Enterprise plans receive additional discounts up to 30%.
+                Yes! Volume discounts are automatically applied to orders over 50 units. Business
+                and Enterprise plans receive additional discounts up to 30%.
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-6 shadow-soft">
-              <h3 className="text-xl font-bold text-slate-900 mb-2">
-                Do you offer payment terms?
-              </h3>
+            <div className="rounded-xl bg-white p-6 shadow-soft">
+              <h3 className="mb-2 text-xl font-bold text-slate-900">Do you offer payment terms?</h3>
               <p className="text-slate-600">
-                Business and Enterprise plans can access NET-30 or NET-60 payment terms after credit approval. Pay As You Go requires payment at time of order.
+                Business and Enterprise plans can access NET-30 or NET-60 payment terms after credit
+                approval. Pay As You Go requires payment at time of order.
               </p>
             </div>
           </div>

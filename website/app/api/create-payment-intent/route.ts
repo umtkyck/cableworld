@@ -1,20 +1,17 @@
-import { NextRequest, NextResponse } from 'next/server';
-import Stripe from 'stripe';
+import { NextRequest, NextResponse } from 'next/server'
+import Stripe from 'stripe'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2023-10-16',
-});
+})
 
 export async function POST(req: NextRequest) {
   try {
-    const { amount, quoteId, customerEmail, customerName } = await req.json();
+    const { amount, quoteId, customerEmail, customerName } = await req.json()
 
     // Validate amount
     if (!amount || amount <= 0) {
-      return NextResponse.json(
-        { error: 'Invalid amount' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Invalid amount' }, { status: 400 })
     }
 
     // Create a PaymentIntent with the order amount and currency
@@ -31,17 +28,14 @@ export async function POST(req: NextRequest) {
       },
       description: `Harness Cart Quote #${quoteId}`,
       receipt_email: customerEmail,
-    });
+    })
 
     return NextResponse.json({
       clientSecret: paymentIntent.client_secret,
       paymentIntentId: paymentIntent.id,
-    });
+    })
   } catch (err: unknown) {
     const errorMessage = err instanceof Error ? err.message : 'Internal server error'
-    return NextResponse.json(
-      { error: errorMessage },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: errorMessage }, { status: 500 })
   }
 }

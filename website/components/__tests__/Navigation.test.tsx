@@ -43,7 +43,9 @@ describe('Navigation', () => {
       const closeButton = screen.getByRole('button', { name: /close banner/i })
       await user.click(closeButton)
 
-      expect(screen.queryByText('Free Worldwide Shipping on orders over $1,000')).not.toBeInTheDocument()
+      expect(
+        screen.queryByText('Free Worldwide Shipping on orders over $1,000')
+      ).not.toBeInTheDocument()
     })
   })
 
@@ -135,7 +137,9 @@ describe('Navigation', () => {
     it('should display cart icon', () => {
       render(<Navigation />)
 
-      const cartLinks = screen.getAllByRole('link').filter(link => link.getAttribute('href') === '/cart')
+      const cartLinks = screen
+        .getAllByRole('link')
+        .filter((link) => link.getAttribute('href') === '/cart')
       expect(cartLinks.length).toBeGreaterThan(0)
     })
 

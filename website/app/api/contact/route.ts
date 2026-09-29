@@ -15,19 +15,13 @@ export async function POST(request: NextRequest) {
 
     // Validate required fields
     if (!data.name || !data.email || !data.subject || !data.message) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(data.email)) {
-      return NextResponse.json(
-        { error: 'Invalid email format' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Invalid email format' }, { status: 400 })
     }
 
     // In production, you would:
@@ -58,9 +52,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: 'Message sent successfully'
+      message: 'Message sent successfully',
     })
-
   } catch (error) {
     return NextResponse.json(
       { error: 'Failed to send message. Please try again.' },

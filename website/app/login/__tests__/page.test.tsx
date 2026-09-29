@@ -121,13 +121,15 @@ describe('LoginPage', () => {
     }
 
     await waitFor(() => {
-      expect(screen.getByText('Failed to sign in. Please check your credentials.')).toBeInTheDocument()
+      expect(
+        screen.getByText('Failed to sign in. Please check your credentials.')
+      ).toBeInTheDocument()
     })
   })
 
   it('should show loading state during sign in', async () => {
     const user = userEvent.setup()
-    mockSignIn.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 1000)))
+    mockSignIn.mockImplementation(() => new Promise((resolve) => setTimeout(resolve, 1000)))
 
     render(<LoginPage />)
 
@@ -169,9 +171,9 @@ describe('LoginPage', () => {
     expect(screen.getByText('Or continue with')).toBeInTheDocument()
 
     // There should be 3 social login buttons
-    const socialButtons = screen.getAllByRole('button').filter(
-      button => button.closest('.grid.grid-cols-3')
-    )
+    const socialButtons = screen
+      .getAllByRole('button')
+      .filter((button) => button.closest('.grid.grid-cols-3'))
     expect(socialButtons.length).toBe(3)
   })
 
@@ -182,9 +184,9 @@ describe('LoginPage', () => {
     render(<LoginPage />)
 
     // Find Google button (first social button)
-    const socialButtons = screen.getAllByRole('button').filter(
-      button => button.closest('.grid.grid-cols-3')
-    )
+    const socialButtons = screen
+      .getAllByRole('button')
+      .filter((button) => button.closest('.grid.grid-cols-3'))
 
     await user.click(socialButtons[0])
 

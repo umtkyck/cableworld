@@ -176,6 +176,7 @@ vercel --prod
 ### Detailed Guide
 
 See **[DEPLOYMENT.md](../DEPLOYMENT.md)** for:
+
 - Multiple hosting options (Vercel, Netlify, Railway, Render)
 - Free domain setup
 - Custom domain configuration
@@ -222,11 +223,11 @@ ZIP: 12345
 
 ### Test Cards
 
-| Scenario | Card Number |
-|----------|-------------|
-| Success | 4242 4242 4242 4242 |
+| Scenario  | Card Number         |
+| --------- | ------------------- |
+| Success   | 4242 4242 4242 4242 |
 | 3D Secure | 4000 0025 0000 3155 |
-| Decline | 4000 0000 0000 9995 |
+| Decline   | 4000 0000 0000 9995 |
 
 ## License
 

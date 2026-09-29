@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { Upload, FileText, X, AlertCircle, RotateCw, ZoomIn, ZoomOut, Loader2 } from 'lucide-react'
+import { Upload, FileText, X, AlertCircle, RotateCw, ZoomIn, Loader2 } from 'lucide-react'
 import type { BufferGeometry, Group, Mesh } from 'three'
 
 interface CADViewerProps {
@@ -22,7 +22,7 @@ interface UploadedFile {
 
 export default function CADViewer({
   onFileUpload,
-  initialFile,
+  initialFile: _initialFile,
   allowedFormats = ['.step', '.stp', '.obj', '.stl'],
   showControls = true,
 }: CADViewerProps) {
@@ -120,7 +120,6 @@ export default function CADViewer({
 
           // Fit camera to object
           fitCameraToObject(camera, mesh, THREE)
-
         } else if (extension === 'obj') {
           setLoadingMessage('Loading OBJ file...')
           const { OBJLoader } = await import('three/examples/jsm/loaders/OBJLoader.js')
@@ -138,7 +137,7 @@ export default function CADViewer({
           // Apply material to all meshes
           object.traverse((child) => {
             if ((child as Mesh).isMesh) {
-              (child as Mesh).material = new THREE.MeshPhongMaterial({
+              ;(child as Mesh).material = new THREE.MeshPhongMaterial({
                 color: 0x3b82f6,
                 specular: 0x111111,
                 shininess: 200,
@@ -148,7 +147,6 @@ export default function CADViewer({
 
           scene.add(object)
           fitCameraToObject(camera, object, THREE)
-
         } else if (extension === 'step' || extension === 'stp') {
           setLoadingMessage('Loading STEP file (this may take a moment)...')
 
@@ -233,7 +231,6 @@ export default function CADViewer({
 
             scene.add(group)
             fitCameraToObject(camera, group, THREE)
-
           } catch (stepError: any) {
             console.error('STEP parsing error:', stepError)
             throw new Error(`Failed to parse STEP file: ${stepError.message}`)
@@ -269,7 +266,6 @@ export default function CADViewer({
         window.addEventListener('resize', handleResize)
 
         sceneRef.current = { scene, camera, renderer, controls, handleResize }
-
       } catch (err: any) {
         console.error('3D rendering error:', err)
         setError(err.message || 'Failed to render 3D view. Your browser may not support WebGL.')
@@ -391,37 +387,40 @@ export default function CADViewer({
   }
 
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="flex h-full w-full flex-col">
       {/* Upload Area */}
       {!uploadedFile && (
         <div
           {...getRootProps()}
           className={`
-            relative border-2 border-dashed rounded-xl p-12 text-center cursor-pointer
+            relative cursor-pointer rounded-xl border-2 border-dashed p-12 text-center
             transition-all duration-200 ease-in-out
-            ${isDragActive
-              ? 'border-primary-500 bg-primary-50'
-              : 'border-slate-300 bg-slate-50 hover:border-primary-400 hover:bg-slate-100'
+            ${
+              isDragActive
+                ? 'border-primary-500 bg-primary-50'
+                : 'border-slate-300 bg-slate-50 hover:border-primary-400 hover:bg-slate-100'
             }
           `}
         >
           <input {...getInputProps()} />
 
           <div className="flex flex-col items-center justify-center space-y-4">
-            <div className={`
-              w-16 h-16 rounded-full flex items-center justify-center
+            <div
+              className={`
+              flex h-16 w-16 items-center justify-center rounded-full
               ${isDragActive ? 'bg-primary-100' : 'bg-slate-200'}
-            `}>
-              <Upload className={`w-8 h-8 ${isDragActive ? 'text-primary-600' : 'text-slate-600'}`} />
+            `}
+            >
+              <Upload
+                className={`h-8 w-8 ${isDragActive ? 'text-primary-600' : 'text-slate-600'}`}
+              />
             </div>
 
             <div>
-              <p className="text-lg font-semibold text-slate-900 mb-2">
+              <p className="mb-2 text-lg font-semibold text-slate-900">
                 {isDragActive ? 'Drop your CAD file here' : 'Drag & drop your CAD file here'}
               </p>
-              <p className="text-sm text-slate-600 mb-4">
-                or click to browse
-              </p>
+              <p className="mb-4 text-sm text-slate-600">or click to browse</p>
               <p className="text-xs text-slate-500">
                 Supported formats: {allowedFormats.join(', ')}
               </p>
@@ -429,9 +428,9 @@ export default function CADViewer({
           </div>
 
           {loading && (
-            <div className="absolute inset-0 bg-white/80 flex items-center justify-center rounded-xl">
+            <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-white/80">
               <div className="flex flex-col items-center space-y-2">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
+                <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-primary-500"></div>
                 <p className="text-sm text-slate-600">Loading CAD file...</p>
               </div>
             </div>
@@ -441,8 +440,8 @@ export default function CADViewer({
 
       {/* Error Message */}
       {error && (
-        <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+        <div className="mb-4 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4">
+          <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-red-500" />
           <div>
             <p className="text-sm font-semibold text-red-800">Error loading CAD file</p>
             <p className="text-sm text-red-600">{error}</p>
@@ -452,38 +451,39 @@ export default function CADViewer({
 
       {/* Viewer Area */}
       {uploadedFile && (
-        <div className="flex-1 flex flex-col">
+        <div className="flex flex-1 flex-col">
           {/* File Info Bar */}
-          <div className="bg-white border border-slate-200 rounded-t-xl p-4 flex items-center justify-between">
+          <div className="flex items-center justify-between rounded-t-xl border border-slate-200 bg-white p-4">
             <div className="flex items-center gap-3">
-              <FileText className="w-5 h-5 text-primary-500" />
+              <FileText className="h-5 w-5 text-primary-500" />
               <div>
                 <p className="font-semibold text-slate-900">{uploadedFile.name}</p>
                 <p className="text-xs text-slate-600">
-                  {formatFileSize(uploadedFile.size)} • {uploadedFile.type.toUpperCase() || 'CAD File'}
+                  {formatFileSize(uploadedFile.size)} •{' '}
+                  {uploadedFile.type.toUpperCase() || 'CAD File'}
                 </p>
               </div>
             </div>
             <button
               onClick={handleRemoveFile}
-              className="p-2 hover:bg-slate-100 rounded-lg transition"
+              className="rounded-lg p-2 transition hover:bg-slate-100"
             >
-              <X className="w-5 h-5 text-slate-600" />
+              <X className="h-5 w-5 text-slate-600" />
             </button>
           </div>
 
           {/* 3D Viewer Canvas */}
           <div
             ref={canvasRef}
-            className="flex-1 bg-slate-900 rounded-b-xl overflow-hidden relative"
+            className="relative flex-1 overflow-hidden rounded-b-xl bg-slate-900"
             style={{ minHeight: '600px', width: '100%' }}
           >
             {/* Loading overlay */}
             {loadingMessage && (
-              <div className="absolute inset-0 bg-slate-900/90 flex items-center justify-center z-10">
+              <div className="absolute inset-0 z-10 flex items-center justify-center bg-slate-900/90">
                 <div className="flex flex-col items-center space-y-4">
-                  <Loader2 className="w-12 h-12 text-primary-500 animate-spin" />
-                  <p className="text-white text-sm">{loadingMessage}</p>
+                  <Loader2 className="h-12 w-12 animate-spin text-primary-500" />
+                  <p className="text-sm text-white">{loadingMessage}</p>
                 </div>
               </div>
             )}
@@ -491,7 +491,7 @@ export default function CADViewer({
 
           {/* Info Message */}
           {!error && (
-            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
               <p className="text-sm text-blue-800">
                 <strong>ℹ️ Info:</strong> {getFormatInfo()}
               </p>
@@ -501,23 +501,23 @@ export default function CADViewer({
           {/* Controls Info */}
           {canRender3D && showControls && !loadingMessage && (
             <div className="mt-4 grid grid-cols-3 gap-4">
-              <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-200">
-                <div className="flex items-center gap-2 mb-2">
-                  <RotateCw className="w-5 h-5 text-primary-500" />
+              <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+                <div className="mb-2 flex items-center gap-2">
+                  <RotateCw className="h-5 w-5 text-primary-500" />
                   <span className="font-semibold text-slate-900">Rotate</span>
                 </div>
                 <p className="text-xs text-slate-600">Left click + drag</p>
               </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-200">
-                <div className="flex items-center gap-2 mb-2">
-                  <ZoomIn className="w-5 h-5 text-primary-500" />
+              <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+                <div className="mb-2 flex items-center gap-2">
+                  <ZoomIn className="h-5 w-5 text-primary-500" />
                   <span className="font-semibold text-slate-900">Zoom</span>
                 </div>
                 <p className="text-xs text-slate-600">Mouse wheel</p>
               </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-200">
-                <div className="flex items-center gap-2 mb-2">
-                  <Upload className="w-5 h-5 text-primary-500" />
+              <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+                <div className="mb-2 flex items-center gap-2">
+                  <Upload className="h-5 w-5 text-primary-500" />
                   <span className="font-semibold text-slate-900">Pan</span>
                 </div>
                 <p className="text-xs text-slate-600">Right click + drag</p>

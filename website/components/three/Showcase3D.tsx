@@ -2,7 +2,7 @@
 
 import { Suspense, useRef, useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { PerspectiveCamera, Float, MeshDistortMaterial, Sphere, Box } from '@react-three/drei'
+import { PerspectiveCamera, Float, MeshDistortMaterial, Sphere } from '@react-three/drei'
 import { EffectComposer, Bloom, DepthOfField } from '@react-three/postprocessing'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -69,11 +69,7 @@ function CableVisualization() {
               {/* Connector */}
               <mesh position={[radius, 0.8, 0]}>
                 <boxGeometry args={[0.2, 0.15, 0.15]} />
-                <meshStandardMaterial
-                  color="#ffffff"
-                  metalness={1}
-                  roughness={0.2}
-                />
+                <meshStandardMaterial color="#ffffff" metalness={1} roughness={0.2} />
               </mesh>
             </Float>
           </group>
@@ -159,23 +155,23 @@ export default function Showcase3D() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-32 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-hidden"
+      className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 py-32"
     >
       {/* Background Elements */}
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(6,182,212,0.1),transparent_50%)]" />
+        <div className="absolute left-0 top-0 h-full w-full bg-[radial-gradient(circle_at_50%_50%,rgba(6,182,212,0.1),transparent_50%)]" />
       </div>
 
       <div className="container-custom relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid items-center gap-16 lg:grid-cols-2">
           {/* Left Content */}
           <div ref={contentRef} className="showcase-content">
-            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-xl border border-purple-500/30 rounded-full px-6 py-2 mb-6">
-              <Activity className="w-4 h-4 text-purple-400" />
+            <div className="mb-6 inline-flex items-center space-x-2 rounded-full border border-purple-500/30 bg-gradient-to-r from-purple-500/20 to-pink-500/20 px-6 py-2 backdrop-blur-xl">
+              <Activity className="h-4 w-4 text-purple-400" />
               <span className="text-sm font-semibold text-purple-300">Live Visualization</span>
             </div>
 
-            <h2 className="text-5xl md:text-6xl font-black mb-6">
+            <h2 className="mb-6 text-5xl font-black md:text-6xl">
               <span className="bg-gradient-to-r from-white via-cyan-300 to-blue-400 bg-clip-text text-transparent">
                 Real-Time 3D
               </span>
@@ -183,52 +179,53 @@ export default function Showcase3D() {
               <span className="text-white">Cable Modeling</span>
             </h2>
 
-            <p className="text-xl text-slate-400 mb-8 leading-relaxed">
+            <p className="mb-8 text-xl leading-relaxed text-slate-400">
               Our advanced WebGL engine renders your cable harness designs in real-time 3D.
-              Visualize complex assemblies, identify potential issues, and optimize before manufacturing.
+              Visualize complex assemblies, identify potential issues, and optimize before
+              manufacturing.
             </p>
 
             {/* Stats Grid */}
-            <div className="stats-grid grid grid-cols-2 gap-4 mb-8">
-              <div className="stat-item bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-xl p-6">
-                <div className="text-4xl font-black bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mb-2">
+            <div className="stats-grid mb-8 grid grid-cols-2 gap-4">
+              <div className="stat-item rounded-xl border border-slate-700/50 bg-slate-900/50 p-6 backdrop-blur-xl">
+                <div className="mb-2 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-4xl font-black text-transparent">
                   99.9%
                 </div>
                 <div className="text-sm text-slate-400">Accuracy Rate</div>
               </div>
 
-              <div className="stat-item bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-xl p-6">
-                <div className="text-4xl font-black bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent mb-2">
+              <div className="stat-item rounded-xl border border-slate-700/50 bg-slate-900/50 p-6 backdrop-blur-xl">
+                <div className="mb-2 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-4xl font-black text-transparent">
                   10M+
                 </div>
                 <div className="text-sm text-slate-400">Cables Analyzed</div>
               </div>
 
-              <div className="stat-item bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-xl p-6">
-                <div className="text-4xl font-black bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent mb-2">
+              <div className="stat-item rounded-xl border border-slate-700/50 bg-slate-900/50 p-6 backdrop-blur-xl">
+                <div className="mb-2 bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-4xl font-black text-transparent">
                   2.5s
                 </div>
                 <div className="text-sm text-slate-400">Avg. Process Time</div>
               </div>
 
-              <div className="stat-item bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-xl p-6">
-                <div className="text-4xl font-black bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent mb-2">
+              <div className="stat-item rounded-xl border border-slate-700/50 bg-slate-900/50 p-6 backdrop-blur-xl">
+                <div className="mb-2 bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-4xl font-black text-transparent">
                   24/7
                 </div>
                 <div className="text-sm text-slate-400">AI Monitoring</div>
               </div>
             </div>
 
-            <button className="group inline-flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-600 text-white font-bold rounded-xl hover:shadow-2xl hover:shadow-purple-500/50 hover:scale-105 transition-all duration-300">
+            <button className="group inline-flex items-center space-x-2 rounded-xl bg-gradient-to-r from-purple-500 to-pink-600 px-8 py-4 font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50">
               <span>Try 3D Visualizer</span>
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </button>
           </div>
 
           {/* Right - 3D Canvas */}
-          <div ref={canvasRef} className="relative h-[600px] rounded-2xl overflow-hidden">
+          <div ref={canvasRef} className="relative h-[600px] overflow-hidden rounded-2xl">
             {/* Canvas Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-900 to-slate-950 rounded-2xl border border-slate-700/50">
+            <div className="absolute inset-0 rounded-2xl border border-slate-700/50 bg-gradient-to-br from-slate-900 to-slate-950">
               <Canvas>
                 <Suspense fallback={null}>
                   <PerspectiveCamera makeDefault position={[0, 0, 5]} fov={75} />
@@ -258,15 +255,15 @@ export default function Showcase3D() {
             </div>
 
             {/* Overlay Info */}
-            <div className="absolute top-6 left-6 bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-lg px-4 py-3">
+            <div className="absolute left-6 top-6 rounded-lg border border-slate-700/50 bg-slate-900/80 px-4 py-3 backdrop-blur-xl">
               <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                <span className="text-sm text-white font-semibold">Live Rendering</span>
+                <div className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
+                <span className="text-sm font-semibold text-white">Live Rendering</span>
               </div>
             </div>
 
-            <div className="absolute bottom-6 right-6 bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-lg px-4 py-3">
-              <div className="text-xs text-slate-400 mb-1">WebGL Performance</div>
+            <div className="absolute bottom-6 right-6 rounded-lg border border-slate-700/50 bg-slate-900/80 px-4 py-3 backdrop-blur-xl">
+              <div className="mb-1 text-xs text-slate-400">WebGL Performance</div>
               <div className="text-2xl font-bold text-green-400">60 FPS</div>
             </div>
           </div>

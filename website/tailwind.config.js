@@ -41,17 +41,17 @@ module.exports = {
           800: '#1e293b',
           900: '#0f172a',
           950: '#020617',
-        }
+        },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         display: ['Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
       },
       boxShadow: {
-        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
-        'medium': '0 4px 25px -3px rgba(0, 0, 0, 0.1), 0 10px 30px -2px rgba(0, 0, 0, 0.06)',
-        'large': '0 10px 50px -5px rgba(0, 0, 0, 0.15), 0 20px 40px -5px rgba(0, 0, 0, 0.1)',
-        'xl': '0 20px 60px -10px rgba(0, 0, 0, 0.2), 0 30px 50px -15px rgba(0, 0, 0, 0.15)',
+        soft: '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+        medium: '0 4px 25px -3px rgba(0, 0, 0, 0.1), 0 10px 30px -2px rgba(0, 0, 0, 0.06)',
+        large: '0 10px 50px -5px rgba(0, 0, 0, 0.15), 0 20px 40px -5px rgba(0, 0, 0, 0.1)',
+        xl: '0 20px 60px -10px rgba(0, 0, 0, 0.2), 0 30px 50px -15px rgba(0, 0, 0, 0.15)',
         'glow-orange': '0 0 40px rgba(249, 115, 22, 0.3)',
         'glow-green': '0 0 40px rgba(16, 185, 129, 0.3)',
         'glow-blue': '0 0 40px rgba(59, 130, 246, 0.3)',
@@ -66,14 +66,14 @@ module.exports = {
         'slide-in-left': 'slideInLeft 0.5s ease-out',
         'slide-in-right': 'slideInRight 0.5s ease-out',
         'scale-in': 'scaleIn 0.3s ease-out',
-        'blob': 'blob 12s infinite',
-        'float': 'float 6s ease-in-out infinite',
+        blob: 'blob 12s infinite',
+        float: 'float 6s ease-in-out infinite',
         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'shimmer': 'shimmer 2s infinite linear',
+        shimmer: 'shimmer 2s infinite linear',
         'gradient-x': 'gradientX 3s ease infinite',
         'spin-slow': 'spin 8s linear infinite',
         'bounce-gentle': 'bounceGentle 2s ease-in-out infinite',
-        'wiggle': 'wiggle 1s ease-in-out infinite',
+        wiggle: 'wiggle 1s ease-in-out infinite',
         'glow-pulse': 'glowPulse 2s ease-in-out infinite',
       },
       keyframes: {
@@ -139,20 +139,23 @@ module.exports = {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'hero-gradient': 'linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #1e293b 100%)',
-        'hero-modern': 'linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #0f172a 50%, #1e293b 75%, #0f172a 100%)',
-        'mesh-gradient': 'radial-gradient(at 40% 20%, rgba(249, 115, 22, 0.15) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(16, 185, 129, 0.1) 0px, transparent 50%), radial-gradient(at 0% 50%, rgba(59, 130, 246, 0.1) 0px, transparent 50%)',
-        'shimmer-gradient': 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
+        'hero-modern':
+          'linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #0f172a 50%, #1e293b 75%, #0f172a 100%)',
+        'mesh-gradient':
+          'radial-gradient(at 40% 20%, rgba(249, 115, 22, 0.15) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(16, 185, 129, 0.1) 0px, transparent 50%), radial-gradient(at 0% 50%, rgba(59, 130, 246, 0.1) 0px, transparent 50%)',
+        'shimmer-gradient':
+          'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       backdropBlur: {
         xs: '2px',
       },
       transitionDuration: {
-        '400': '400ms',
+        400: '400ms',
       },
       transitionTimingFunction: {
         'bounce-in': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
-        'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
+        smooth: 'cubic-bezier(0.4, 0, 0.2, 1)',
       },
     },
   },
