@@ -30,20 +30,26 @@ export async function POST(request: NextRequest) {
       await fileRef.save(buffer, {
         metadata: { contentType: file.type || 'application/octet-stream' },
       })
-      const [url] = await fileRef.getSignedUrl({ action: 'read', expires: Date.now() + 7 * 24 * 60 * 60 * 1000 })
+      const [url] = await fileRef.getSignedUrl({
+        action: 'read',
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+      })
       uploadedFiles.push({ name: file.name, size: file.size, url })
     }
 
-    await db.collection('quotes').doc(quoteId).set({
-      quoteId,
-      userId: authUser?.uid || null,
-      customerEmail: authUser?.email || null,
-      notes,
-      files: uploadedFiles,
-      status: 'submitted',
-      createdAt: FieldValue.serverTimestamp(),
-      updatedAt: FieldValue.serverTimestamp(),
-    })
+    await db
+      .collection('quotes')
+      .doc(quoteId)
+      .set({
+        quoteId,
+        userId: authUser?.uid || null,
+        customerEmail: authUser?.email || null,
+        notes,
+        files: uploadedFiles,
+        status: 'submitted',
+        createdAt: FieldValue.serverTimestamp(),
+        updatedAt: FieldValue.serverTimestamp(),
+      })
   } else {
     for (const file of files) {
       uploadedFiles.push({ name: file.name, size: file.size })

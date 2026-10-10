@@ -27,7 +27,7 @@ const posts = {
 
       <h2>Conclusion</h2>
       <p>By carefully considering these factors, you can select a cable harness that meets your project's technical and budgetary requirements.</p>
-    `
+    `,
   },
   'dfm-best-practices': {
     title: 'Design for Manufacturing: Best Practices for Cable Harnesses',
@@ -55,7 +55,7 @@ const posts = {
 
       <h2>Conclusion</h2>
       <p>DFM is a partnership between designer and manufacturer. Engage your harness supplier early — a short DFM review before finalizing a design routinely saves 10-30% on unit cost.</p>
-    `
+    `,
   },
   'ipc-620-compliance': {
     title: 'Understanding IPC-620 Compliance for Cable Harnesses',
@@ -80,7 +80,7 @@ const posts = {
 
       <h2>Conclusion</h2>
       <p>IPC-620 compliance is the baseline for professional harness manufacturing. Specify the class that matches your application, and verify your supplier's certification before awarding production.</p>
-    `
+    `,
   },
   'custom-cable-trends-2024': {
     title: 'Top Custom Cable Trends in 2024',
@@ -108,8 +108,8 @@ const posts = {
 
       <h2>Conclusion</h2>
       <p>Staying ahead of these trends helps engineers design cables that are faster to source, cheaper to build, and ready for next-generation applications.</p>
-    `
-  }
+    `,
+  },
 }
 
 export default function BlogPostPage({ params }: { params: { slug: string } }) {
@@ -122,44 +122,47 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950">
       <div className="container-custom section-padding max-w-4xl">
-        <Link href="/blog" className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white mb-8">
-          <ArrowLeft className="w-5 h-5" />
+        <Link
+          href="/blog"
+          className="mb-8 flex items-center gap-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+        >
+          <ArrowLeft className="h-5 w-5" />
           Back to Blog
         </Link>
 
         <article>
           <div className="mb-8">
-            <span className="text-sm font-semibold text-accent-green uppercase mb-4 block">
+            <span className="mb-4 block text-sm font-semibold uppercase text-accent-green">
               {post.category}
             </span>
-            <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-6">
+            <h1 className="mb-6 text-4xl font-bold text-slate-900 dark:text-white sm:text-5xl">
               {post.title}
             </h1>
 
             <div className="flex items-center gap-6 text-slate-600 dark:text-slate-400">
               <span className="flex items-center gap-2">
-                <User className="w-5 h-5" />
+                <User className="h-5 w-5" />
                 {post.author}
               </span>
               <span className="flex items-center gap-2">
-                <Calendar className="w-5 h-5" />
+                <Calendar className="h-5 w-5" />
                 {new Date(post.date).toLocaleDateString()}
               </span>
               <span className="flex items-center gap-2">
-                <Clock className="w-5 h-5" />
+                <Clock className="h-5 w-5" />
                 {post.readTime}
               </span>
             </div>
           </div>
 
           <div
-            className="max-w-none text-lg leading-relaxed text-slate-700 dark:text-slate-300 [&_p]:mb-6 [&_h2]:mt-10 [&_h2]:mb-4 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-slate-900 dark:[&_h2]:text-white"
+            className="max-w-none text-lg leading-relaxed text-slate-700 dark:text-slate-300 [&_h2]:mb-4 [&_h2]:mt-10 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-slate-900 dark:[&_h2]:text-white [&_p]:mb-6"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
-          <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
+          <div className="mt-12 border-t border-slate-200 pt-8 dark:border-slate-800">
             <Link href="/blog" className="btn-primary">
-              <ArrowLeft className="w-5 h-5 mr-2" />
+              <ArrowLeft className="mr-2 h-5 w-5" />
               Back to All Posts
             </Link>
           </div>

@@ -1,44 +1,40 @@
-'use client';
+'use client'
 
-import React, { useState } from 'react';
-import {
-  PaymentElement,
-  useStripe,
-  useElements,
-} from '@stripe/react-stripe-js';
-import { useRouter } from 'next/navigation';
+import React, { useState } from 'react'
+import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
+import { useRouter } from 'next/navigation'
 
 interface CheckoutFormProps {
-  amount: number;
-  quoteId: string;
-  orderRef: string;
+  amount: number
+  quoteId: string
+  orderRef: string
 }
 
 export default function CheckoutForm({ amount, quoteId, orderRef }: CheckoutFormProps) {
-  const stripe = useStripe();
-  const elements = useElements();
-  const router = useRouter();
+  const stripe = useStripe()
+  const elements = useElements()
+  const router = useRouter()
 
-  const [message, setMessage] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (!stripe || !elements) {
       // Stripe.js hasn't yet loaded.
-      return;
+      return
     }
 
-    setIsLoading(true);
-    setMessage(null);
+    setIsLoading(true)
+    setMessage(null)
 
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
         return_url: `${window.location.origin}/payment/success?quote_id=${quoteId}&amount=${amount}&order_ref=${orderRef}`,
       },
-    });
+    })
 
     // This point will only be reached if there is an immediate error when
     // confirming the payment. Otherwise, your customer will be redirected to
@@ -47,14 +43,14 @@ export default function CheckoutForm({ amount, quoteId, orderRef }: CheckoutForm
     // redirected to the `return_url`.
     if (error) {
       if (error.type === 'card_error' || error.type === 'validation_error') {
-        setMessage(error.message || 'An error occurred');
+        setMessage(error.message || 'An error occurred')
       } else {
-        setMessage('An unexpected error occurred.');
+        setMessage('An unexpected error occurred.')
       }
     }
 
-    setIsLoading(false);
-  };
+    setIsLoading(false)
+  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -65,18 +61,18 @@ export default function CheckoutForm({ amount, quoteId, orderRef }: CheckoutForm
       />
 
       {message && (
-        <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
+        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-800">
           {message}
         </div>
       )}
 
       <button
         disabled={isLoading || !stripe || !elements}
-        className="w-full bg-primary-500 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        className="w-full rounded-lg bg-primary-500 px-6 py-4 text-lg font-semibold text-white transition-colors hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isLoading ? (
           <span className="flex items-center justify-center gap-2">
-            <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+            <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24">
               <circle
                 className="opacity-25"
                 cx="12"
@@ -103,5 +99,5 @@ export default function CheckoutForm({ amount, quoteId, orderRef }: CheckoutForm
         <p>Secured by Stripe • Your payment information is encrypted</p>
       </div>
     </form>
-  );
+  )
 }

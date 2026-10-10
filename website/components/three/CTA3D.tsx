@@ -128,7 +128,7 @@ export default function CTA3D() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-32 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-hidden"
+      className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 py-32"
     >
       {/* 3D Background */}
       <div className="absolute inset-0 opacity-50">
@@ -156,17 +156,15 @@ export default function CTA3D() {
 
       {/* Content */}
       <div ref={contentRef} className="container-custom relative z-10">
-        <div className="max-w-4xl mx-auto text-center cta-content">
+        <div className="cta-content mx-auto max-w-4xl text-center">
           {/* Badge */}
-          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 backdrop-blur-xl border border-cyan-500/30 rounded-full px-6 py-3 mb-8">
-            <Sparkles className="w-5 h-5 text-cyan-400" />
-            <span className="text-sm font-semibold text-cyan-300">
-              Join 10,000+ Manufacturers
-            </span>
+          <div className="mb-8 inline-flex items-center space-x-2 rounded-full border border-cyan-500/30 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 px-6 py-3 backdrop-blur-xl">
+            <Sparkles className="h-5 w-5 text-cyan-400" />
+            <span className="text-sm font-semibold text-cyan-300">Join 10,000+ Manufacturers</span>
           </div>
 
           {/* Heading */}
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">
+          <h2 className="mb-6 text-5xl font-black leading-tight md:text-6xl lg:text-7xl">
             <span className="bg-gradient-to-r from-white via-cyan-300 to-blue-400 bg-clip-text text-transparent">
               Ready to Transform
             </span>
@@ -177,46 +175,46 @@ export default function CTA3D() {
           </h2>
 
           {/* Subheading */}
-          <p className="text-xl md:text-2xl text-slate-300 mb-12 max-w-2xl mx-auto leading-relaxed">
-            Get started in seconds. Upload your design and receive instant quotes from
-            our global network of certified manufacturers.
+          <p className="mx-auto mb-12 max-w-2xl text-xl leading-relaxed text-slate-300 md:text-2xl">
+            Get started in seconds. Upload your design and receive instant quotes from our global
+            network of certified manufacturers.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+          <div className="mb-12 flex flex-col justify-center gap-4 sm:flex-row">
             <Link
               href="/quote"
-              className="group relative inline-flex items-center justify-center px-10 py-5 text-lg font-bold text-white bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/50 hover:scale-105"
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 px-10 py-5 text-lg font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/50"
             >
               <span className="relative z-10 flex items-center">
-                <Upload className="w-5 h-5 mr-2" />
+                <Upload className="mr-2 h-5 w-5" />
                 Upload Design Now
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" />
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-2" />
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 opacity-0 transition-opacity group-hover:opacity-100" />
             </Link>
 
             <Link
               href="/contact"
-              className="group inline-flex items-center justify-center px-10 py-5 text-lg font-bold text-white border-2 border-cyan-400 rounded-xl backdrop-blur-xl bg-white/5 hover:bg-white/10 transition-all duration-300"
+              className="group inline-flex items-center justify-center rounded-xl border-2 border-cyan-400 bg-white/5 px-10 py-5 text-lg font-bold text-white backdrop-blur-xl transition-all duration-300 hover:bg-white/10"
             >
               Schedule Demo
-              <Sparkles className="w-5 h-5 ml-2 group-hover:rotate-12 transition-transform" />
+              <Sparkles className="ml-2 h-5 w-5 transition-transform group-hover:rotate-12" />
             </Link>
           </div>
 
           {/* Trust Indicators */}
           <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-slate-400">
             <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              <div className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
               <span>No credit card required</span>
             </div>
             <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              <div className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
               <span>Free instant quotes</span>
             </div>
             <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              <div className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
               <span>24/7 AI support</span>
             </div>
           </div>

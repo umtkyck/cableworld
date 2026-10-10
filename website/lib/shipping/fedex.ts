@@ -13,7 +13,7 @@ const SERVICE_NAMES: Record<string, string> = {
   PRIORITY_OVERNIGHT: 'FedEx Priority Overnight',
   FIRST_OVERNIGHT: 'FedEx First Overnight',
   INTERNATIONAL_ECONOMY: 'FedEx International Economy',
-  INTERNATIONAL_PRIORITY: 'FedEx International Priority'
+  INTERNATIONAL_PRIORITY: 'FedEx International Priority',
 }
 
 export function isFedexConfigured(): boolean {
@@ -37,9 +37,9 @@ async function getAccessToken(): Promise<string> {
     body: new URLSearchParams({
       grant_type: 'client_credentials',
       client_id: process.env.FEDEX_CLIENT_ID || '',
-      client_secret: process.env.FEDEX_CLIENT_SECRET || ''
+      client_secret: process.env.FEDEX_CLIENT_SECRET || '',
     }),
-    cache: 'no-store'
+    cache: 'no-store',
   })
 
   if (!res.ok) {
@@ -49,7 +49,7 @@ async function getAccessToken(): Promise<string> {
   const data = await res.json()
   cachedToken = {
     token: data.access_token,
-    expiresAt: Date.now() + Number(data.expires_in || 3600) * 1000
+    expiresAt: Date.now() + Number(data.expires_in || 3600) * 1000,
   }
   return cachedToken.token
 }
@@ -62,7 +62,7 @@ export async function getFedexRates(shipment: ShipmentDetails): Promise<Shipping
   const body = {
     accountNumber: { value: process.env.FEDEX_ACCOUNT_NUMBER },
     rateRequestControlParameters: {
-      returnTransitTimes: true
+      returnTransitTimes: true,
     },
     requestedShipment: {
       shipper: {
@@ -71,8 +71,8 @@ export async function getFedexRates(shipment: ShipmentDetails): Promise<Shipping
           city: SHIP_FROM.city,
           stateOrProvinceCode: SHIP_FROM.state,
           postalCode: SHIP_FROM.postalCode,
-          countryCode: SHIP_FROM.country
-        }
+          countryCode: SHIP_FROM.country,
+        },
       },
       recipient: {
         address: {
@@ -81,8 +81,8 @@ export async function getFedexRates(shipment: ShipmentDetails): Promise<Shipping
           stateOrProvinceCode: destination.state,
           postalCode: destination.postalCode,
           countryCode: destination.country,
-          residential: true
-        }
+          residential: true,
+        },
       },
       pickupType: 'DROPOFF_AT_FEDEX_LOCATION',
       rateRequestType: ['ACCOUNT', 'LIST'],
@@ -93,21 +93,21 @@ export async function getFedexRates(shipment: ShipmentDetails): Promise<Shipping
             length: dimensionsIn.length,
             width: dimensionsIn.width,
             height: dimensionsIn.height,
-            units: 'IN'
-          }
-        }
-      ]
-    }
+            units: 'IN',
+          },
+        },
+      ],
+    },
   }
 
   const res = await fetch(`${BASE_URL}/rate/v1/rates/quotes`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(body),
-    cache: 'no-store'
+    cache: 'no-store',
   })
 
   if (!res.ok) {
@@ -130,8 +130,13 @@ export async function getFedexRates(shipment: ShipmentDetails): Promise<Shipping
       const transitDays = detail?.operationalDetail?.transitTime
       // FedEx returns transit as e.g. "TWO_DAYS"; map the common values.
       const daysMap: Record<string, number> = {
-        ONE_DAY: 1, TWO_DAYS: 2, THREE_DAYS: 3, FOUR_DAYS: 4,
-        FIVE_DAYS: 5, SIX_DAYS: 6, SEVEN_DAYS: 7
+        ONE_DAY: 1,
+        TWO_DAYS: 2,
+        THREE_DAYS: 3,
+        FOUR_DAYS: 4,
+        FIVE_DAYS: 5,
+        SIX_DAYS: 6,
+        SEVEN_DAYS: 7,
       }
 
       return {
@@ -142,7 +147,7 @@ export async function getFedexRates(shipment: ShipmentDetails): Promise<Shipping
         serviceCode: code,
         amount: total,
         currency: shipmentDetail?.currency || 'USD',
-        estimatedDays: transitDays ? daysMap[transitDays] : undefined
+        estimatedDays: transitDays ? daysMap[transitDays] : undefined,
       }
     })
     .filter((rate): rate is ShippingRate => rate !== null)

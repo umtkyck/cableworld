@@ -21,21 +21,21 @@ export function getTrackingInfo(trackingNumber: string): TrackingInfo | null {
   if (/^1Z[0-9A-Z]{16}$/.test(cleaned)) {
     return {
       carrier: 'UPS',
-      url: `https://www.ups.com/track?tracknum=${encodeURIComponent(cleaned)}`
+      url: `https://www.ups.com/track?tracknum=${encodeURIComponent(cleaned)}`,
     }
   }
 
   if (/^9\d{19,21}$/.test(cleaned)) {
     return {
       carrier: 'USPS',
-      url: `https://tools.usps.com/go/TrackConfirmAction?tLabels=${encodeURIComponent(cleaned)}`
+      url: `https://tools.usps.com/go/TrackConfirmAction?tLabels=${encodeURIComponent(cleaned)}`,
     }
   }
 
   if (/^\d{12}$/.test(cleaned) || /^\d{15}$/.test(cleaned) || /^\d{20}$/.test(cleaned)) {
     return {
       carrier: 'FedEx',
-      url: `https://www.fedex.com/fedextrack/?trknbr=${encodeURIComponent(cleaned)}`
+      url: `https://www.fedex.com/fedextrack/?trknbr=${encodeURIComponent(cleaned)}`,
     }
   }
 

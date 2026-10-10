@@ -30,7 +30,7 @@ function parseAddress(input: any): ShippingAddress | null {
     state: input.state.trim().toUpperCase(),
     postalCode: input.postalCode.trim(),
     country: country as ShippingAddress['country'],
-    phone: input.phone ? String(input.phone).trim() : undefined
+    phone: input.phone ? String(input.phone).trim() : undefined,
   }
 }
 
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     const shipment: ShipmentDetails = {
       destination,
       weightLb,
-      dimensionsIn: DEFAULT_DIMENSIONS_IN
+      dimensionsIn: DEFAULT_DIMENSIONS_IN,
     }
 
     const { rates, usedFallback } = await getShippingRates(shipment)
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       rates: finalRates,
       usedFallback,
-      freeShippingApplied
+      freeShippingApplied,
     })
   } catch (error) {
     console.error('[api/shipping/rates] error:', error)

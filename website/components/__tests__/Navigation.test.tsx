@@ -32,7 +32,9 @@ describe('Navigation', () => {
     it('should render promotional banner', () => {
       render(<Navigation />)
 
-      expect(screen.getByText('Free North America shipping on orders over $1,000')).toBeInTheDocument()
+      expect(
+        screen.getByText('Free North America shipping on orders over $1,000')
+      ).toBeInTheDocument()
       expect(screen.getByText('Shop Now')).toBeInTheDocument()
     })
 
@@ -43,7 +45,9 @@ describe('Navigation', () => {
       const closeButton = screen.getByRole('button', { name: /close banner/i })
       await user.click(closeButton)
 
-      expect(screen.queryByText('Free North America shipping on orders over $1,000')).not.toBeInTheDocument()
+      expect(
+        screen.queryByText('Free North America shipping on orders over $1,000')
+      ).not.toBeInTheDocument()
     })
   })
 
@@ -135,7 +139,9 @@ describe('Navigation', () => {
     it('should display cart icon', () => {
       render(<Navigation />)
 
-      const cartLinks = screen.getAllByRole('link').filter(link => link.getAttribute('href') === '/cart')
+      const cartLinks = screen
+        .getAllByRole('link')
+        .filter((link) => link.getAttribute('href') === '/cart')
       expect(cartLinks.length).toBeGreaterThan(0)
     })
 

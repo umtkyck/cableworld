@@ -24,7 +24,7 @@ export function getFallbackRates(shipment: ShipmentDetails): ShippingRate[] {
       serviceCode: 'ground',
       amount: round(ground),
       currency: 'USD',
-      estimatedDays: international ? 8 : 5
+      estimatedDays: international ? 8 : 5,
     },
     {
       id: 'flat:expedited',
@@ -34,7 +34,7 @@ export function getFallbackRates(shipment: ShipmentDetails): ShippingRate[] {
       serviceCode: 'expedited',
       amount: round(expedited),
       currency: 'USD',
-      estimatedDays: international ? 4 : 2
+      estimatedDays: international ? 4 : 2,
     },
     {
       id: 'flat:overnight',
@@ -45,7 +45,7 @@ export function getFallbackRates(shipment: ShipmentDetails): ShippingRate[] {
       amount: round(overnight),
       currency: 'USD',
       estimatedDays: international ? 2 : 1,
-      guaranteed: true
-    }
+      guaranteed: true,
+    },
   ]
 }

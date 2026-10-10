@@ -6,7 +6,7 @@ const BASE_URL = process.env.USPS_API_BASE || 'https://apis.usps.com'
 const MAIL_CLASSES: { code: string; name: string; days: number }[] = [
   { code: 'USPS_GROUND_ADVANTAGE', name: 'USPS Ground Advantage', days: 5 },
   { code: 'PRIORITY_MAIL', name: 'USPS Priority Mail', days: 2 },
-  { code: 'PRIORITY_MAIL_EXPRESS', name: 'USPS Priority Mail Express', days: 1 }
+  { code: 'PRIORITY_MAIL_EXPRESS', name: 'USPS Priority Mail Express', days: 1 },
 ]
 
 export function isUspsConfigured(): boolean {
@@ -26,9 +26,9 @@ async function getAccessToken(): Promise<string> {
     body: JSON.stringify({
       client_id: process.env.USPS_CLIENT_ID,
       client_secret: process.env.USPS_CLIENT_SECRET,
-      grant_type: 'client_credentials'
+      grant_type: 'client_credentials',
     }),
-    cache: 'no-store'
+    cache: 'no-store',
   })
 
   if (!res.ok) {
@@ -38,7 +38,7 @@ async function getAccessToken(): Promise<string> {
   const data = await res.json()
   cachedToken = {
     token: data.access_token,
-    expiresAt: Date.now() + Number(data.expires_in || 28800) * 1000
+    expiresAt: Date.now() + Number(data.expires_in || 28800) * 1000,
   }
   return cachedToken.token
 }
@@ -61,7 +61,7 @@ export async function getUspsRates(shipment: ShipmentDetails): Promise<ShippingR
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           originZIPCode: SHIP_FROM.postalCode,
@@ -75,9 +75,9 @@ export async function getUspsRates(shipment: ShipmentDetails): Promise<ShippingR
           rateIndicator: 'SP',
           destinationEntryFacilityType: 'NONE',
           priceType: 'RETAIL',
-          mailingDate: new Date().toISOString().slice(0, 10)
+          mailingDate: new Date().toISOString().slice(0, 10),
         }),
-        cache: 'no-store'
+        cache: 'no-store',
       })
 
       if (!res.ok) {
@@ -98,7 +98,7 @@ export async function getUspsRates(shipment: ShipmentDetails): Promise<ShippingR
         serviceCode: mailClass.code,
         amount: price,
         currency: 'USD',
-        estimatedDays: mailClass.days
+        estimatedDays: mailClass.days,
       }
       return rate
     })

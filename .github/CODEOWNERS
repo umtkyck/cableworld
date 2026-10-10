@@ -1,0 +1,20 @@
+# Default owner for everything
+* @umtkyck
+
+# Website (Next.js frontend)
+/website/ @umtkyck
+
+# Critical paths requiring additional review
+/website/lib/ @umtkyck
+/website/context/ @umtkyck
+/website/app/api/ @umtkyck
+/website/app/checkout/ @umtkyck
+
+# Backend
+/backend/ @umtkyck
+
+# Infrastructure
+/infrastructure/ @umtkyck
+
+# Mobile app
+/mobile/ @umtkyck

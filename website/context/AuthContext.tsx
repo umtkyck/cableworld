@@ -11,7 +11,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   FacebookAuthProvider,
-  OAuthProvider
+  OAuthProvider,
 } from 'firebase/auth'
 import { auth } from '@/lib/firebase'
 import { isAdminEmail } from '@/lib/admin'
@@ -47,15 +47,19 @@ function friendlyAuthError(error: unknown, fallback: string): Error {
     'auth/wrong-password': 'Incorrect email or password. Please try again.',
     'auth/user-not-found': 'No account found with this email. Please sign up first.',
     'auth/invalid-email': 'Please enter a valid email address.',
-    'auth/email-already-in-use': 'An account with this email already exists. Try signing in instead.',
+    'auth/email-already-in-use':
+      'An account with this email already exists. Try signing in instead.',
     'auth/weak-password': 'Password is too weak. Please use at least 6 characters.',
     'auth/too-many-requests': 'Too many attempts. Please wait a few minutes and try again.',
     'auth/network-request-failed': 'Network error. Please check your connection and try again.',
     'auth/popup-closed-by-user': 'Sign-in window was closed before completing. Please try again.',
-    'auth/popup-blocked': 'Your browser blocked the sign-in window. Please allow popups and try again.',
+    'auth/popup-blocked':
+      'Your browser blocked the sign-in window. Please allow popups and try again.',
     'auth/operation-not-allowed': 'This sign-in method is not available right now.',
-    'auth/api-key-not-valid.-please-pass-a-valid-api-key.': 'Sign-in is temporarily unavailable. Please try again later or contact support.',
-    'auth/invalid-api-key': 'Sign-in is temporarily unavailable. Please try again later or contact support.',
+    'auth/api-key-not-valid.-please-pass-a-valid-api-key.':
+      'Sign-in is temporarily unavailable. Please try again later or contact support.',
+    'auth/invalid-api-key':
+      'Sign-in is temporarily unavailable. Please try again later or contact support.',
   }
 
   return new Error(messages[code] ?? fallback)
@@ -80,7 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       // Update profile with display name
       await updateProfile(userCredential.user, {
-        displayName: displayName
+        displayName: displayName,
       })
 
       // Save user profile to Firestore (including company)
@@ -145,17 +149,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{
-      user,
-      loading,
-      isAdmin: isAdminEmail(user?.email),
-      signUp,
-      signIn,
-      signInWithGoogle,
-      signInWithFacebook,
-      signInWithApple,
-      logout
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        isAdmin: isAdminEmail(user?.email),
+        signUp,
+        signIn,
+        signInWithGoogle,
+        signInWithFacebook,
+        signInWithApple,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )

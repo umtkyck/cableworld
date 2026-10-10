@@ -50,7 +50,10 @@ const DitherMaterial = ({ time, resolution }: DitherMaterialProps) => {
 const DitherSphere = () => {
   const meshRef = useRef<THREE.Mesh>(null)
   const { size } = useThree()
-  const resolution = useMemo(() => new THREE.Vector2(size.width, size.height), [size.width, size.height])
+  const resolution = useMemo(
+    () => new THREE.Vector2(size.width, size.height),
+    [size.width, size.height]
+  )
 
   useFrame((state) => {
     if (meshRef.current) {

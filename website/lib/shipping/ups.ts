@@ -13,14 +13,12 @@ const SERVICE_NAMES: Record<string, string> = {
   '07': 'UPS Worldwide Express',
   '08': 'UPS Worldwide Expedited',
   '11': 'UPS Standard',
-  '65': 'UPS Worldwide Saver'
+  '65': 'UPS Worldwide Saver',
 }
 
 export function isUpsConfigured(): boolean {
   return Boolean(
-    process.env.UPS_CLIENT_ID &&
-    process.env.UPS_CLIENT_SECRET &&
-    process.env.UPS_ACCOUNT_NUMBER
+    process.env.UPS_CLIENT_ID && process.env.UPS_CLIENT_SECRET && process.env.UPS_ACCOUNT_NUMBER
   )
 }
 
@@ -39,10 +37,10 @@ async function getAccessToken(): Promise<string> {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: `Basic ${credentials}`
+      Authorization: `Basic ${credentials}`,
     },
     body: 'grant_type=client_credentials',
-    cache: 'no-store'
+    cache: 'no-store',
   })
 
   if (!res.ok) {
@@ -52,7 +50,7 @@ async function getAccessToken(): Promise<string> {
   const data = await res.json()
   cachedToken = {
     token: data.access_token,
-    expiresAt: Date.now() + Number(data.expires_in || 3600) * 1000
+    expiresAt: Date.now() + Number(data.expires_in || 3600) * 1000,
   }
   return cachedToken.token
 }
@@ -68,7 +66,7 @@ export async function getUpsRates(shipment: ShipmentDetails): Promise<ShippingRa
   const body = {
     RateRequest: {
       Request: {
-        TransactionReference: { CustomerContext: 'harnesscart rate shop' }
+        TransactionReference: { CustomerContext: 'harnesscart rate shop' },
       },
       Shipment: {
         Shipper: {
@@ -79,8 +77,8 @@ export async function getUpsRates(shipment: ShipmentDetails): Promise<ShippingRa
             City: SHIP_FROM.city,
             StateProvinceCode: SHIP_FROM.state,
             PostalCode: SHIP_FROM.postalCode,
-            CountryCode: SHIP_FROM.country
-          }
+            CountryCode: SHIP_FROM.country,
+          },
         },
         ShipFrom: {
           Name: SHIP_FROM.name,
@@ -89,8 +87,8 @@ export async function getUpsRates(shipment: ShipmentDetails): Promise<ShippingRa
             City: SHIP_FROM.city,
             StateProvinceCode: SHIP_FROM.state,
             PostalCode: SHIP_FROM.postalCode,
-            CountryCode: SHIP_FROM.country
-          }
+            CountryCode: SHIP_FROM.country,
+          },
         },
         ShipTo: {
           Name: destination.name,
@@ -99,8 +97,8 @@ export async function getUpsRates(shipment: ShipmentDetails): Promise<ShippingRa
             City: destination.city,
             StateProvinceCode: destination.state,
             PostalCode: destination.postalCode,
-            CountryCode: destination.country
-          }
+            CountryCode: destination.country,
+          },
         },
         Package: [
           {
@@ -109,30 +107,27 @@ export async function getUpsRates(shipment: ShipmentDetails): Promise<ShippingRa
               UnitOfMeasurement: { Code: 'IN' },
               Length: String(dimensionsIn.length),
               Width: String(dimensionsIn.width),
-              Height: String(dimensionsIn.height)
+              Height: String(dimensionsIn.height),
             },
             PackageWeight: {
               UnitOfMeasurement: { Code: 'LBS' },
-              Weight: String(Math.max(weightLb, 0.1))
-            }
-          }
-        ]
-      }
-    }
+              Weight: String(Math.max(weightLb, 0.1)),
+            },
+          },
+        ],
+      },
+    },
   }
 
-  const res = await fetch(
-    `${BASE_URL}/api/rating/v2409/Shop?additionalinfo=timeintransit`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify(body),
-      cache: 'no-store'
-    }
-  )
+  const res = await fetch(`${BASE_URL}/api/rating/v2409/Shop?additionalinfo=timeintransit`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(body),
+    cache: 'no-store',
+  })
 
   if (!res.ok) {
     throw new Error(`UPS Rating failed: ${res.status}`)
@@ -140,7 +135,11 @@ export async function getUpsRates(shipment: ShipmentDetails): Promise<ShippingRa
 
   const data = await res.json()
   const ratedShipments = data?.RateResponse?.RatedShipment
-  const list = Array.isArray(ratedShipments) ? ratedShipments : ratedShipments ? [ratedShipments] : []
+  const list = Array.isArray(ratedShipments)
+    ? ratedShipments
+    : ratedShipments
+      ? [ratedShipments]
+      : []
 
   return list
     .map((rated: any): ShippingRate | null => {
@@ -148,7 +147,8 @@ export async function getUpsRates(shipment: ShipmentDetails): Promise<ShippingRa
       const total = parseFloat(rated?.TotalCharges?.MonetaryValue)
       if (!code || !Number.isFinite(total)) return null
 
-      const transitDays = rated?.TimeInTransit?.ServiceSummary?.EstimatedArrival?.BusinessDaysInTransit
+      const transitDays =
+        rated?.TimeInTransit?.ServiceSummary?.EstimatedArrival?.BusinessDaysInTransit
 
       return {
         id: `ups:${code}`,
@@ -159,7 +159,7 @@ export async function getUpsRates(shipment: ShipmentDetails): Promise<ShippingRa
         amount: total,
         currency: rated?.TotalCharges?.CurrencyCode || 'USD',
         estimatedDays: transitDays ? parseInt(transitDays, 10) : undefined,
-        guaranteed: rated?.GuaranteedDelivery !== undefined
+        guaranteed: rated?.GuaranteedDelivery !== undefined,
       }
     })
     .filter((rate): rate is ShippingRate => rate !== null)

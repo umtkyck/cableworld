@@ -42,10 +42,10 @@ describe('getFallbackRates', () => {
       city: 'New York',
       state: 'NY',
       postalCode: '10001',
-      country: 'US' as const
+      country: 'US' as const,
     },
     weightLb: 2,
-    dimensionsIn: { length: 14, width: 10, height: 4 }
+    dimensionsIn: { length: 14, width: 10, height: 4 },
   }
 
   it('returns three rate options sorted from cheapest to fastest', () => {
@@ -59,7 +59,7 @@ describe('getFallbackRates', () => {
     const us = getFallbackRates(shipment)
     const ca = getFallbackRates({
       ...shipment,
-      destination: { ...shipment.destination, country: 'CA' }
+      destination: { ...shipment.destination, country: 'CA' },
     })
     expect(ca[0].amount).toBeGreaterThan(us[0].amount)
   })

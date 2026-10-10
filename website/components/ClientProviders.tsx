@@ -8,9 +8,7 @@ export default function ClientProviders({ children }: { children: React.ReactNod
   return (
     <ThemeProvider>
       <AuthProvider>
-        <CartProvider>
-          {children}
-        </CartProvider>
+        <CartProvider>{children}</CartProvider>
       </AuthProvider>
     </ThemeProvider>
   )

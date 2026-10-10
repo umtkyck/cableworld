@@ -43,7 +43,9 @@ export async function POST(request: NextRequest) {
     subtotal: body.subtotal,
     shippingCost: body.shippingCost ?? 0,
     total: body.total,
-    items: body.items?.length ? body.items : [{ name: 'Harness Cart Order', quantity: 1, price: body.subtotal }],
+    items: body.items?.length
+      ? body.items
+      : [{ name: 'Harness Cart Order', quantity: 1, price: body.subtotal }],
     shipping: body.shipping,
   }
 

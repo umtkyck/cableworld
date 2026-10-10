@@ -44,7 +44,9 @@ function TestComponent() {
       <div data-testid="user-status">{user ? user.email : 'No user'}</div>
       <div data-testid="loading-status">{loading ? 'Loading' : 'Ready'}</div>
       <div data-testid="error-status">{error}</div>
-      <button onClick={runAndCaptureError(() => signUp('test@test.com', 'password123', 'Test User'))}>
+      <button
+        onClick={runAndCaptureError(() => signUp('test@test.com', 'password123', 'Test User'))}
+      >
         Sign Up
       </button>
       <button onClick={runAndCaptureError(() => signIn('test@test.com', 'password123'))}>
@@ -135,11 +137,7 @@ describe('AuthContext', () => {
       signUpButton.click()
 
       await waitFor(() => {
-        expect(mockCreateUser).toHaveBeenCalledWith(
-          {},
-          'test@test.com',
-          'password123'
-        )
+        expect(mockCreateUser).toHaveBeenCalledWith({}, 'test@test.com', 'password123')
         expect(mockUpdateProfile).toHaveBeenCalledWith(mockUser, {
           displayName: 'Test User',
         })
@@ -186,11 +184,7 @@ describe('AuthContext', () => {
       signInButton.click()
 
       await waitFor(() => {
-        expect(mockSignIn).toHaveBeenCalledWith(
-          {},
-          'test@test.com',
-          'password123'
-        )
+        expect(mockSignIn).toHaveBeenCalledWith({}, 'test@test.com', 'password123')
       })
     })
 

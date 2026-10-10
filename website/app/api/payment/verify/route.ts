@@ -40,7 +40,13 @@ export async function GET(req: NextRequest) {
         subtotal: Math.max(subtotal, 0),
         shippingCost,
         total: paymentIntent.amount_received / 100,
-        items: [{ name: meta.quoteId ? `Quote ${meta.quoteId}` : 'Order', quantity: 1, price: Math.max(subtotal, 0) }],
+        items: [
+          {
+            name: meta.quoteId ? `Quote ${meta.quoteId}` : 'Order',
+            quantity: 1,
+            price: Math.max(subtotal, 0),
+          },
+        ],
         stripePaymentIntentId: paymentIntentId,
       })
     }

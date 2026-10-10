@@ -28,7 +28,10 @@ function docToOrder(id: string, data: FirebaseFirestore.DocumentData): OrderReco
 
 export async function createOrder(input: CreateOrderInput): Promise<OrderRecord | null> {
   if (!isAdminConfigured()) {
-    console.warn('[orders] FIREBASE_SERVICE_ACCOUNT_JSON not set — order not persisted:', input.orderRef)
+    console.warn(
+      '[orders] FIREBASE_SERVICE_ACCOUNT_JSON not set — order not persisted:',
+      input.orderRef
+    )
     return null
   }
 
@@ -36,7 +39,7 @@ export async function createOrder(input: CreateOrderInput): Promise<OrderRecord 
   const ref = db.collection('orders').doc(input.orderRef)
   const existing = await ref.get()
   if (existing.exists) {
-    return docToOrder(existing.id, existing.data()!)
+    return docToOrder(existing.id, existing.data() ?? {})
   }
 
   const payload = {
@@ -50,7 +53,7 @@ export async function createOrder(input: CreateOrderInput): Promise<OrderRecord 
 
   await ref.set(payload)
   const saved = await ref.get()
-  return docToOrder(saved.id, saved.data()!)
+  return docToOrder(saved.id, saved.data() ?? {})
 }
 
 export async function updateOrderStatus(
@@ -60,10 +63,10 @@ export async function updateOrderStatus(
 ): Promise<void> {
   if (!isAdminConfigured()) return
   const db = getAdminDb()
-  await db.collection('orders').doc(orderRef).set(
-    { status, ...extra, updatedAt: FieldValue.serverTimestamp() },
-    { merge: true }
-  )
+  await db
+    .collection('orders')
+    .doc(orderRef)
+    .set({ status, ...extra, updatedAt: FieldValue.serverTimestamp() }, { merge: true })
 }
 
 export async function getOrdersForUser(userId: string, email: string): Promise<OrderRecord[]> {
@@ -119,7 +122,9 @@ export async function getOrderStats(): Promise<{
   }
 }
 
-export async function getOrderByPaymentIntent(paymentIntentId: string): Promise<OrderRecord | null> {
+export async function getOrderByPaymentIntent(
+  paymentIntentId: string
+): Promise<OrderRecord | null> {
   if (!isAdminConfigured()) return null
   const db = getAdminDb()
   const snap = await db

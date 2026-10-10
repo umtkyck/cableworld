@@ -28,10 +28,12 @@ export async function POST(request: NextRequest) {
     }
 
     if (isAdminConfigured()) {
-      await getAdminDb().collection('contacts').add({
-        ...data,
-        createdAt: FieldValue.serverTimestamp(),
-      })
+      await getAdminDb()
+        .collection('contacts')
+        .add({
+          ...data,
+          createdAt: FieldValue.serverTimestamp(),
+        })
     }
 
     await sendNotificationEmail({
@@ -51,6 +53,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true, message: 'Message sent successfully' })
   } catch {
-    return NextResponse.json({ error: 'Failed to send message. Please try again.' }, { status: 500 })
+    return NextResponse.json(
+      { error: 'Failed to send message. Please try again.' },
+      { status: 500 }
+    )
   }
 }

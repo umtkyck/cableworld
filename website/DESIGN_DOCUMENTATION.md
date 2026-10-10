@@ -1,11 +1,13 @@
 # CableWorld 3D Landing Page - Design Documentation
 
 ## Overview
+
 This is a cutting-edge landing page built with advanced WebGL shaders, Three.js, and GSAP animations, featuring sophisticated dither effects and real-time 3D visualizations.
 
 ## Design Philosophy
 
 ### Visual Aesthetic
+
 - **Dithered Retro-Futurism**: Combines classic dithering techniques with modern 3D rendering
 - **Cyberpunk Color Palette**: Deep blues, cyans, purples, and pinks with gradients
 - **Glassmorphism**: Frosted glass effects with backdrop blur for depth
@@ -15,11 +17,13 @@ This is a cutting-edge landing page built with advanced WebGL shaders, Three.js,
 ### Technology Stack
 
 #### Core Technologies
+
 - **Next.js 14**: React framework with App Router
 - **TypeScript**: Type-safe development
 - **Tailwind CSS**: Utility-first styling
 
 #### 3D & Animation
+
 - **Three.js**: 3D rendering engine
 - **@react-three/fiber**: React renderer for Three.js
 - **@react-three/drei**: Useful helpers for R3F
@@ -27,6 +31,7 @@ This is a cutting-edge landing page built with advanced WebGL shaders, Three.js,
 - **GSAP**: Professional-grade animation library with ScrollTrigger
 
 #### Shader Effects
+
 - **Custom GLSL Shaders**: Hand-coded vertex and fragment shaders
 - **Dither Algorithm**: Bayer matrix-based dithering for retro aesthetic
 - **Simplex Noise**: Organic displacement and color variation
@@ -35,15 +40,19 @@ This is a cutting-edge landing page built with advanced WebGL shaders, Three.js,
 ## Component Architecture
 
 ### `/shaders/`
+
 Custom GLSL shader files:
+
 - `ditherVertex.glsl` - Vertex shader with noise-based displacement
 - `ditherFragment.glsl` - Fragment shader with Bayer dithering
 
 ### `/components/three/`
 
 #### `Hero3D.tsx`
+
 **Purpose**: Main hero section with immersive 3D background
 **Features**:
+
 - Full-screen WebGL canvas with perspective camera
 - Mouse parallax effect
 - GSAP scroll animations
@@ -53,6 +62,7 @@ Custom GLSL shader files:
 - CTA buttons with hover effects
 
 **Design Elements**:
+
 - Glassmorphic badges with glowing effects
 - Multi-line gradient text headings
 - Animated scroll indicator
@@ -60,8 +70,10 @@ Custom GLSL shader files:
 - Responsive layout
 
 #### `DitherScene.tsx`
+
 **Purpose**: Core 3D scene with custom shader materials
 **Features**:
+
 - Custom dither shader implementation
 - Animated icosahedron with displacement
 - Orbiting color-coded spheres (8 nodes)
@@ -70,6 +82,7 @@ Custom GLSL shader files:
 - Multiple light sources
 
 **Shader Implementation**:
+
 - Simplex noise for organic movement
 - Bayer matrix dithering (8x8)
 - Multi-layer color mixing
@@ -77,8 +90,10 @@ Custom GLSL shader files:
 - Energy hotspots
 
 #### `Features3D.tsx`
+
 **Purpose**: Feature showcase with 3D card animations
 **Features**:
+
 - 6 feature cards with unique color gradients
 - GSAP scroll-triggered animations
 - Staggered card entrance effects
@@ -87,14 +102,17 @@ Custom GLSL shader files:
 - Animated background grid
 
 **Design Pattern**:
+
 - Glassmorphic cards with gradient borders
 - Icon containers with gradient backgrounds
 - Hover states: lift, rotate, glow
 - Decorative corner elements
 
 #### `Showcase3D.tsx`
+
 **Purpose**: Live 3D cable visualization demo
 **Features**:
+
 - Real-time cable harness 3D model
 - Animated orbiting cables (4 segments)
 - Connection nodes and connectors
@@ -103,6 +121,7 @@ Custom GLSL shader files:
 - Post-processing: Bloom, Depth of Field
 
 **3D Model Components**:
+
 - Central distorted sphere core
 - Cylindrical cable segments
 - Box geometry connectors
@@ -110,8 +129,10 @@ Custom GLSL shader files:
 - Floating animations with drei
 
 #### `CTA3D.tsx`
+
 **Purpose**: Final call-to-action with 3D background
 **Features**:
+
 - Animated particle ring (200 particles)
 - Pulsing wireframe sphere
 - Dual CTA buttons
@@ -121,19 +142,23 @@ Custom GLSL shader files:
 ## Animation Strategy
 
 ### GSAP ScrollTrigger
+
 All sections use ScrollTrigger for:
+
 - Fade-in animations on scroll
 - Parallax effects
 - Staggered element appearances
 - Scrubbed timeline animations
 
 ### Three.js Animations
+
 - `useFrame` hook for 60fps animations
 - Rotation, scaling, and position updates
 - Noise-based organic movement
 - Auto-rotate controls for user interaction
 
 ### CSS Transitions
+
 - Hover effects on cards and buttons
 - Color transitions
 - Transform animations (scale, translate, rotate)
@@ -141,6 +166,7 @@ All sections use ScrollTrigger for:
 ## Color System
 
 ### Primary Palette
+
 ```
 Cyan: #06b6d4
 Blue: #3b82f6, #1e40af
@@ -149,6 +175,7 @@ Pink: #ec4899
 ```
 
 ### Backgrounds
+
 ```
 Slate-950: #020617 (deepest)
 Slate-900: #0f172a
@@ -156,6 +183,7 @@ Slate-800: #1e293b
 ```
 
 ### Gradients
+
 - Radial gradients for depth
 - Linear gradients for text highlights
 - Multi-stop gradients for buttons

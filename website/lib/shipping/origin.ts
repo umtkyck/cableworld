@@ -8,5 +8,5 @@ export const SHIP_FROM: ShippingAddress = {
   state: 'IL',
   postalCode: '60563',
   country: 'US',
-  phone: '+12246299664'
+  phone: '+12246299664',
 }

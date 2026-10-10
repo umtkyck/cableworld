@@ -11,42 +11,48 @@ const features = [
   {
     icon: Brain,
     title: 'AI-Powered Analysis',
-    description: 'Advanced machine learning algorithms analyze your designs instantly, providing accurate quotes and manufacturing insights.',
+    description:
+      'Advanced machine learning algorithms analyze your designs instantly, providing accurate quotes and manufacturing insights.',
     color: 'from-cyan-500 to-blue-600',
     delay: 0,
   },
   {
     icon: Zap,
     title: 'Lightning Fast',
-    description: 'Get quotes in under 60 seconds. Our optimized platform processes thousands of parameters in real-time.',
+    description:
+      'Get quotes in under 60 seconds. Our optimized platform processes thousands of parameters in real-time.',
     color: 'from-purple-500 to-pink-600',
     delay: 0.1,
   },
   {
     icon: Globe,
     title: 'Global Network',
-    description: 'Access 50+ vetted manufacturers worldwide. We ensure quality, reliability, and competitive pricing.',
+    description:
+      'Access 50+ vetted manufacturers worldwide. We ensure quality, reliability, and competitive pricing.',
     color: 'from-green-500 to-emerald-600',
     delay: 0.2,
   },
   {
     icon: Shield,
     title: 'Quality Assured',
-    description: 'ISO 9001 certified partners. Every manufacturer undergoes rigorous verification and quality audits.',
+    description:
+      'ISO 9001 certified partners. Every manufacturer undergoes rigorous verification and quality audits.',
     color: 'from-orange-500 to-red-600',
     delay: 0.3,
   },
   {
     icon: Layers,
     title: 'Full Stack Integration',
-    description: 'Seamless integration with your existing CAD tools, ERP systems, and supply chain management.',
+    description:
+      'Seamless integration with your existing CAD tools, ERP systems, and supply chain management.',
     color: 'from-blue-500 to-indigo-600',
     delay: 0.4,
   },
   {
     icon: TrendingUp,
     title: 'Real-Time Tracking',
-    description: 'Monitor your orders from quote to delivery with live updates and predictive shipping analytics.',
+    description:
+      'Monitor your orders from quote to delivery with live updates and predictive shipping analytics.',
     color: 'from-pink-500 to-rose-600',
     delay: 0.5,
   },
@@ -109,7 +115,7 @@ export default function Features3D() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-32 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-hidden"
+      className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 py-32"
     >
       {/* Animated Background Grid */}
       <div className="absolute inset-0 opacity-20">
@@ -127,31 +133,34 @@ export default function Features3D() {
       </div>
 
       {/* Glowing orbs */}
-      <div className="absolute top-20 left-10 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+      <div className="absolute left-10 top-20 h-96 w-96 animate-pulse rounded-full bg-cyan-500/10 blur-3xl" />
+      <div
+        className="absolute bottom-20 right-10 h-96 w-96 animate-pulse rounded-full bg-purple-500/10 blur-3xl"
+        style={{ animationDelay: '1s' }}
+      />
 
       <div className="container-custom relative z-10">
         {/* Section Title */}
-        <div ref={titleRef} className="text-center mb-20">
-          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 backdrop-blur-xl border border-cyan-500/30 rounded-full px-6 py-2 mb-6">
-            <Layers className="w-4 h-4 text-cyan-400" />
+        <div ref={titleRef} className="mb-20 text-center">
+          <div className="mb-6 inline-flex items-center space-x-2 rounded-full border border-cyan-500/30 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 px-6 py-2 backdrop-blur-xl">
+            <Layers className="h-4 w-4 text-cyan-400" />
             <span className="text-sm font-semibold text-cyan-300">Platform Features</span>
           </div>
 
-          <h2 className="text-5xl md:text-6xl font-black mb-6">
+          <h2 className="mb-6 text-5xl font-black md:text-6xl">
             <span className="bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
               Cutting-Edge Technology
             </span>
           </h2>
 
-          <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-            Powered by advanced AI and WebGL, our platform delivers unprecedented speed,
-            accuracy, and user experience in cable harness manufacturing.
+          <p className="mx-auto max-w-3xl text-xl text-slate-400">
+            Powered by advanced AI and WebGL, our platform delivers unprecedented speed, accuracy,
+            and user experience in cable harness manufacturing.
           </p>
         </div>
 
         {/* Feature Grid */}
-        <div className="feature-grid grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="feature-grid grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => {
             const Icon = feature.icon
             return (
@@ -161,30 +170,30 @@ export default function Features3D() {
                 style={{ transformStyle: 'preserve-3d' }}
               >
                 {/* Card Background with Gradient Border */}
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-transparent to-purple-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-500/20 via-transparent to-purple-500/20 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
 
                 {/* Main Card */}
-                <div className="relative bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-8 h-full transition-all duration-500 group-hover:border-cyan-500/50 group-hover:-translate-y-2 group-hover:shadow-2xl group-hover:shadow-cyan-500/20">
+                <div className="relative h-full rounded-2xl border border-slate-700/50 bg-gradient-to-br from-slate-900/90 to-slate-800/90 p-8 backdrop-blur-xl transition-all duration-500 group-hover:-translate-y-2 group-hover:border-cyan-500/50 group-hover:shadow-2xl group-hover:shadow-cyan-500/20">
                   {/* Icon */}
-                  <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500`}>
-                    <Icon className="w-8 h-8 text-white" />
+                  <div
+                    className={`h-16 w-16 bg-gradient-to-br ${feature.color} mb-6 flex items-center justify-center rounded-xl transition-all duration-500 group-hover:rotate-6 group-hover:scale-110`}
+                  >
+                    <Icon className="h-8 w-8 text-white" />
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-cyan-400 transition-colors">
+                  <h3 className="mb-4 text-2xl font-bold text-white transition-colors group-hover:text-cyan-400">
                     {feature.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-slate-400 leading-relaxed">
-                    {feature.description}
-                  </p>
+                  <p className="leading-relaxed text-slate-400">{feature.description}</p>
 
                   {/* Decorative Corner */}
-                  <div className="absolute top-4 right-4 w-20 h-20 border-t-2 border-r-2 border-cyan-500/20 rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute right-4 top-4 h-20 w-20 rounded-tr-2xl border-r-2 border-t-2 border-cyan-500/20 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
                   {/* Hover Glow Effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 </div>
               </div>
             )
@@ -192,10 +201,10 @@ export default function Features3D() {
         </div>
 
         {/* Bottom CTA */}
-        <div className="text-center mt-16">
-          <button className="group inline-flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold rounded-xl hover:shadow-2xl hover:shadow-cyan-500/50 hover:scale-105 transition-all duration-300">
+        <div className="mt-16 text-center">
+          <button className="group inline-flex items-center space-x-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-8 py-4 font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/50">
             <span>Explore All Features</span>
-            <TrendingUp className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <TrendingUp className="h-5 w-5 transition-transform group-hover:translate-x-1" />
           </button>
         </div>
       </div>

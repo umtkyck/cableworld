@@ -7,7 +7,11 @@ interface SendEmailInput {
 }
 
 /** Sends a notification email when RESEND_API_KEY is configured; otherwise no-ops. */
-export async function sendNotificationEmail({ subject, html, replyTo }: SendEmailInput): Promise<boolean> {
+export async function sendNotificationEmail({
+  subject,
+  html,
+  replyTo,
+}: SendEmailInput): Promise<boolean> {
   const apiKey = process.env.RESEND_API_KEY?.trim()
   if (!apiKey) return false
 

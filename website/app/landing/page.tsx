@@ -10,7 +10,7 @@ const CTA3D = dynamic(() => import('@/components/three/CTA3D'), { ssr: false })
 
 export default function LandingPage() {
   return (
-    <main className="relative bg-slate-950 overflow-x-hidden">
+    <main className="relative overflow-x-hidden bg-slate-950">
       {/* Hero Section with 3D Dither Effects */}
       <Hero3D />
 

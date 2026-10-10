@@ -31,30 +31,37 @@ export default function Features() {
       icon: Wrench,
       title: 'Design Services',
       description: 'Need help? Our engineers provide custom harness design consultation.',
-    }
+    },
   ]
 
   return (
     <section className="section-padding">
       <div className="container-custom">
-        <div className="max-w-2xl mb-16">
-          <h2 className="text-3xl sm:text-4xl font-semibold text-slate-900 dark:text-white mb-4 tracking-tight">
+        <div className="mb-16 max-w-2xl">
+          <h2 className="mb-4 text-3xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
             Everything you need to build better products
           </h2>
           <p className="text-lg text-slate-500 dark:text-slate-400">
-            From instant quotes to global manufacturing, we handle the complexity
-            so you can focus on innovation.
+            From instant quotes to global manufacturing, we handle the complexity so you can focus
+            on innovation.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-200 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden">
+        <div className="grid gap-px overflow-hidden rounded-2xl border border-slate-200 bg-slate-200 dark:border-slate-800 dark:bg-slate-800 md:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => {
             const Icon = feature.icon
             return (
-              <div key={index} className="bg-white dark:bg-slate-950 p-8 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors duration-200">
-                <Icon className="w-5 h-5 text-slate-900 dark:text-white mb-5" strokeWidth={1.75} />
-                <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-2">{feature.title}</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{feature.description}</p>
+              <div
+                key={index}
+                className="bg-white p-8 transition-colors duration-200 hover:bg-slate-50 dark:bg-slate-950 dark:hover:bg-slate-900"
+              >
+                <Icon className="mb-5 h-5 w-5 text-slate-900 dark:text-white" strokeWidth={1.75} />
+                <h3 className="mb-2 text-base font-semibold text-slate-900 dark:text-white">
+                  {feature.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                  {feature.description}
+                </p>
               </div>
             )
           })}

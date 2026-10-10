@@ -22,8 +22,8 @@ const BANK_DETAILS = [
   { label: 'Intermediary SWIFT / BIC', value: 'CHASUS33XXX', mono: true },
   {
     label: 'Bank Address',
-    value: '1 Letterman Drive, Building A, Suite A4-700, San Francisco, CA 94129 US'
-  }
+    value: '1 Letterman Drive, Building A, Suite A4-700, San Francisco, CA 94129 US',
+  },
 ]
 
 function CopyButton({ text }: { text: string }) {
@@ -42,11 +42,11 @@ function CopyButton({ text }: { text: string }) {
   return (
     <button
       onClick={copy}
-      className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+      className="p-1 text-gray-400 transition-colors hover:text-gray-600"
       aria-label={`Copy ${text}`}
       type="button"
     >
-      {copied ? <Check className="w-4 h-4 text-green-600" /> : <Copy className="w-4 h-4" />}
+      {copied ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />}
     </button>
   )
 }
@@ -60,21 +60,22 @@ export default function BankTransferDetails({
 }: BankTransferDetailsProps) {
   return (
     <div>
-      <div className="flex items-center gap-2 mb-4">
-        <Landmark className="w-5 h-5 text-gray-700" />
+      <div className="mb-4 flex items-center gap-2">
+        <Landmark className="h-5 w-5 text-gray-700" />
         <h3 className="text-lg font-semibold text-gray-900">Pay by Bank Transfer</h3>
       </div>
 
-      <p className="text-sm text-gray-600 mb-6">
+      <p className="mb-6 text-sm text-gray-600">
         Send an ACH or wire transfer for{' '}
         <span className="font-semibold text-gray-900">
-          ${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          $
+          {amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
         </span>{' '}
-        using the details below. Production starts as soon as the payment is received
-        (ACH typically 1–2 business days, domestic wire same day).
+        using the details below. Production starts as soon as the payment is received (ACH typically
+        1–2 business days, domestic wire same day).
       </p>
 
-      <div className="border border-gray-200 rounded-lg divide-y divide-gray-200 overflow-hidden">
+      <div className="divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-200">
         {BANK_DETAILS.map((row) => (
           <div key={row.label} className="flex items-center justify-between gap-4 px-4 py-3">
             <div className="min-w-0">
@@ -86,26 +87,29 @@ export default function BankTransferDetails({
             <CopyButton text={row.value} />
           </div>
         ))}
-        <div className="flex items-center justify-between gap-4 px-4 py-3 bg-amber-50">
+        <div className="flex items-center justify-between gap-4 bg-amber-50 px-4 py-3">
           <div>
-            <div className="text-xs text-amber-700 font-medium">Payment Reference (required)</div>
-            <div className="text-sm font-mono font-semibold text-amber-900">{reference}</div>
+            <div className="text-xs font-medium text-amber-700">Payment Reference (required)</div>
+            <div className="font-mono text-sm font-semibold text-amber-900">{reference}</div>
           </div>
           <CopyButton text={reference} />
         </div>
       </div>
 
-      <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start gap-3">
-        <Mail className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+      <div className="mt-6 flex items-start gap-3 rounded-lg border border-blue-200 bg-blue-50 p-4">
+        <Mail className="mt-0.5 h-5 w-5 flex-shrink-0 text-blue-600" />
         <div className="text-sm text-blue-800">
-          <p className="font-semibold mb-1">After sending your transfer</p>
+          <p className="mb-1 font-semibold">After sending your transfer</p>
           <p>
             Email your remittance confirmation to{' '}
-            <a href={`mailto:umtkyck@gmail.com?subject=Payment%20remittance%20${encodeURIComponent(reference)}`} className="underline font-medium">
+            <a
+              href={`mailto:umtkyck@gmail.com?subject=Payment%20remittance%20${encodeURIComponent(reference)}`}
+              className="font-medium underline"
+            >
               umtkyck@gmail.com
             </a>{' '}
-            with the reference <span className="font-mono">{reference}</span> so we can
-            match your payment and start production immediately.
+            with the reference <span className="font-mono">{reference}</span> so we can match your
+            payment and start production immediately.
           </p>
         </div>
       </div>
@@ -113,16 +117,17 @@ export default function BankTransferDetails({
       {onPlaceOrder && (
         <div className="mt-6">
           {placed ? (
-            <div className="flex items-center gap-2 text-green-700 bg-green-50 border border-green-200 rounded-lg px-4 py-3 text-sm">
-              <CheckCircle className="w-5 h-5" />
-              Order placed. Send your transfer using the reference above, then email your confirmation.
+            <div className="flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+              <CheckCircle className="h-5 w-5" />
+              Order placed. Send your transfer using the reference above, then email your
+              confirmation.
             </div>
           ) : (
             <button
               type="button"
               onClick={() => void onPlaceOrder()}
               disabled={placing}
-              className="w-full bg-primary-500 text-white py-4 px-6 rounded-lg font-semibold hover:bg-primary-600 disabled:opacity-50 transition-colors"
+              className="w-full rounded-lg bg-primary-500 px-6 py-4 font-semibold text-white transition-colors hover:bg-primary-600 disabled:opacity-50"
             >
               {placing ? 'Placing order…' : 'Place order — pay by bank transfer'}
             </button>

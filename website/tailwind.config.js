@@ -44,23 +44,23 @@ module.exports = {
           800: '#1e293b',
           900: '#0f172a',
           950: '#020617',
-        }
+        },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         display: ['Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
       },
       boxShadow: {
-        'soft': '0 1px 2px 0 rgba(15, 23, 42, 0.04), 0 1px 3px 0 rgba(15, 23, 42, 0.06)',
-        'medium': '0 4px 12px -2px rgba(15, 23, 42, 0.08)',
-        'large': '0 12px 32px -8px rgba(15, 23, 42, 0.12)',
+        soft: '0 1px 2px 0 rgba(15, 23, 42, 0.04), 0 1px 3px 0 rgba(15, 23, 42, 0.06)',
+        medium: '0 4px 12px -2px rgba(15, 23, 42, 0.08)',
+        large: '0 12px 32px -8px rgba(15, 23, 42, 0.12)',
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-out',
         'fade-in-up': 'fadeInUp 0.5s ease-out',
         'slide-up': 'slideUp 0.4s ease-out',
         'scale-in': 'scaleIn 0.3s ease-out',
-        'shimmer': 'shimmer 1.5s infinite linear',
+        shimmer: 'shimmer 1.5s infinite linear',
       },
       keyframes: {
         fadeIn: {
@@ -85,7 +85,7 @@ module.exports = {
         },
       },
       transitionTimingFunction: {
-        'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
+        smooth: 'cubic-bezier(0.4, 0, 0.2, 1)',
       },
     },
   },

@@ -4,7 +4,13 @@ import { getFedexRates, isFedexConfigured } from './fedex'
 import { getUspsRates, isUspsConfigured } from './usps'
 import { getFallbackRates } from './fallback'
 
-export type { CarrierId, RatesResponse, ShipmentDetails, ShippingAddress, ShippingRate } from './types'
+export type {
+  CarrierId,
+  RatesResponse,
+  ShipmentDetails,
+  ShippingAddress,
+  ShippingRate,
+} from './types'
 export { SHIP_FROM } from './origin'
 
 /** Free shipping threshold advertised site-wide ("Free shipping over $1,000"). */

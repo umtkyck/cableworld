@@ -28,21 +28,23 @@ export default function RequireAuth({ children, adminOnly = false }: RequireAuth
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500" />
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-900">
+        <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-primary-500" />
       </div>
     )
   }
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center py-12 px-4">
-        <div className="max-w-md w-full text-center">
-          <Lock className="w-16 h-16 text-slate-300 mx-auto mb-6" />
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Sign In Required</h1>
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12 dark:bg-slate-900">
+        <div className="w-full max-w-md text-center">
+          <Lock className="mx-auto mb-6 h-16 w-16 text-slate-300" />
+          <h1 className="mb-4 text-2xl font-bold text-slate-900 dark:text-white">
+            Sign In Required
+          </h1>
           <Link href="/login" className="btn-primary inline-flex">
             Sign In
-            <ChevronRight className="w-5 h-5 ml-2" />
+            <ChevronRight className="ml-2 h-5 w-5" />
           </Link>
         </div>
       </div>
@@ -51,13 +53,15 @@ export default function RequireAuth({ children, adminOnly = false }: RequireAuth
 
   if (adminOnly && !isAdmin) {
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center py-12 px-4">
-        <div className="max-w-md w-full text-center">
-          <Lock className="w-16 h-16 text-slate-300 mx-auto mb-6" />
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Admin Access Required</h1>
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12 dark:bg-slate-900">
+        <div className="w-full max-w-md text-center">
+          <Lock className="mx-auto mb-6 h-16 w-16 text-slate-300" />
+          <h1 className="mb-4 text-2xl font-bold text-slate-900 dark:text-white">
+            Admin Access Required
+          </h1>
           <Link href="/dashboard" className="btn-primary inline-flex">
             Back to Dashboard
-            <ChevronRight className="w-5 h-5 ml-2" />
+            <ChevronRight className="ml-2 h-5 w-5" />
           </Link>
         </div>
       </div>
