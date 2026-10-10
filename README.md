@@ -254,3 +254,24 @@ Copyright © 2024 CableWorld. All rights reserved.
 ---
 
 **Built with ❤️ by the CableWorld Team**
+
+## AI Tooling (MCP)
+
+This repo ships a project-scoped `.mcp.json` that connects Claude Code to the official **Vercel** and **Stripe** MCP servers over OAuth — no API keys stored in the repo.
+
+| Server | Endpoint | What it gives the agent |
+|--------|----------|------------------------|
+| Vercel | `https://mcp.vercel.com` | Deployments, deploy logs, project settings, Web Analytics |
+| Stripe | `https://mcp.stripe.com` | Customers, payments, refunds, subscriptions, webhooks, Stripe docs search |
+
+### First-time connect (one time per machine)
+
+```bash
+cd cableworld
+claude          # Claude Code auto-detects .mcp.json and asks to approve the servers
+/mcp            # opens the OAuth sign-in for Vercel and Stripe in your browser
+```
+
+After signing in once, every future session connects automatically. Sessions can be revoked anytime from the Vercel dashboard or Stripe Dashboard → User settings → OAuth sessions.
+
+On claude.ai (web/desktop), add the same servers under **Settings → Connectors** with the URLs above.
